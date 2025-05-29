@@ -2,7 +2,7 @@
 Code Kombat
 
 Collaborators:
---> Belza, John Jaylyn
+--> Belza, John Jaylyn <br>
 --> Constantino, Alvin Jr.
 --> Sabangan, Ybo
 --> Santiago, James Aries
