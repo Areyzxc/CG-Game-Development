@@ -1,0 +1,360 @@
+/**
+ * File: assets/css/admin_dashboard.css
+ * Purpose: Styles for the Admin Dashboard in a retro OS theme.
+ * Features:
+ *   - Retro OS theme with pixelated fonts and colors.
+ *   - Responsive design for various screen sizes.
+ * Usage:
+ *   - Include this CSS file in the Admin Dashboard page.
+ *   - Ensure the HTML structure matches the class names used in this CSS.
+ * Dependencies: 
+ *   - Font: 'Segoe UI' or similar pixelated font for retro effect.
+ *   - Icons: Ensure icons used in buttons are compatible with the retro theme.
+ * Author: CodeGaming Team
+ * Last Updated: July 26, 2025
+ */
+/* Font Face */
+@font-face {
+  font-family: 'Your-Sans-Serif-Font'; /* Replace with a real font if you have one */
+  src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), sans-serif;
+}
+
+/* -------------------
+ * Theme Variables
+ * ------------------- */
+:root {
+  --theme-bg: #fdfaf6;
+  --theme-text: #1a1a1a;
+  --theme-border: #1a1a1a;
+  --theme-accent: #e74c3c;
+  --theme-accent-hover: #c0392b;
+  --theme-card-bg: #ffffff;
+  --theme-card-shadow: 0 4px 8px rgba(0,0,0,0.04);
+  --theme-tag-green: #27ae60;
+  --theme-tag-blue: #2980b9;
+  --theme-tag-orange: #d35400;
+}
+
+/* -------------------
+ * General Styles
+ * ------------------- */
+body.admin-theme {
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  font-family: 'Your-Sans-Serif-Font', sans-serif;
+  font-size: 16px;
+}
+
+.admin-main-content {
+  padding: 2rem;
+  margin-top: 70px; /* Space for fixed header */
+}
+
+/* -------------------
+ * Header & Navigation
+ * ------------------- */
+.admin-header {
+  background-color: var(--theme-bg);
+  border-bottom: 2px solid var(--theme-border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+}
+
+.admin-header .navbar-brand {
+  font-weight: bold;
+  color: var(--theme-text);
+}
+.admin-header .navbar-brand .fa-code {
+  color: var(--theme-accent);
+}
+
+.admin-header .nav-link {
+  color: var(--theme-text);
+  margin: 0 0.5rem;
+  font-weight: 500;
+}
+.admin-header .nav-link:hover {
+    color: var(--theme-accent);
+}
+
+.admin-header .nav-icon {
+    font-size: 1.2rem;
+}
+
+.admin-header .navbar-toggler {
+  border: none;
+  font-size: 1.5rem;
+}
+.admin-header .navbar-toggler:focus {
+  box-shadow: none;
+}
+
+/* -------------------
+ * Sidebar (Mobile)
+ * ------------------- */
+.sidebar-container {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100%;
+    z-index: 1040;
+    transition: left 0.3s ease;
+    background-color: var(--theme-bg);
+    border-right: 2px solid var(--theme-border);
+}
+.sidebar-container.active {
+    left: 0;
+}
+
+#adminSidebar ul {
+    list-style: none;
+    padding: 2rem 1rem;
+    margin: 0;
+}
+
+#adminSidebar a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--theme-text);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 5px;
+}
+#adminSidebar a:hover {
+    background-color: #f0ebe5;
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 1035;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* -------------------
+ * Cards
+ * ------------------- */
+.admin-card {
+  background-color: var(--theme-card-bg);
+  border: 2px solid var(--theme-border);
+  border-radius: 8px;
+  box-shadow: 6px 6px 0 0 var(--theme-border);
+  transition: all 0.2s ease;
+  margin-bottom: 2rem;
+}
+
+.admin-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 0 var(--theme-border);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+/* -------------------
+ * Buttons & Forms
+ * ------------------- */
+.btn-primary {
+  background-color: var(--theme-accent);
+  border: 2px solid var(--theme-border);
+  color: #fff;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 4px 4px 0 0 var(--theme-border);
+}
+.btn-primary:hover {
+  background-color: var(--theme-accent-hover);
+  color: #fff;
+  transform: translate(1px, 1px);
+  box-shadow: 3px 3px 0 0 var(--theme-border);
+}
+
+.form-control, .form-select {
+  border: 2px solid var(--theme-border);
+  border-radius: 5px;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--theme-accent);
+  box-shadow: none;
+}
+
+/* -------------------
+ * Tables & Modals
+ * ------------------- */
+.table {
+  border: 2px solid var(--theme-border);
+}
+
+.table thead th {
+  border-bottom: 2px solid var(--theme-border);
+  background-color: #f8f3ed;
+}
+
+.modal-content {
+  border: 2px solid var(--theme-border);
+  border-radius: 8px;
+  background-color: var(--theme-bg);
+}
+
+.modal-header {
+  border-bottom: 2px solid var(--theme-border);
+}
+.modal-footer {
+  border-top: 2px solid var(--theme-border);
+}
+
+/* Admin Dashboard Specific Styles */
+
+/* Font Face for Segoe UI */
+@font-face {
+  font-family: 'Segoe UI';
+  src: local('Segoe UI'), local('SegoeUI'),
+       url('/fonts/SegoeUI.woff2') format('woff2'),
+       url('/fonts/SegoeUI.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+body, .admin-theme {
+  font-family: 'Segoe UI', 'Roboto', 'Inter', 'Nunito', 'Open Sans', Arial, sans-serif;
+  background-color: var(--admin-light);
+  color: var(--admin-text);
+  letter-spacing: 0.01em;
+  font-size: 1rem;
+}
+
+/* Footer Styles (for admin-footer) */
+.admin-footer {
+  background: var(--admin-primary) !important;
+  border-top: 1px solid var(--admin-border);
+  color: var(--admin-light);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 1rem;
+  padding: 1.2rem 0;
+  text-align: center;
+}
+.admin-footer a {
+  color: var(--admin-accent);
+  text-decoration: none;
+  margin: 0 0.7rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.admin-footer a:hover {
+  color: var(--admin-warning);
+  text-decoration: underline;
+}
+
+/* -------------------
+ * Login Notification
+ * ------------------- */
+.login-notification {
+    position: fixed;
+    top: 90px; /* Below header */
+    right: 2rem;
+    z-index: 1050;
+    background-color: var(--theme-card-bg);
+    border: 2px solid var(--theme-border);
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    box-shadow: 6px 6px 0 0 var(--theme-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    max-width: 400px;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.login-notification.dismissed {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+}
+
+.login-notification .text-accent {
+    color: var(--theme-accent);
+}
+
+@media (max-width: 768px) {
+    .login-notification {
+        top: 80px;
+        left: 1rem;
+        right: 1rem;
+        max-width: none;
+    }
+}
+
+/* Compact Quick Actions */
+.compact-quick-actions .btn {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.98rem;
+  margin-bottom: 0.3rem;
+  border-radius: 5px;
+  min-height: 36px;
+}
+.compact-quick-actions .btn i {
+  font-size: 1rem;
+}
+
+/* Pinned Announcement Highlight */
+.dashboard-announcement-pinned {
+  border-left: 5px solid var(--theme-accent);
+  background: #fff8f3;
+  position: relative;
+}
+.dashboard-announcement-pinned .fa-thumbtack {
+  color: var(--theme-accent);
+  margin-right: 6px;
+  position: absolute;
+  left: -22px;
+  top: 18px;
+}
+
+/* Pin/Unpin Button */
+.pin-btn {
+  background: none;
+  border: none;
+  color: var(--theme-accent);
+  font-size: 1.1rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.pin-btn.pinned {
+  color: var(--theme-accent-hover);
+}
+
+.small-stats-card .card-body {
+  padding: 0.8rem 0.7rem;
+}
+.small-stats-card .mb-2 i {
+  font-size: 1.4rem !important;
+}
+.display-7 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+.fs-7 {
+  font-size: 0.95rem !important;
+} 

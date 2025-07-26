@@ -1,0 +1,206 @@
+/**
+ * File: assets/css/audio-player.css
+ * Purpose: Styles for the Audio Player component in a retro OS theme.
+ * Features:
+ *   - Retro OS theme with pixelated fonts and colors.
+ *   - Responsive design for various screen sizes.
+ * Usage:
+ *   - Include this CSS file in the Audio Player component.
+ *   - Ensure the HTML structure matches the class names used in this CSS.
+ * Dependencies: 
+ *   - Font: 'Times New Roman' or similar serif font for retro effect.
+ *   - Icons: Ensure icons used in buttons are compatible with the retro theme.
+ * Author: CodeGaming Team
+ * Last Updated: July 26, 2025
+ */
+/*===================================
+  Audio Toolbar Styling
+===================================*/
+.audio-toolbar {
+  background: var(--nav-bg);
+  border-top: 1px solid var(--nav-border);
+  font-family: "Times New Roman", Times, serif;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.audio-toolbar .container-fluid {
+    padding: 0.5rem 1rem;
+}
+
+.audio-toolbar .row {
+    align-items: center;
+}
+
+.audio-toolbar .col-md-4 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.audio-toolbar .col-md-4:nth-child(2) {
+    justify-content: center;
+}
+
+.audio-toolbar .col-md-4:nth-child(3) {
+    justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+    .audio-toolbar .row {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .audio-toolbar .col-md-4 {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .audio-toolbar .col-md-4:last-child {
+        margin-bottom: 0;
+    }
+    
+    .audio-toolbar #audioTitle {
+        font-size: 1rem;
+    }
+
+    .audio-toolbar .form-range,
+    .audio-toolbar .form-select {
+        width: 80%;
+    }
+}
+
+.audio-toolbar button.btn-link:hover {
+  color: var(--text-primary);
+}
+.audio-toolbar #audioTitle {
+  font-size: 0.9rem;
+}
+#audioVisualizer {
+  background: rgba(128, 24, 24, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(128, 24, 24, 0.3);
+  box-shadow: 0 0 10px rgba(128, 24, 24, 0.2);
+  transition: all var(--transition-speed) var(--transition-timing);
+}
+
+#audioVisualizer:hover {
+  box-shadow: 0 0 15px rgba(128, 24, 24, 0.4);
+  border-color: rgba(128, 24, 24, 0.5);
+}
+
+#audioPlayPause {
+  transition: all var(--transition-speed) var(--transition-timing);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#audioPlayPause:hover {
+  background: rgba(128, 24, 24, 0.2);
+  transform: scale(1.1);
+}
+
+#audioPlayIcon {
+  color: var(--accent-primary);
+  transition: all var(--transition-speed) var(--transition-timing);
+}
+
+#audioPlayPause:hover #audioPlayIcon {
+  color: var(--accent-hover);
+}
+
+.audio-toolbar .form-range {
+  background: rgba(128, 24, 24, 0.1);
+  border-radius: 10px;
+  height: 6px;
+  border: 1px solid rgba(128, 24, 24, 0.3);
+}
+
+.audio-toolbar .form-range::-webkit-slider-thumb {
+  background: var(--accent-primary);
+  border: 2px solid var(--accent-hover);
+  box-shadow: 0 0 10px rgba(128, 24, 24, 0.5);
+  transition: all var(--transition-speed) var(--transition-timing);
+}
+
+.audio-toolbar .form-range::-webkit-slider-thumb:hover {
+  background: var(--accent-hover);
+  transform: scale(1.2);
+  box-shadow: 0 0 15px rgba(128, 24, 24, 0.8);
+}
+
+/* Enhanced Track Select */
+.audio-toolbar .form-select {
+    background: rgba(128, 24, 24, 0.1);
+    border: 1px solid rgba(128, 24, 24, 0.3);
+    color: var(--text-primary); /* Keeps main select text white */
+    border-radius: 6px;
+    transition: all var(--transition-speed) var(--transition-timing);
+}
+
+.audio-toolbar .form-select option {
+    background-color: #333333; /* Dark background for options for readability */
+    color: #ffffff; /* White text for options for readability */
+}
+
+.audio-toolbar .form-select:hover {
+    background: rgba(128, 24, 24, 0.2);
+    border-color: rgba(128, 24, 24, 0.5);
+    box-shadow: 0 0 10px rgba(128, 24, 24, 0.3);
+}
+
+.audio-toolbar .form-select:focus {
+    background: rgba(128, 24, 24, 0.2);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 15px rgba(128, 24, 24, 0.5);
+}
+
+.audio-toolbar #audioTitle {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  text-shadow: 0 0 5px rgba(128, 24, 24, 0.5);
+  transition: all var(--transition-speed) var(--transition-timing);
+}
+
+.audio-toolbar #audioTitle:hover {
+  color: var(--accent-primary);
+  text-shadow: 0 0 8px rgba(128, 24, 24, 0.8);
+}
+
+@media (max-width: 768px) {
+    .audio-toolbar .row {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .audio-toolbar .col-md-4 {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .audio-toolbar .col-md-4:last-child {
+        margin-bottom: 0;
+    }
+    
+    .audio-toolbar #audioTitle {
+        font-size: 1rem;
+    }
+
+    .audio-toolbar .form-range,
+    .audio-toolbar .form-select {
+        width: 80%;
+    }
+    
+    #audioVisualizer {
+        width: 100%;
+        max-width: 300px;
+    }
+} 
