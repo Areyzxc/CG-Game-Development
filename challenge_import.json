@@ -1,0 +1,442 @@
+[
+    {
+      "type": "output",
+      "title": "Hello, World?",
+      "description": "What will be the output of this code?",
+      "starter_code": "print('Hello, World!' * 3)",
+      "expected_output": "Hello, World!Hello, World!Hello, World!",
+      "points": 30,
+      "answers": [
+        { "answer_text": "Hello, World!Hello, World!Hello, World!", "is_correct": 1, "explanation": "Hello, World! times three." }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "Predict the Output",
+      "description": "What will be the output of this code?",
+      "starter_code": "public class Main { public static void main(String[] args) { int x = 5; int y = 10; System.out.println(x * y); } }",
+      "expected_output": "50",
+      "points": 30,
+      "answers": [
+        { "answer_text": "50", "is_correct": 1 }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "Predict the Output",
+      "description": "What will be the output of this code?",
+      "starter_code": "#include <iostream>\nint main() { int a = 10, b = 20; std::cout << a + b; return 0; }",
+      "expected_output": "30",
+      "points": 30,
+      "answers": [
+        { "answer_text": "30", "is_correct": 1 }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "Predict the Output",
+      "description": "What will be the output of this code when run in a browser console?",
+      "starter_code": "let arr = [10, 20, 30]; console.log(arr.reduce((a, b) => a + b, 0));",
+      "expected_output": "60",
+      "points": 30,
+      "answers": [
+        { "answer_text": "60", "is_correct": 1 }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "Predict the Output",
+      "description": "What will be displayed inside the div with id='output' after this code is run?",
+      "starter_code": "<div id='output'></div><script>document.getElementById('output').innerHTML = 'Expert Challenge';</script>",
+      "expected_output": "Expert Challenge",
+      "points": 30,
+      "answers": [
+        { "answer_text": "Expert Challenge", "is_correct": 1 }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "Predict the Output",
+      "description": "What text is displayed on the page?",
+      "starter_code": "<style>h1 { color: blue; }</style><h1>Welcome</h1>",
+      "expected_output": "Welcome",
+      "points": 30,
+      "answers": [
+        { "answer_text": "Welcome", "is_correct": 1 }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "Predict the Output",
+      "description": "What text is displayed inside the card?",
+      "starter_code": "<div class='card'><div class='card-body'>Card Content</div></div>",
+      "expected_output": "Card Content",
+      "points": 30,
+      "answers": [
+        { "answer_text": "Card Content", "is_correct": 1, "explanation": "The output of the code is Card Content." }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "Predict the Output",
+      "description": "What will be the output of this code?",
+      "starter_code": "def reverse_string(s):\n    return s[::-1]\nprint(reverse_string('hello'))",
+      "expected_output": "olleh",
+      "points": 30,
+      "answers": [
+        { "answer_text": "olleh", "is_correct": 1, "explanation": "The output of the code is olleh." }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "Predict the Output",
+      "description": "What will be the output of this code?",
+      "starter_code": "public class Main { public static void main(String[] args) { String str = \"Programming\"; System.out.println(str.substring(0, 4)); } }",
+      "expected_output": "Prog",
+      "points": 30,
+      "answers": [
+        { "answer_text": "Prog", "is_correct": 1, "explanation": "The output of the code is Prog." }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "Predict the Output",
+      "description": "What will be the output of this code when run in a browser console?",
+      "starter_code": "function multiply(a, b) { return a * b; } console.log(multiply(5, 6));",
+      "expected_output": "30",
+      "points": 30,
+      "answers": [
+        { "answer_text": "30", "is_correct": 1, "explanation": "The output of the code is 30." }
+      ]
+    },
+  {
+      "type": "case_study",
+      "title": "Web Application Performance Optimization",
+      "description": "A web application built with HTML, CSS, and JavaScript is experiencing high page load times due to a large number of DOM elements. What is the most effective way to optimize this?",
+      "starter_code": "",
+      "expected_output": "Implement virtual scrolling for lists",
+      "points": 30,
+      "answers": [
+        { "answer_text": "Implement virtual scrolling for lists", "is_correct": 1, "explanation": "Implement virtual scrolling for lists is the most effective way to optimize the performance of a web application built with HTML, CSS, and JavaScript." }
+      ]
+    },
+  {
+      "type": "case_study",
+      "title": "Java Application Performance Tuning",
+      "description": "A Java application is experiencing frequent garbage collection pauses, leading to poor performance. What is the most likely cause and how can it be mitigated?",
+      "starter_code": "",
+      "expected_output": "The JVM is not configured optimally",
+      "points": 30,
+      "answers": [
+        { "answer_text": "The JVM is not configured optimally", "is_correct": 1, "explanation": "The JVM is not configured optimally is a common cause of frequent garbage collection pauses in Java applications." }
+      ]
+    },
+  {
+      "type": "case_study",
+      "title": "C++ Memory Management",
+      "description": "In a C++ application, you notice that the program is consuming more memory than expected, and performance is degrading over time. What is the most likely cause?",
+      "starter_code": "",
+      "expected_output": "Memory leaks due to forgotten deletes",
+      "points": 30,
+      "answers": [
+        { "answer_text": "Memory leaks due to forgotten deletes", "is_correct": 1, "explanation": "Memory leaks due to forgotten deletes is a common cause of performance degradation in C++ applications." }
+      ]
+    },
+  {
+      "type": "case_study",
+      "title": "Python Numerical Computation Optimization",
+      "description": "In a Python application, you are experiencing slow performance when dealing with large numerical arrays. What library can you use to optimize this?",
+      "starter_code": "",
+      "expected_output": "NumPy",
+      "points": 30,
+      "answers": [
+        { "answer_text": "NumPy", "is_correct": 1, "explanation": "NumPy is a library in Python that is used to optimize performance when dealing with large numerical arrays." }
+      ]
+    },
+  {
+      "type": "case_study",
+      "title": "Bootstrap Responsive Design",
+      "description": "You are building a responsive web design using Bootstrap. Which class should you use to make an element take up the full width of its parent container on small screens and half the width on large screens?",
+      "starter_code": "",
+      "expected_output": "col-12 col-lg-6",
+      "points": 30,
+      "answers": [
+        { "answer_text": "col-12 col-lg-6", "is_correct": 1, "explanation": "col-12 col-lg-6 is a Bootstrap class that is used to make an element take up the full width of its parent container on small screens and half the width on large screens." }
+      ]
+    },
+  {
+      "type": "case_study",
+      "title": "JavaScript Event Handling",
+      "description": "In JavaScript, what method can you use to add an event listener to an element that will be triggered when the element is clicked?",
+      "starter_code": "",
+      "expected_output": "Both addEventListener('click', function() {}) and onclick = function() {}",
+      "points": 30,
+      "answers": [
+        { "answer_text": "Both addEventListener('click', function() {}) and onclick = function() {}", "is_correct": 1, "explanation": "Both addEventListener('click', function() {}) and onclick = function() {} are valid ways to add an event listener to an element that will be triggered when the element is clicked." }
+      ]
+    },
+  {
+      "type": "case_study",
+      "title": "Java Final Keyword",
+      "description": "In Java, what is the purpose of the 'final' keyword when applied to a variable?",
+      "starter_code": "",
+      "expected_output": "It makes the variable immutable, prevents it from being reassigned, and makes it a constant",
+      "points": 30,
+      "answers": [
+        { "answer_text": "It makes the variable immutable, prevents it from being reassigned, and makes it a constant", "is_correct": 1, "explanation": "The 'final' keyword makes the variable immutable, prevents it from being reassigned, and makes it a constant." }
+      ]
+    },
+  {
+      "type": "case_study",
+      "title": "C++ Memory Deallocation",
+      "description": "In C++, what is the difference between 'delete' and 'delete[]'?",
+      "starter_code": "",
+      "expected_output": "'delete' is used for single objects, 'delete[]' for arrays",
+      "points": 30,
+      "answers": [
+        { "answer_text": "'delete' is used for single objects, 'delete[]' for arrays", "is_correct": 1, "explanation": "'delete' is used for single objects, 'delete[]' for arrays." }
+      ]
+    },
+  {
+      "type": "case_study",
+      "title": "HTML Meta Viewport",
+      "description": "In HTML, what is the purpose of the  tag with the name=\"viewport\" attribute?",
+      "starter_code": "",
+      "expected_output": "To control the viewport's size on mobile devices",
+      "points": 30,
+      "answers": [
+        { "answer_text": "To control the viewport's size on mobile devices", "is_correct": 1, "explanation": "The viewport tag with the name=\"viewport\" attribute is used to control the viewport's size on mobile devices." }
+      ]
+    },
+  {
+      "type": "case_study",
+      "title": "Python Pass Statement",
+      "description": "In Python, what does the 'pass' statement do?",
+      "starter_code": "",
+      "expected_output": "It does nothing; it's a placeholder",
+      "points": 30,
+      "answers": [
+        { "answer_text": "It does nothing; it's a placeholder", "is_correct": 1, "explanation": "pass is a Python statement that does nothing; it's a placeholder." }
+      ]
+  },
+  {
+      "type": "fill_blank",
+      "title": "HTML Element",
+      "description": "The HTML5 element that represents a container for flow content, potentially with a caption, and is used to annotate illustrations, diagrams, photos, code listings, etc. is __________.",
+      "starter_code": "",
+      "expected_output": "figure",
+      "points": 30,
+      "answers": [
+        { "answer_text": "figure", "is_correct": 1, "explanation": "figure is an HTML5 element that represents a container for flow content, potentially with a caption, and is used to annotate illustrations, diagrams, photos, code listings, etc." }
+      ]
+    },
+    {
+      "type": "fill_blank",
+      "title": "CSS Property",
+      "description": "The CSS property that, when set to 'none', removes an element from the document flow is __________.",
+      "starter_code": "",
+      "expected_output": "display",
+      "points": 30,
+      "answers": [
+        { "answer_text": "display", "is_correct": 1, "explanation": "display is a CSS property that, when set to 'none', removes an element from the document flow." }
+      ]
+    },
+    {
+      "type": "fill_blank",
+      "title": "Java Interface",
+      "description": "In Java, the interface that all event listeners must implement to receive and process ActionEvents is __________.",
+      "starter_code": "",
+      "expected_output": "ActionListener",
+      "points": 30,
+      "answers": [
+        { "answer_text": "ActionListener", "is_correct": 1, "explanation": "ActionListener is an interface in Java that all event listeners must implement to receive and process ActionEvents." }
+      ]
+    },
+    {
+      "type": "fill_blank",
+      "title": "JavaScript Method",
+      "description": "The JavaScript method of the Array prototype that creates a new array with all sub-array elements concatenated into it recursively up to the specified depth is __________.",
+      "starter_code": "",
+      "expected_output": "flat",
+      "points": 30,
+      "answers": [
+        { "answer_text": "flat", "is_correct": 1, "explanation": "flat is a JavaScript method of the Array prototype that creates a new array with all sub-array elements concatenated into it recursively up to the specified depth." }
+      ]
+    },
+    {
+      "type": "fill_blank",
+      "title": "Bootstrap Class",
+      "description": "The Bootstrap class used to create a responsive table is __________.",
+      "starter_code": "",
+      "expected_output": "table-responsive",
+      "points": 30,
+      "answers": [
+        { "answer_text": "table-responsive", "is_correct": 1, "explanation": "table-responsive is a Bootstrap class that is used to create a responsive table." }
+      ]
+    },
+    {
+      "type": "fill_blank",
+      "title": "C++ Operator",
+      "description": "The C++ operator used to access a member of a structure or union through a pointer is __________.",
+      "starter_code": "",
+      "expected_output": "->",
+      "points": 30,
+      "answers": [
+        { "answer_text": "->", "is_correct": 1, "explanation": "-> is an operator in C++ that is used to access a member of a structure or union through a pointer." }
+      ]
+    },
+    {
+      "type": "fill_blank",
+      "title": "Python Exception",
+      "description": "The Python exception that is raised when a sequence subscript is out of range is __________.",
+      "starter_code": "",
+      "expected_output": "IndexError",
+      "points": 30,
+      "answers": [
+        { "answer_text": "IndexError", "is_correct": 1, "explanation": "IndexError is a Python exception that is raised when a sequence subscript is out of range." }
+      ]
+    },
+    {
+      "type": "fill_blank",
+      "title": "HTML Attribute",
+      "description": "The HTML attribute used to define a string value that labels an interactive element when it's focused, for accessibility purposes, is __________.",
+      "starter_code": "",
+      "expected_output": "aria-label",
+      "points": 30,
+      "answers": [
+        { "answer_text": "aria-label", "is_correct": 1, "explanation": "aria-label is an HTML attribute that defines a string value that labels an interactive element when it's focused, for accessibility purposes." }
+      ]
+    },
+    {
+      "type": "fill_blank",
+      "title": "CSS Property",
+      "description": "The CSS property that defines the direction of the flexible items in a flex container is __________.",
+      "starter_code": "",
+      "expected_output": "flex-direction",
+      "points": 30,
+      "answers": [
+        { "answer_text": "flex-direction", "is_correct": 1, "explanation": "flex-direction is a CSS property that defines the direction of the flexible items in a flex container." }
+      ]
+    },
+    {
+      "type": "fill_blank",
+      "title": "Java Interface",
+      "description": "The Java interface that represents a collection of objects that can be accessed both sequentially and randomly is __________.",
+      "starter_code": "",
+      "expected_output": "List",
+      "points": 30,
+      "answers": [
+        { "answer_text": "List", "is_correct": 1, "explanation": "List is an interface in Java that represents a collection of objects that can be accessed both sequentially and randomly." }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "Java Integer Caching",
+      "description": "What will be the output of this code?",
+      "starter_code": "public class Main {\n    public static void main(String[] args) {\n        Integer i = 127;\n        Integer j = 127;\n        System.out.println(i == j);\n    }\n}",
+      "expected_output": "true",
+      "points": 30,
+      "answers": [
+        { "answer_text": "true", "is_correct": 1, "explanation": "Integer caching in Java is done for values between -128 and 127. Since both i and j are 127, they refer to the same object." }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "Java Try-Catch-Finally",
+      "description": "What will be the output of this code?",
+      "starter_code": "public class Main {\n    public static void main(String[] args) {\n        try {\n            System.out.print(\"A\");\n            int x = 1 / 0;\n            System.out.print(\"B\");\n        } catch (ArithmeticException e) {\n            System.out.print(\"C\");\n        } finally {\n            System.out.print(\"D\");\n        }\n        System.out.print(\"E\");\n    }\n}",
+      "expected_output": "ACDE",
+      "points": 30,
+      "answers": [
+        { "answer_text": "ACDE", "is_correct": 1, "explanation": "The finally block is executed even if an exception is thrown. So, the output is ACDE." }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "Java String Comparison",
+      "description": "What will be the output of this code?",
+      "starter_code": "public class Main {\n    public static void main(String[] args) {\n        String s1 = \"hello\";\n        String s2 = new String(\"hello\");\n        System.out.println(s1 == s2);\n        System.out.println(s1.equals(s2));\n    }\n}",
+      "expected_output": "false\ntrue",
+      "points": 30,
+      "answers": [
+        { "answer_text": "false\ntrue", "is_correct": 1, "explanation": "s1 is a string literal, so it's interned and points to the same object. s2 is a new String object, so it's not interned and points to a different object." }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "Python Try-Finally",
+      "description": "What will be the output of this code?",
+      "starter_code": "def foo():\n    try:\n        return 'A'\n    finally:\n        return 'B'\n\nprint(foo())",
+      "expected_output": "B",
+      "points": 30,
+      "answers": [
+        { "answer_text": "B", "is_correct": 1, "explanation": "The return statement in the finally block overrides the return in the try block." }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "Python Decorator",
+      "description": "What will be the output of this code?",
+      "starter_code": "def decorate(func):\n    def wrapper():\n        print(\"Before\")\n        func()\n        print(\"After\")\n    return wrapper\n\n@decorate\ndef say_hello():\n    print(\"Hello\")\n\nsay_hello()",
+      "expected_output": "Before\nHello\nAfter",
+      "points": 30,
+      "answers": [
+        { "answer_text": "Before\nHello\nAfter", "is_correct": 1, "explanation": "The decorator modifies the say_hello function to print 'Before' and 'After' before and after the original function." }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "C++ Template Function",
+      "description": "What will be the output of this code?",
+      "starter_code": "#include <iostream>\ntemplate <typename T>\nT add(T a, T b) {\n    return a + b;\n}\n\nint main() {\n    std::cout << add(5, 3) << \", \" << add(5.5, 3.3);\n    return 0;\n}",
+      "expected_output": "8, 8.8",
+      "points": 30,
+      "answers": [
+        { "answer_text": "8, 8.8", "is_correct": 1, "explanation": "The template function can handle both int and double values." }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "C++ Polymorphism",
+      "description": "What will be the output of this code?",
+      "starter_code": "#include <iostream>\nclass Base {\npublic:\n    virtual void print() { std::cout << \"Base\"; }\n};\n\nclass Derived : public Base {\npublic:\n    void print() override { std::cout << \"Derived\"; }\n};\n\nint main() {\n    Base* b = new Derived();\n    b->print();\n    delete b;\n    return 0;\n}",
+      "expected_output": "Derived",
+      "points": 30,
+      "answers": [
+        { "answer_text": "Derived", "is_correct": 1, "explanation": "The base class pointer points to the derived class object, so the overridden method is called." }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "C++ Smart Pointers",
+      "description": "What will be the output of this code?",
+      "starter_code": "#include <iostream>\n#include <memory>\n\nint main() {\n    std::shared_ptr<int> p1 = std::make_shared<int>(10);\n    {\n        std::shared_ptr<int> p2 = p1;\n        std::cout << p1.use_count() << std::endl;\n    }\n    std::cout << p1.use_count() << std::endl;\n    return 0;\n}",
+      "expected_output": "2\n1",
+      "points": 30,
+      "answers": [
+        { "answer_text": "2\n1", "is_correct": 1, "explanation": "The shared_ptr maintains a reference count, so when p2 is created, the count is 2. When p2 goes out of scope, the count is decremented to 1." }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "JavaScript Async Function",
+      "description": "What will be the output of this code when run in a browser console?",
+      "starter_code": "async function foo() {\n    return 'A';\n}\n\nfoo().then(result => console.log(result));\nconsole.log('B');",
+      "expected_output": "B\nA",
+      "points": 30,
+      "answers": [
+        { "answer_text": "B\nA", "is_correct": 1, "explanation": "The async function returns a promise, so the console.log('B') is executed before the promise is resolved." }
+      ]
+    },
+    {
+      "type": "output",
+      "title": "JavaScript Generator Function",
+      "description": "What will be the output of this code when run in a browser console?",
+      "starter_code": "function* gen() {\n    yield 1;\n    yield 2;\n    yield 3;\n}\n\nconst iterator = gen();\nconsole.log(iterator.next().value);\nconsole.log(iterator.next().value);\nconsole.log(iterator.next().value);",
+      "expected_output": "1\n2\n3",
+      "points": 30,
+      "answers": [
+        { "answer_text": "1\n2\n3", "is_correct": 1, "explanation": "The generator function yields three values, and the console.log statements are executed in order." }
+      ]
+    }
+  ]  

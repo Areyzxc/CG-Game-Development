@@ -1,0 +1,1364 @@
+[
+  {
+    "topic_id": "html",
+    "question": "Which HTML tag is used to create a hyperlink (clickable link)?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "<link>", "is_correct": 0},
+      {"answer": "<a>", "is_correct": 1},
+      {"answer": "<ul>", "is_correct": 0},
+      {"answer": "<div>", "is_correct": 0}
+    ]
+  },
+  {
+    "topic_id": "html",
+    "question": "Which tag defines the largest heading in HTML?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "<h1>", "is_correct": 1},
+      {"answer": "<h6>", "is_correct": 0},
+      {"answer": "<head>", "is_correct": 0},
+      {"answer": "<b>", "is_correct": 0}
+    ]
+  },
+ {
+    "topic_id": "html",
+    "question": "Which HTML element is used to display an image on a web page?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "<pic>", "is_correct": 0},
+      {"answer": "<figure>", "is_correct": 0},
+      {"answer": "<img>", "is_correct": 1},
+      {"answer": "<src>", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "html",
+    "question": "Which tag is used to create an unordered (bulleted) list in HTML?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "<ol>", "is_correct": 0},
+      {"answer": "<li>", "is_correct": 0},
+      {"answer": "<list>", "is_correct": 0},
+      {"answer": "<ul>", "is_correct": 1}
+    ]
+  },
+  {
+    "topic_id": "css",
+    "question": "What does CSS stand for?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "Cascading Style Sheets", "is_correct": 1},
+      {"answer": "Computer Style Sheets", "is_correct": 0},
+      {"answer": "Creative Style System", "is_correct": 0},
+      {"answer": "Compact Style Syntax", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "css",
+    "question": "Which CSS property is used to change the text color of an element?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "font-color", "is_correct": 0},
+      {"answer": "style-color", "is_correct": 0},
+      {"answer": "color", "is_correct": 1},
+      {"answer": "text-color", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "css",
+    "question": "Which CSS property is used to change the background color of an element?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "background-color", "is_correct": 1},
+      {"answer": "bgcolor", "is_correct": 0},
+      {"answer": "color", "is_correct": 0},
+      {"answer": "color-background", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "css",
+    "question": "In CSS, which selector targets elements with class header?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "header", "is_correct": 0},
+      {"answer": "#header", "is_correct": 0},
+      {"answer": ".header", "is_correct": 1},
+      {"answer": "/header", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "What does the console.log() function do in JavaScript?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "Displays a dialog box with a message", "is_correct": 0},
+      {"answer": "Writes text to the HTML page", "is_correct": 0},
+      {"answer": "Writes a message to the browser console", "is_correct": 1},
+      {"answer": "Saves data to a file", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "Which operator is used for strict equality (value and type) comparison in JavaScript?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "==", "is_correct": 1},
+      {"answer": "!=", "is_correct": 0},
+      {"answer": "<=", "is_correct": 0},
+      {"answer": "===", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "Which keyword is used to declare a variable in JavaScript?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "int", "is_correct": 0},
+      {"answer": "float", "is_correct": 0},
+      {"answer": "var", "is_correct": 1},
+      {"answer": "number", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "In JavaScript, which event occurs when the user clicks on an HTML element?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "onmouseover", "is_correct": 0},
+      {"answer": "onclick", "is_correct": 1},
+      {"answer": "onsubmit", "is_correct": 0},
+      {"answer": "oncommence", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "What is the output of: console.log(2 + '2'); in JavaScript?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "4", "is_correct": 1},
+      {"answer": "\"22\" (string)", "is_correct": 0},
+      {"answer": "2", "is_correct": 0},
+      {"answer": "4", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "JavaScript is a programming language commonly used for web development.",
+    "question_type": "true_false",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "True", "is_correct": 1},
+      {"answer": "False", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "Which function is used to print output to the console in Python?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "printf()", "is_correct": 0},
+      {"answer": "echo()", "is_correct": 0},
+      {"answer": "print()", "is_correct": 1},
+      {"answer": "cout", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "Which symbol is used to start a comment in Python?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "//", "is_correct": 0},
+      {"answer": "#", "is_correct": 1},
+      {"answer": "<!--", "is_correct": 0},
+      {"answer": "||", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "In Python, indentation is not used to define blocks of code.",
+    "question_type": "true_false",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "True", "is_correct": 0},
+      {"answer": "False", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "What is the standard file extension for Python files?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": ".py", "is_correct": 1},
+      {"answer": ".python", "is_correct": 0},
+      {"answer": ".pyt", "is_correct": 0},
+      {"answer": ".thon", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "Which keyword is used to define a function in Python?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "function", "is_correct": 0},
+      {"answer": "def", "is_correct": 1},
+      {"answer": "fun", "is_correct": 0},
+      {"answer": "descript", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "Python is a case-sensitive programming language.",
+    "question_type": "true_false",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "True", "is_correct": 1},
+      {"answer": "False", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "Which of the following best describes Bootstrap?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "A JavaScript library", "is_correct": 0},
+      {"answer": "A database management system", "is_correct": 0},
+      {"answer": "A CSS framework for building responsive websites", "is_correct": 1},
+      {"answer": "A version control tool", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "How many columns are in the default Bootstrap grid system?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "6", "is_correct": 0},
+      {"answer": "10", "is_correct": 0},
+      {"answer": "12", "is_correct": 1},
+      {"answer": "15", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "Which class is used to create a centered, fixed-width container in Bootstrap?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": ".row", "is_correct": 0},
+      {"answer": ".container", "is_correct": 1},
+      {"answer": ".fixed", "is_correct": 0},
+      {"answer": "wrapper", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "Which class is used to create a new row in a Bootstrap grid layout?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": ".container", "is_correct": 0},
+      {"answer": ".row", "is_correct": 1},
+      {"answer": ".rows", "is_correct": 0},
+      {"answer": ".grid", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "Which class makes images responsive (scalable) in Bootstrap 4?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "img-responsive", "is_correct": 0},
+      {"answer": "img-fluid", "is_correct": 1},
+      {"answer": "img-scalable", "is_correct": 0},
+      {"answer": "responsive-img", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "Bootstrap is a front-end framework designed for responsive (mobile-friendly) web design.",
+    "question_type": "true_false",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "True", "is_correct": 1},
+      {"answer": "False", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "What is the correct directive to include the iostream library (for input/output) in C++?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "#include <iostream>", "is_correct": 1},
+      {"answer": "include iostream", "is_correct": 0},
+      {"answer": "#import <iostream>", "is_correct": 0},
+      {"answer": "#include \"iostream\"", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "Which operator is used with std::cout to output data to the console?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": ">>", "is_correct": 0},
+      {"answer": "<=", "is_correct": 0},
+      {"answer": "+=", "is_correct": 0},
+      {"answer": "<<", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "Which of the following is the correct signature for the main function in a C++ program?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "int main()", "is_correct": 1},
+      {"answer": "void main()", "is_correct": 0},
+      {"answer": "int Main()", "is_correct": 0},
+      {"answer": "main()", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "Which of the following correctly declares an integer variable in C++?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "integer x;", "is_correct": 0},
+      {"answer": "int x;", "is_correct": 1},
+      {"answer": "num x;", "is_correct": 0},
+      {"answer": "var x;", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "In C++, the cout object and the << operator are not used together to print output to the console.",
+    "question_type": "true_false",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "True", "is_correct": 0},
+      {"answer": "False", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "What is the standard file extension for Java source files?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": ".javascript", "is_correct": 0},
+      {"answer": ".class", "is_correct": 0},
+      {"answer": ".jdk", "is_correct": 0},
+      {"answer": ".java", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "What keyword is used to declare a class in Java?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "class", "is_correct": 1},
+      {"answer": "define", "is_correct": 0},
+      {"answer": "classes", "is_correct": 0},
+      {"answer": "object", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "Which of the following is NOT a primitive data type in Java?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "int", "is_correct": 0},
+      {"answer": "double", "is_correct": 0},
+      {"answer": "char", "is_correct": 0},
+      {"answer": "String", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "What does JDK stand for?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "Java Document Key", "is_correct": 0},
+      {"answer": "Java Driver Kit", "is_correct": 0},
+      {"answer": "Java Distribution Kit", "is_correct": 0},
+      {"answer": "Java Development Kit", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "Which of the following is the correct signature of the main method in Java?",
+    "question_type": "multiple_choice",
+    "difficulty": "beginner",
+    "choices": [
+      {"answer": "void main(String args)", "is_correct": 0},
+      {"answer": "static public main(String[] args)", "is_correct": 0},
+      {"answer": "public void main(String[] args)", "is_correct": 0},
+      {"answer": "public static void main(String[] args)", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "html",
+    "question": "Which of the following is NOT considered a semantic HTML element?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "<article>", "is_correct": 0},
+      {"answer": "<div>", "is_correct": 1},
+      {"answer": "<section>", "is_correct": 0},
+      {"answer": "<header>", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "html",
+    "question": "Which HTML5 element is used to draw graphics via scripting?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "<svg>", "is_correct": 0},
+      {"answer": "<canvas>", "is_correct": 1},
+      {"answer": "<graphics>", "is_correct": 0},
+      {"answer": "<image>", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "html",
+    "question": "Which attribute in an HTML <form> tag specifies how form data is sent to the server?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "action", "is_correct": 0},
+      {"answer": "name", "is_correct": 0},
+      {"answer": "method", "is_correct": 1},
+      {"answer": "enctype", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "html",
+    "question": "What is the correct doctype declaration for HTML5?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\">", "is_correct": 0},
+      {"answer": "<DOCTYPE html>", "is_correct": 0},
+      {"answer": "<!doctype HTML5>", "is_correct": 0},
+      {"answer": "<!DOCTYPE html>", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "html",
+    "question": "What is the purpose of the HTML5 <aside> element?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "Defines the main content area", "is_correct": 0},
+      {"answer": "Defines the footer of a document", "is_correct": 0},
+      {"answer": "Defines content tangentially related to the main content (like a sidebar)", "is_correct": 1},
+      {"answer": "Defines the header of a document", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "css",
+    "question": "Which CSS selector has the highest specificity?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "#menu", "is_correct": 1},
+      {"answer": ".header .nav li", "is_correct": 0},
+      {"answer": "nav ul li", "is_correct": 0},
+      {"answer": "body .container .item", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "css",
+    "question": "Which of the following is a CSS pseudo-element (not a pseudo-class)?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": ":nth-child", "is_correct": 0},
+      {"answer": "::after", "is_correct": 1},
+      {"answer": ":hover", "is_correct": 0},
+      {"answer": ":focus", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "css",
+    "question": "In a flex container, which CSS property aligns items along the cross-axis (vertically if flex-direction: row)?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "justify-content", "is_correct": 0},
+      {"answer": "align-content", "is_correct": 0},
+      {"answer": "flex-direction", "is_correct": 0},
+      {"answer": "align-items", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "css",
+    "question": "Which CSS property defines the spacing (gutter) between rows or columns in a Flexbox or Grid container?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "gap", "is_correct": 1},
+      {"answer": "margin", "is_correct": 0},
+      {"answer": "padding", "is_correct": 0},
+      {"answer": "spacing", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "css",
+    "question": "In the default CSS box model, if an element has width: 100px and padding: 10px, the total rendered width becomes 120px.",
+    "question_type": "true_false",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "True", "is_correct": 1},
+      {"answer": "False", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "What is the output of typeof null in JavaScript?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "\"null\"", "is_correct": 0},
+      {"answer": "\"object\"", "is_correct": 1},
+      {"answer": "\"undefined\"", "is_correct": 0},
+      {"answer": "\"number\"", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "Which of the following is true about the == and === operators in JavaScript?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "They are identical and behave the same.", "is_correct": 0},
+      {"answer": "=== also performs type conversion.", "is_correct": 0},
+      {"answer": "== compares only value, while === compares both value and type.", "is_correct": 1},
+      {"answer": "== compares type only, === compares value.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "Which of the following statements about variables in JavaScript is true?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "let variables cannot be redeclared in the same scope.", "is_correct": 1},
+      {"answer": "var variables are block-scoped.", "is_correct": 0},
+      {"answer": "const variables can be reassigned.", "is_correct": 0},
+      {"answer": "var variables must be declared before use (they are hoisted by default).", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "What is a closure in JavaScript?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "A private function inside a class.", "is_correct": 0},
+      {"answer": "A function bundled together with its lexical environment (it retains access to variables from its defining scope).", "is_correct": 1},
+      {"answer": "A function that prevents access to the global scope.", "is_correct": 0},
+      {"answer": "A self-invoking anonymous function.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "Which of the following is NOT a state of a JavaScript Promise?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "pending", "is_correct": 0},
+      {"answer": "fulfilled", "is_correct": 0},
+      {"answer": "rejected", "is_correct": 0},
+      {"answer": "cancelled", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "What is the output of the following code? print(2**3**2)",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "64", "is_correct": 0},
+      {"answer": "1000", "is_correct": 0},
+      {"answer": "512", "is_correct": 1},
+      {"answer": "Error", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "In Python function definitions, what do *args and **kwargs represent?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "Flags for static or class methods.", "is_correct": 0},
+      {"answer": "Operators for exponentiation and modulo.", "is_correct": 0},
+      {"answer": "Variables for default and named arguments.", "is_correct": 0},
+      {"answer": "A tuple of extra positional arguments (*args) and a dict of extra keyword arguments (**kwargs).", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "What is the output of the following Python code? try: print(\"Hello\") 1/0 except ZeroDivisionError: print(\"Error\") finally: print(\"Done\")",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "Hello Done Error", "is_correct": 0},
+      {"answer": "Hello Error Done", "is_correct": 1},
+      {"answer": "Hello Hello Done", "is_correct": 0},
+      {"answer": "Error Done", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "Which of the following constructs a dictionary in Python?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "{x*2 for x in range(3)}", "is_correct": 0},
+      {"answer": "[x: x*2 for x in range(3)]", "is_correct": 0},
+      {"answer": "{x: x*2 for x in range(3)}", "is_correct": 1},
+      {"answer": "(x: x*2 for x in range(3))", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "Python tuples are immutable.",
+    "question_type": "true_false",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "True", "is_correct": 1},
+      {"answer": "False", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "Which Bootstrap class provides a full-width container that spans the entire viewport width?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": ".container", "is_correct": 0},
+      {"answer": ".container-fluid", "is_correct": 1},
+      {"answer": ".container-full", "is_correct": 0},
+      {"answer": ".container-responsive", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "In Bootstrap 4 and 5, what is the minimum viewport width (in pixels) for the 'md' (medium) breakpoint?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "768px", "is_correct": 1},
+      {"answer": "200px", "is_correct": 0},
+      {"answer": "576px", "is_correct": 0},
+      {"answer": "992px", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "Bootstrap 5 requires jQuery for its JavaScript plugins.",
+    "question_type": "true_false",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "True", "is_correct": 0},
+      {"answer": "False", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "In Bootstrap 5, this adds indicators for the carousel. These are the little dots at the bottom of each slide.",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": ".carousel-indication", "is_correct": 0},
+      {"answer": "carousel-dash", "is_correct": 0},
+      {"answer": "carousel-dots", "is_correct": 0},
+      {"answer": ".carousel-indicators", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "Which of the following was introduced as a new feature of Bootstrap 5’s pagination component?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "Support for dropdown menus inside pagination items.", "is_correct": 0},
+      {"answer": "Vertical pagination layout by default.", "is_correct": 0},
+      {"answer": "CSS transitions on pagination links", "is_correct": 1},
+      {"answer": "First/last page buttons enabled by default.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "Which C++ operator should be used to deallocate memory allocated with new[]?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "delete[]", "is_correct": 1},
+      {"answer": "delete", "is_correct": 0},
+      {"answer": "free()", "is_correct": 0},
+      {"answer": "deallocate", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "In C++, references must be initialized when declared.",
+    "question_type": "true_false",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "True", "is_correct": 1},
+      {"answer": "False", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "What is a virtual function in C++ used for?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "Compile-time function binding.", "is_correct": 0},
+      {"answer": "Enabling runtime polymorphism (allowing derived classes to override methods).", "is_correct": 1},
+      {"answer": "A static function with no implementation.", "is_correct": 0},
+      {"answer": "Memory management.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "Which of these is NOT part of the C++ Standard Template Library (STL)?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "std::vector", "is_correct": 0},
+      {"answer": "std::stack", "is_correct": 0},
+      {"answer": "hash_table", "is_correct": 1},
+      {"answer": "std::map", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "What does the auto keyword do in C++11 and later?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "Indicates a loop will run automatically.", "is_correct": 0},
+      {"answer": "Deduces the variable’s type from its initializer.", "is_correct": 1},
+      {"answer": "Automatically allocates memory.", "is_correct": 0},
+      {"answer": "Declares a variable with automatic storage duration.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "What is an advantage of using C++ smart pointers (like std::unique_ptr/std::shared_ptr) over raw pointers?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "They must be manually deleted.", "is_correct": 0},
+      {"answer": "They provide automatic memory management and can prevent memory leaks.", "is_correct": 1},
+      {"answer": "", "is_correct": 0},
+      {"answer": "", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "In Java, what is the difference between == and .equals() when comparing objects (e.g., Strings)?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "== checks reference equality, while .equals() checks value/content equality.", "is_correct": 1},
+      {"answer": "== checks only the hash code.", "is_correct": 0},
+      {"answer": ".equals() cannot be overridden.", "is_correct": 0},
+      {"answer": "They are identical for object comparison.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "Which statement is true about interfaces in Java?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "Interfaces can have instance (non-static) fields.", "is_correct": 0},
+      {"answer": "A class can extend multiple interfaces.", "is_correct": 0},
+      {"answer": "Interface methods can only be private.", "is_correct": 0},
+      {"answer": "A class can implement multiple interfaces.", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "To properly create a new thread of execution in Java, which method should you call on a Thread object?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "run()", "is_correct": 0},
+      {"answer": "execute()", "is_correct": 0},
+      {"answer": "commence()", "is_correct": 0},
+      {"answer": "start()", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "Declaring a method as final in Java means the method:",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "cannot be overridden by subclasses.", "is_correct": 1},
+      {"answer": "cannot be overloaded.", "is_correct": 0},
+      {"answer": "cannot be inherited.", "is_correct": 0},
+      {"answer": "cannot be static.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "Which is a benefit of using Java generics?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "Improved runtime performance.", "is_correct": 0},
+      {"answer": "Smaller bytecode size.", "is_correct": 0},
+      {"answer": "Faster development time without testing.", "is_correct": 0},
+      {"answer": "Compile-time type safety (fewer type-casting errors).", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "In Java, the alternate term for class attributes is ‘fields’",
+    "question_type": "true_false",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "True", "is_correct": 1},
+      {"answer": "False", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "What is recursion in Java?",
+    "question_type": "multiple_choice",
+    "difficulty": "intermediate",
+    "choices": [
+      {"answer": "Conditions inside switch statements.", "is_correct": 0},
+      {"answer": "A technique of making a function call itself.", "is_correct": 1},
+      {"answer": "Constant variables that have the possibility to be free.", "is_correct": 0},
+      {"answer": "For-each loops with superpowers.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "html",
+    "question": "Which HTML5 semantic element is intended to define a section of navigation links on a page?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "<header>", "is_correct": 0},
+      {"answer": "<nav>", "is_correct": 1},
+      {"answer": "<section>", "is_correct": 0},
+      {"answer": "<menu>", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "html",
+    "question": "Why is it recommended to use a <button> element instead of a <div> (or <span>) for clickable buttons in HTML?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "<button> provides native keyboard accessibility and semantics for user agents.", "is_correct": 1},
+      {"answer": "<button> elements are automatically focusable only in old browsers.", "is_correct": 0},
+      {"answer": "<button> has built-in form styling, while <div> does not.", "is_correct": 0},
+      {"answer": "<button> cannot be styled with CSS, making it safer.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "html",
+    "question": "What is the primary purpose of the HTML <label> element when used with form controls?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "To automatically validate the form control’s input.", "is_correct": 0},
+      {"answer": "To provide an alternative submission button.", "is_correct": 0},
+      {"answer": "To associate descriptive text with a form control for users and assistive technologies.", "is_correct": 1},
+      {"answer": "To provide an alternative submission button.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "html",
+    "question": "Which <meta> tag is commonly used to ensure proper scaling on mobile devices for responsive design?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">", "is_correct": 1},
+      {"answer": "<meta charset=\"utf-8\">", "is_correct": 0},
+      {"answer": "<meta name=\"mobile\" content=\"device-width\">", "is_correct": 0},
+      {"answer": "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "html",
+    "question": "Using semantic HTML elements (like <header>, <main>, <article>) can improve SEO by helping search engines understand the content structure.",
+    "question_type": "true_false",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "True", "is_correct": 1},
+      {"answer": "False", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "html",
+    "question": "Which attribute should be provided on every <img> element to improve accessibility?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "title", "is_correct": 0},
+      {"answer": "alt", "is_correct": 1},
+      {"answer": "aria-role", "is_correct": 0},
+      {"answer": "longdesc", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "css",
+    "question": "Consider the following two CSS selectors: #header .nav-item a:hover and ul li.nav-item a. Which selector has higher specificity?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "ul li.nav-item a (specificity 0-1-3)", "is_correct": 0},
+      {"answer": "They have equal specificity.", "is_correct": 0},
+      {"answer": "#header .nav-item a:hover", "is_correct": 1},
+      {"answer": "Specificity cannot be compared without more context.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "css",
+    "question": "The universal selector * has a specificity of 0-0-0 in CSS.",
+    "question_type": "true_false",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "True", "is_correct": 1},
+      {"answer": "False", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "css",
+    "question": "In CSS, an element with position: absolute; is removed from the normal document flow.",
+    "question_type": "true_false",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "True", "is_correct": 1},
+      {"answer": "False", "is_correct": 0}
+    ]
+
+  },
+{
+    "topic_id": "css",
+    "question": "Which CSS layout mode is best suited for creating a grid of rows and columns with explicit row/column definitions?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "Flexbox (display: flex)", "is_correct": 0},
+      {"answer": "Grid (display: grid)", "is_correct": 1},
+      {"answer": "Block (display: block)", "is_correct": 0},
+      {"answer": "Table (display: table)", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "css",
+    "question": "What is the correct syntax to use a CSS custom property (variable) named --main-color in a rule?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "color: $main-color;", "is_correct": 0},
+      {"answer": "color: --main-color;", "is_correct": 0},
+      {"answer": "color: var(--main-color);", "is_correct": 1},
+      {"answer": "color: main-color;", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "css",
+    "question": "What does the CSS pseudo-class :only-child select?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "The first child of its parent element.", "is_correct": 0},
+      {"answer": "An element that has no child elements.", "is_correct": 0},
+      {"answer": "An element whose parent has only one type of child.", "is_correct": 0},
+      {"answer": "An element that is the only child of its parent.", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "What is the output of typeof NaN in JavaScript?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "undefined", "is_correct": 0},
+      {"answer": "number", "is_correct": 1},
+      {"answer": "object", "is_correct": 0},
+      {"answer": "NaN", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "Where is the JavaScript await operator allowed to be used?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "Only in regular (non-async) functions.", "is_correct": 0},
+      {"answer": "Only in global scope.", "is_correct": 0},
+      {"answer": "Only inside functions declared with async.", "is_correct": 1},
+      {"answer": "In any function.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "In the JavaScript event loop, promise callbacks (microtasks) always run before setTimeout callbacks (tasks) queued with 0ms delay.",
+    "question_type": "true_false",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "True", "is_correct": 1},
+      {"answer": "False", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "Which statement about ‘this’ in JavaScript is correct, particularly regarding arrow functions?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "Arrow functions define their own this context at call time.", "is_correct": 0},
+      {"answer": "Arrow functions do not have their own this; they inherit it lexically from the surrounding scope.", "is_correct": 1},
+      {"answer": "Arrow functions always bind this to the global object.", "is_correct": 0},
+      {"answer": "The this value in an arrow function can be changed with call() or apply().", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "Variables declared with let in JavaScript have block scope (not function scope).",
+    "question_type": "true_false",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "True", "is_correct": 1},
+      {"answer": "False", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "javascript",
+    "question": "typeof null does not return 'object' in JavaScript.",
+    "question_type": "true_false",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "True", "is_correct": 0},
+      {"answer": "False", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "Why should you avoid using a mutable object (like a list or dict) as a default value for a function parameter in Python?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "There is no difference; it’s safe to use mutable defaults.", "is_correct": 0},
+      {"answer": "The mutable default is shared across calls, leading to unintended side-effects.", "is_correct": 1},
+      {"answer": "Mutable default arguments cause a syntax error.", "is_correct": 0},
+      {"answer": "Default arguments must always be immutable by language specification.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "Which of the following creates a shallow copy of a list lst in Python?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "lst.copy()", "is_correct": 0},
+      {"answer": "copy.copy(lst)", "is_correct": 0},
+      {"answer": "lst[:]", "is_correct": 0},
+      {"answer": "All of the above.", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "Which of these Python types is immutable?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "list", "is_correct": 0},
+      {"answer": "set", "is_correct": 0},
+      {"answer": "dict", "is_correct": 0},
+      {"answer": "tuple", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "An integer in Python is immutable (cannot be changed once created).",
+    "question_type": "true_false",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "True", "is_correct": 1},
+      {"answer": "False", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "Python’s range object generates values lazily and does not store all the elements in memory.",
+    "question_type": "true_false",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "True", "is_correct": 1},
+      {"answer": "False", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "python",
+    "question": "In Python, which built-in method creates a shallow copy of a dictionary dct?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "dict.copy()", "is_correct": 0},
+      {"answer": "copy.copy(dct)", "is_correct": 0},
+      {"answer": "dict(dct)", "is_correct": 0},
+      {"answer": "All of the above.", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "How many default grid breakpoints (tiers) are defined in Bootstrap 5’s grid system?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "6", "is_correct": 1},
+      {"answer": "5", "is_correct": 0},
+      {"answer": "7", "is_correct": 0},
+      {"answer": "4", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "Which Bootstrap utility class removes all horizontal and vertical gutters (gaps) in a grid or row?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": ".no-gutters", "is_correct": 0},
+      {"answer": ".g-0", "is_correct": 1},
+      {"answer": ".p-0", "is_correct": 0},
+      {"answer": ".m-0", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "If you use .col-sm-4 on an element, to which screen sizes does it apply by default?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "Small only (≥576px)", "is_correct": 0},
+      {"answer": "Small and all larger (≥576px)", "is_correct": 1},
+      {"answer": "Extra small only (<576px)", "is_correct": 0},
+      {"answer": "All sizes (no breakpoints)", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "In Bootstrap 5, what is the purpose of the new .carousel-dark class variant?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "Switches the carousel images to a dark theme by inverting their colors.", "is_correct": 0},
+      {"answer": "Enables a crossfade transition effect between slides instead of the default slide effect.", "is_correct": 0},
+      {"answer": "Applies a style variant with dark-colored controls and indicators for use on light backgrounds", "is_correct": 1},
+      {"answer": "Adds full-screen modal behavior to the carousel.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "In Bootstrap 5, using the class .offcanvas-right will position an offcanvas on the right side of the viewport.",
+    "question_type": "true_false",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "True", "is_correct": 0},
+      {"answer": "False", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "bootstrap",
+    "question": "In Bootstrap 5, you should use data-backdrop=\"static\" (with no bs- prefix) to create a static (non-dismissible) modal backdrop.",
+    "question_type": "true_false",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "True", "is_correct": 0},
+      {"answer": "False", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "What does the RAII (Resource Acquisition Is Initialization) idiom guarantee in C++?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "Objects are initialized to zero by default.", "is_correct": 0},
+      {"answer": "Resources acquired in a constructor are released in the destructor, preventing leaks.", "is_correct": 1},
+      {"answer": "Heap memory is automatically compacted.", "is_correct": 0},
+      {"answer": "All functions are executed in reverse order.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "What is the behavior if you use delete on a pointer that was allocated with new[] (i.e., an array)?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "The behavior is undefined.", "is_correct": 1},
+      {"answer": "It throws a C++ exception at runtime.", "is_correct": 0},
+      {"answer": "It causes a compiler warning but works.", "is_correct": 0},
+      {"answer": "It correctly deallocates the array.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "Which C++ smart pointer type enforces unique ownership of a dynamically allocated object (no shared references)?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "std::shared_ptr", "is_correct": 0},
+      {"answer": "std::weak_ptr", "is_correct": 0},
+      {"answer": "std::unique_ptr", "is_correct": 1},
+      {"answer": "None of the above", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "cpp",
+    "question": "Which C++ smart pointer uses reference counting to allow multiple owners of the same object?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "std::unique_ptr", "is_correct": 0},
+      {"answer": "std::weak_ptr", "is_correct": 0},
+      {"answer": "std::auto_ptr", "is_correct": 0},
+      {"answer": "std::shared_ptr", "is_correct": 1}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "Which Java Map implementation is synchronized (thread-safe) by default?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "HashMap", "is_correct": 0},
+      {"answer": "Hashtable", "is_correct": 1},
+      {"answer": "TreeMap", "is_correct": 0},
+      {"answer": "LinkedHashMap", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "What does the final keyword indicate when applied to a class declaration in Java?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "The class can’t be subclassed (no inheritance).", "is_correct": 1},
+      {"answer": "The class methods can’t be overridden.", "is_correct": 0},
+      {"answer": "Instances of the class are immutable.", "is_correct": 0},
+      {"answer": "The class must be compiled last.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "In Java multithreading, what is the difference between Thread.start() and Thread.run()?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "start() invokes run() immediately without creating a new thread; run() creates a new thread.", "is_correct": 0},
+      {"answer": "They are equivalent; both spawn a new thread.", "is_correct": 0},
+      {"answer": "start() creates a new thread and then calls run() on it; calling run() directly executes it in the current thread.", "is_correct": 1},
+      {"answer": "run() is only for Runnable, start() only for Thread.", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "Which keyword in Java is used for obtaining a 'page cache' for a field that ensures visibility of writes across threads?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "volatile", "is_correct": 1},
+      {"answer": "synchronized", "is_correct": 0},
+      {"answer": "transient", "is_correct": 0},
+      {"answer": "static", "is_correct": 0}
+    ]
+  },
+{
+    "topic_id": "java",
+    "question": "Which of the following is guaranteed to execute in a try-catch block regardless of exceptions?",
+    "question_type": "multiple_choice",
+    "difficulty": "expert",
+    "choices": [
+      {"answer": "The code in the try block.", "is_correct": 0},
+      {"answer": "The code in the catch block (if an exception occurs).", "is_correct": 0},
+      {"answer": "The code in the finally block.", "is_correct": 1},
+      {"answer": "The code after the try-catch block.", "is_correct": 0}
+    ]
+  },
+
+
+{
+  "type": "fill_blank",
+  "title": "Complete the Loop",
+  "description": "Fill in the blank to complete this for loop...",
+  "starter_code": "",
+  "expected_output": "i++",   
+  "points": 30,
+  "answers": [
+  { "answer_text": "i++", "is_correct": 1, "explanation": "This is the standard increment operator in C-style for loops." },
+  { "answer_text": "++i", "is_correct": 1, "explanation": "++i also increments the value, and is valid in this context." },
+  { "answer_text": "i--", "is_correct": 0, "explanation": "i-- would decrement, not increment, so it is incorrect here." }
+  ]
+},
+{
+  "type": "output",
+  "title": "Predict the Output",
+  "description": "What will be the output of this code?",
+  "starter_code": "",
+  "expected_output": "[1, 2, 3, 4]",
+  "points": 30,
+  "answers": [
+    { "answer_text": "[1, 2, 3, 4]", "is_correct": 1 }
+  ]
+},
+{
+  "type": "case_study",
+  "title": "Database Optimization",
+  "description": "A web application is experiencing slow query performance...",
+  "starter_code": "",
+  "expected_output": "Add indexes on frequently queried columns",
+  "points": 30,
+  "answers": [
+    { "answer_text": "Add indexes on frequently queried columns", "is_correct": 1 }
+  ]
+},
+{
+  "type": "code",
+  "title": "Reverse String",
+  "description": "Write a function that reverses a string...",
+  "starter_code": "function reverseString(str) {\n    // Your code here\n}",
+  "expected_output": "",
+  "points": 30
+}
+]
