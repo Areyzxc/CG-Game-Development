@@ -37,28 +37,376 @@ $languages = $db->getProgrammingLanguages();
 // Define topics for each language directly in PHP
 $topicsConfig = [
     'html' => [
-        ['id' => 'html-1', 'title' => 'HTML Fundamentals', 'description' => 'Learn the basic structure and elements of HTML documents.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'html-2', 'title' => 'HTML Elements & Attributes', 'description' => 'Explore common HTML elements and their attributes.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'html-3', 'title' => 'Links & Images', 'description' => 'How to add links and images to your web pages.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'html-4', 'title' => 'Lists & Tables', 'description' => 'Create lists and tables for structured content.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'html-5', 'title' => 'Forms & Input', 'description' => 'Master HTML forms and input types.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'html-6', 'title' => 'Semantic HTML', 'description' => 'Use semantic tags for better accessibility and SEO.', 'difficulty' => 'intermediate', 'content' => ''],
+        ['id' => 'html-1', 'title' => 'HTML Fundamentals', 'description' => 'Learn the basic structure and elements of HTML documents.', 'difficulty' => 'beginner', 
+    'content' => '
+<h3>What is HTML?</h3>
+<p>HTML (HyperText Markup Language) is the backbone of every web page. It provides the basic structure using elements (tags) that browsers understand and render visually.</p>
+<h4>Basic HTML Structure</h4>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My First Page&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello, World!&lt;/h1&gt;
+    &lt;p&gt;Welcome to HTML fundamentals.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<ul>
+  <li><strong>&lt;html&gt;</strong>: Root element of the page.</li>
+  <li><strong>&lt;head&gt;</strong>: Metadata (title, links to CSS, etc.).</li>
+  <li><strong>&lt;body&gt;</strong>: Main content visible on the page.</li>
+</ul>
+'],
+        ['id' => 'html-2', 'title' => 'HTML Elements & Attributes', 'description' => 'Explore common HTML elements and their attributes.', 'difficulty' => 'beginner', 
+    'content' => '
+<h3>HTML Elements</h3>
+<p>Elements are the building blocks of HTML, defined by tags such as <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;div&gt;</code>, etc.</p>
+<pre><code>&lt;h1&gt;This is a heading&lt;/h1&gt;
+&lt;p&gt;This is a paragraph.&lt;/p&gt;
+</code></pre>
+<h3>Attributes</h3>
+<p>Attributes provide extra information about elements. They go inside the opening tag.</p>
+<pre><code>&lt;a href="https://example.com"&gt;Visit Example&lt;/a&gt;</code></pre>
+<ul>
+  <li><strong>href</strong>: Specifies the URL for a link.</li>
+  <li><strong>src</strong>: Specifies the image source for <code>&lt;img&gt;</code> tags.</li>
+</ul>
+'],
+        ['id' => 'html-3', 'title' => 'Links & Images', 'description' => 'How to add links and images to your web pages.', 'difficulty' => 'beginner', 
+    'content' => '
+<h3>Hyperlinks</h3>
+<p>Use <code>&lt;a&gt;</code> to create hyperlinks to other pages or sites.</p>
+<pre><code>&lt;a href="https://www.google.com"&gt;Go to Google&lt;/a&gt;</code></pre>
+<h3>Images</h3>
+<p>Use <code>&lt;img&gt;</code> to display images.</p>
+<pre><code>&lt;img src="logo.png" alt="Website Logo"&gt;</code></pre>
+<ul>
+  <li><strong>src</strong>: Path to the image file.</li>
+  <li><strong>alt</strong>: Alternative text for accessibility.</li>
+</ul>
+'],
+        ['id' => 'html-4', 'title' => 'Lists & Tables', 'description' => 'Create lists and tables for structured content.', 'difficulty' => 'beginner', 
+    'content' => '
+<h3>Lists</h3>
+<p>There are two basic types: ordered (<code>&lt;ol&gt;</code>) and unordered (<code>&lt;ul&gt;</code>).</p>
+<pre><code>
+&lt;ul&gt;
+  &lt;li&gt;Apple&lt;/li&gt;
+  &lt;li&gt;Banana&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;First&lt;/li&gt;
+  &lt;li&gt;Second&lt;/li&gt;
+&lt;/ol&gt;
+</code></pre>
+<h3>Tables</h3>
+<p>Tables organize data into rows and columns.</p>
+<pre><code>
+&lt;table&gt;
+  &lt;tr&gt;
+    &lt;th&gt;Name&lt;/th&gt;
+    &lt;th&gt;Age&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Alice&lt;/td&gt;
+    &lt;td&gt;21&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+'],
+        ['id' => 'html-5', 'title' => 'Forms & Input', 'description' => 'Master HTML forms and input types.', 'difficulty' => 'intermediate', 
+    'content' => '
+<h3>HTML Forms</h3>
+<p>Forms collect user input and send it to a server. Basic form elements include <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;button&gt;</code>, and <code>&lt;select&gt;</code>.</p>
+<pre><code>
+&lt;form&gt;
+  &lt;label&gt;Name:&lt;/label&gt;
+  &lt;input type="text" name="username"&gt;
+  &lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;
+</code></pre>
+<ul>
+  <li><strong>type</strong>: Specifies the input type (text, password, email, etc.).</li>
+  <li><strong>name</strong>: The name for the data submitted.</li>
+</ul>
+'],
+        ['id' => 'html-6', 'title' => 'Semantic HTML', 'description' => 'Use semantic tags for better accessibility and SEO.', 'difficulty' => 'intermediate', 
+    'content' => '
+<h3>Semantic Elements</h3>
+<p>Semantic tags clearly describe their meaning and structure (for both browsers and developers).</p>
+<ul>
+  <li><code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;footer&gt;</code></li>
+</ul>
+<p>Example:</p>
+<pre><code>
+&lt;header&gt;Site Header&lt;/header&gt;
+&lt;nav&gt;Main Navigation&lt;/nav&gt;
+&lt;main&gt;
+  &lt;article&gt;Blog Post&lt;/article&gt;
+&lt;/main&gt;
+&lt;footer&gt;Site Footer&lt;/footer&gt;
+</code></pre>
+'],
         ['id' => 'html-7', 'title' => 'Media Elements', 'description' => 'Embed audio, video, and other media.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'html-8', 'title' => 'HTML APIs', 'description' => 'Introduction to HTML5 APIs.', 'difficulty' => 'expert', 'content' => ''],
-        ['id' => 'html-9', 'title' => 'Accessibility', 'description' => 'Make your web pages accessible to all users.', 'difficulty' => 'expert', 'content' => ''],
-        ['id' => 'html-10', 'title' => 'Best Practices', 'description' => 'Tips and tricks for writing clean HTML.', 'difficulty' => 'expert', 'content' => ''],
+    'content' => '
+<h3>Embedding Media</h3>
+<p>HTML lets you add audio, video, and other multimedia to your website.</p>
+<h4>Audio</h4>
+<pre><code>
+&lt;audio controls&gt;
+  &lt;source src="audio.mp3" type="audio/mpeg"&gt;
+  Your browser does not support the audio element.
+&lt;/audio&gt;
+</code></pre>
+<h4>Video</h4>
+<pre><code>
+&lt;video width="320" height="240" controls&gt;
+  &lt;source src="movie.mp4" type="video/mp4"&gt;
+  Your browser does not support the video tag.
+&lt;/video&gt;
+</code></pre>
+'],
+        ['id' => 'html-8', 'title' => 'HTML APIs', 'description' => 'Introduction to HTML5 APIs.', 'difficulty' => 'expert', 
+    'content' => '
+<h3>HTML5 APIs</h3>
+<p>HTML5 introduced powerful APIs for modern web applications:</p>
+<ul>
+  <li><strong>Canvas API</strong>: Draw graphics using JavaScript.</li>
+  <li><strong>Geolocation API</strong>: Get user location.</li>
+  <li><strong>Local Storage</strong>: Store data in the browser.</li>
+</ul>
+<p>Example: Using Local Storage</p>
+<pre><code>
+&lt;script&gt;
+  localStorage.setItem("username", "Alice");
+  const name = localStorage.getItem("username");
+&lt;/script&gt;
+</code></pre>
+'],
+        ['id' => 'html-9', 'title' => 'Accessibility', 'description' => 'Make your web pages accessible to all users.', 'difficulty' => 'expert', 
+    'content' => '
+<h3>Accessible HTML</h3>
+<p>Accessibility ensures your site works for everyone, including users with disabilities.</p>
+<ul>
+  <li>Use <strong>alt</strong> text for images.</li>
+  <li>Ensure proper heading structure (<code>&lt;h1&gt; - &lt;h6&gt;</code>).</li>
+  <li>Use semantic tags.</li>
+  <li>Add <code>aria</code> attributes where necessary.</li>
+</ul>
+<p>Example:</p>
+<pre><code>
+&lt;img src="logo.png" alt="Company Logo"&gt;
+&lt;button aria-label="Close"&gt;X&lt;/button&gt;
+</code></pre>
+'],
+        ['id' => 'html-10', 'title' => 'Best Practices', 'description' => 'Tips and tricks for writing clean HTML.', 'difficulty' => 'expert', 
+    'content' => '
+<h3>HTML Best Practices</h3>
+<ul>
+  <li>Use semantic elements for clarity and SEO.</li>
+  <li>Always include <code>alt</code> attributes for images.</li>
+  <li>Keep your code clean and well-indented.</li>
+  <li>Validate your HTML using tools like <a href="https://validator.w3.org/" target="_blank">W3C Validator</a>.</li>
+  <li>Test your pages on multiple browsers and devices.</li>
+</ul>
+'],
     ],
     'css' => [
-        ['id' => 'css-1', 'title' => 'CSS Basics', 'description' => 'Introduction to CSS syntax and selectors.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'css-2', 'title' => 'Colors & Backgrounds', 'description' => 'Styling backgrounds and using color.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'css-3', 'title' => 'Text & Fonts', 'description' => 'Control typography and font styles.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'css-4', 'title' => 'Box Model', 'description' => 'Understand margin, border, padding, and content.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'css-5', 'title' => 'Flexbox', 'description' => 'Modern layout with CSS Flexbox.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'css-6', 'title' => 'Grid Layout', 'description' => 'Advanced layouts with CSS Grid.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'css-7', 'title' => 'Transitions & Animations', 'description' => 'Add motion to your web pages.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'css-8', 'title' => 'Responsive Design', 'description' => 'Make your site look great on any device.', 'difficulty' => 'expert', 'content' => ''],
-        ['id' => 'css-9', 'title' => 'CSS Variables', 'description' => 'Reusable values with custom properties.', 'difficulty' => 'expert', 'content' => ''],
-        ['id' => 'css-10', 'title' => 'CSS Best Practices', 'description' => 'Write maintainable and scalable CSS.', 'difficulty' => 'expert', 'content' => ''],
+        ['id' => 'css-1', 'title' => 'CSS Basics', 'description' => 'Introduction to CSS syntax and selectors.', 'difficulty' => 'beginner', 
+    'content' => '
+<h3>What is CSS?</h3>
+<p>CSS (Cascading Style Sheets) is used to style and layout web pages. It controls colors, fonts, spacing, and positioning of HTML elements.</p>
+<h4>Basic Syntax</h4>
+<pre><code>
+selector {
+  property: value;
+}
+</code></pre>
+<p>Example:</p>
+<pre><code>
+p {
+  color: blue;
+  font-size: 16px;
+}
+</code></pre>
+<ul>
+  <li><strong>Selectors</strong> target HTML elements.</li>
+  <li><strong>Properties</strong> define what to change.</li>
+  <li><strong>Values</strong> set the property’s value.</li>
+</ul>
+'],
+        ['id' => 'css-2', 'title' => 'Colors & Backgrounds', 'description' => 'Styling backgrounds and using color.', 'difficulty' => 'beginner', 
+    'content' => '
+<h3>Colors</h3>
+<p>Set colors using names, HEX, RGB, or HSL.</p>
+<pre><code>
+body {
+  background-color: #f0f0f0;
+  color: rgb(40, 40, 40);
+}
+</code></pre>
+<h3>Backgrounds</h3>
+<p>Control backgrounds with <code>background</code> properties.</p>
+<pre><code>
+div {
+  background-image: url("image.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</code></pre>
+<ul>
+  <li><strong>background-color</strong>: Sets background color.</li>
+  <li><strong>background-image</strong>: Adds images behind content.</li>
+</ul>
+'],
+        ['id' => 'css-3', 'title' => 'Text & Fonts', 'description' => 'Control typography and font styles.', 'difficulty' => 'beginner', \
+    'content' => '
+<h3>Text Styling</h3>
+<p>Change font, size, weight, and style with CSS.</p>
+<pre><code>
+h1 {
+  font-family: "Arial", sans-serif;
+  font-size: 2em;
+  font-weight: bold;
+  color: #333;
+}
+</code></pre>
+<h3>Font Properties</h3>
+<ul>
+  <li><strong>font-family</strong>: Sets the typeface.</li>
+  <li><strong>font-size</strong>: Adjusts text size.</li>
+  <li><strong>font-weight</strong>: Bold, normal, etc.</li>
+  <li><strong>color</strong>: Sets text color.</li>
+</ul>
+'],
+        ['id' => 'css-4', 'title' => 'Box Model', 'description' => 'Understand margin, border, padding, and content.', 'difficulty' => 'beginner', 
+    'content' => '
+<h3>The CSS Box Model</h3>
+<p>Every HTML element is a box with four parts:</p>
+<ul>
+  <li><strong>Content</strong>: The actual text or image.</li>
+  <li><strong>Padding</strong>: Space inside the border.</li>
+  <li><strong>Border</strong>: The line around the box.</li>
+  <li><strong>Margin</strong>: Space outside the border.</li>
+</ul>
+<pre><code>
+div {
+  margin: 20px;
+  padding: 10px;
+  border: 2px solid #888;
+}
+</code></pre>
+<p>Understanding the box model helps with layout and spacing.</p>
+'],
+        ['id' => 'css-5', 'title' => 'Flexbox', 'description' => 'Modern layout with CSS Flexbox.', 'difficulty' => 'intermediate', 
+    'content' => '
+<h3>CSS Flexbox</h3>
+<p>Flexbox is a modern layout tool for arranging items in rows or columns.</p>
+<pre><code>
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</code></pre>
+<ul>
+  <li><strong>display: flex</strong>: Enables flexbox.</li>
+  <li><strong>justify-content</strong>: Controls horizontal alignment.</li>
+  <li><strong>align-items</strong>: Controls vertical alignment.</li>
+</ul>
+<p>Flexbox makes it easy to build responsive layouts!</p>
+'],
+        ['id' => 'css-6', 'title' => 'Grid Layout', 'description' => 'Advanced layouts with CSS Grid.', 'difficulty' => 'intermediate', 
+    'content' => '
+<h3>CSS Grid Layout</h3>
+<p>Grid is the most powerful CSS layout system for structuring content in rows and columns.</p>
+<pre><code>
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 10px;
+}
+</code></pre>
+<ul>
+  <li><strong>display: grid</strong>: Enables grid layout.</li>
+  <li><strong>grid-template-columns</strong>: Defines columns.</li>
+  <li><strong>gap</strong>: Sets spacing between items.</li>
+</ul>
+'],
+        ['id' => 'css-7', 'title' => 'Transitions & Animations', 'description' => 'Add motion to your web pages.', 'difficulty' => 'intermediate', 
+    'content' => '
+<h3>CSS Transitions</h3>
+<p>Transitions create smooth changes between property values.</p>
+<pre><code>
+button {
+  background: #007bff;
+  transition: background 0.3s;
+}
+button:hover {
+  background: #0056b3;
+}
+</code></pre>
+<h3>CSS Animations</h3>
+<p>Animations let you animate multiple properties.</p>
+<pre><code>
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+div {
+  animation: fadeIn 1s ease-in;
+}
+</code></pre>
+'],
+        ['id' => 'css-8', 'title' => 'Responsive Design', 'description' => 'Make your site look great on any device.', 'difficulty' => 'expert', 
+    'content' => '
+<h3>Responsive Design</h3>
+<p>Make your site look good on all devices using media queries.</p>
+<pre><code>
+@media (max-width: 600px) {
+  body {
+    font-size: 14px;
+  }
+  .menu {
+    flex-direction: column;
+  }
+}
+</code></pre>
+<ul>
+  <li><strong>Media queries</strong> adapt styles for different screen sizes.</li>
+  <li>Use relative units (%, em, rem) for flexible layouts.</li>
+</ul>
+'],
+        ['id' => 'css-9', 'title' => 'CSS Variables', 'description' => 'Reusable values with custom properties.', 'difficulty' => 'expert', 
+    'content' => '
+<h3>CSS Variables (Custom Properties)</h3>
+<p>Variables help you reuse values and make your styles easier to update.</p>
+<pre><code>
+:root {
+  --main-color: #ff6600;
+}
+h1 {
+  color: var(--main-color);
+}
+</code></pre>
+<ul>
+  <li>Define variables inside <code>:root</code> for global scope.</li>
+  <li>Use <code>var(--variable-name)</code> to apply them.</li>
+</ul>
+'],
+        ['id' => 'css-10', 'title' => 'CSS Best Practices', 'description' => 'Write maintainable and scalable CSS.', 'difficulty' => 'expert', 
+    'content' => '
+<h3>CSS Best Practices</h3>
+<ul>
+  <li>Keep your CSS organized and well-commented.</li>
+  <li>Use classes for styling instead of element selectors.</li>
+  <li>Use CSS variables for consistent colors and spacing.</li>
+  <li>Test your styles on different browsers and devices.</li>
+  <li>Minimize repetition by grouping shared styles.</li>
+</ul>
+'],
     ],
     'bootstrap' => [
         ['id' => 'bootstrap-1', 'title' => 'Topic 1: Bootstrap Introduction', 'description' => 'What is Bootstrap and why use it?', 'difficulty' => 'beginner',
@@ -273,37 +621,461 @@ $topicsConfig = [
 </ul>'
     ],
         ['id' => 'bootstrap-4', 'title' => 'Topic 4: Utilities & Helpers', 'description' => 'Quickly style elements with utility classes.', 'difficulty' => 'beginner', 
-        'content' => ''],
-        ['id' => 'bootstrap-5', 'title' => 'Topic 5: Customizing Bootstrap', 'description' => 'Override and extend Bootstrap styles.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'bootstrap-6', 'title' => 'Topic 6: Bootstrap JS Plugins', 'description' => 'Add interactivity with Bootstrap plugins.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'bootstrap-7', 'title' => 'Topic 7: Forms & Validation', 'description' => 'Build and validate forms with Bootstrap.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'bootstrap-8', 'title' => 'Topic 8: Advanced Components', 'description' => 'Carousels, modals, and more.', 'difficulty' => 'expert', 'content' => ''],
-        ['id' => 'bootstrap-9', 'title' => 'Topic 9: Accessibility in Bootstrap', 'description' => 'Make Bootstrap sites accessible.', 'difficulty' => 'expert', 'content' => ''],
-        ['id' => 'bootstrap-10', 'title' => 'Topic 10: Bootstrap Best Practices', 'description' => 'Tips for scalable Bootstrap projects.', 'difficulty' => 'expert', 'content' => ''],
+        'content' => '
+<h3>Bootstrap Utilities & Helpers</h3>
+<p>Bootstrap comes with hundreds of utility classes that help you style elements quickly without writing custom CSS.</p>
+<ul>
+  <li><strong>Spacing:</strong> <code>.m-2</code> (margin), <code>.p-3</code> (padding)</li>
+  <li><strong>Text:</strong> <code>.text-center</code>, <code>.text-danger</code></li>
+  <li><strong>Display:</strong> <code>.d-flex</code>, <code>.d-none</code></li>
+  <li><strong>Colors:</strong> <code>.bg-primary</code>, <code>.text-success</code></li>
+  <li><strong>Borders:</strong> <code>.border</code>, <code>.rounded</code></li>
+</ul>
+<pre><code>
+&lt;div class="bg-warning p-3 text-center rounded"&gt;
+  Quick styled box!
+&lt;/div&gt;
+</code></pre>
+<p>For a full list of utilities, see <a href="https://getbootstrap.com/docs/5.3/utilities/" target="_blank">Bootstrap Utilities</a>.</p>
+'],
+        ['id' => 'bootstrap-5', 'title' => 'Topic 5: Customizing Bootstrap', 'description' => 'Override and extend Bootstrap styles.', 'difficulty' => 'intermediate', 
+    'content' => '
+<h3>Customizing Bootstrap</h3>
+<p>Override Bootstrap’s default styles to match your brand or design needs.</p>
+<ul>
+  <li><strong>Use your own CSS:</strong> Write custom styles after the Bootstrap CSS link.</li>
+  <li><strong>Customize Sass variables:</strong> Change colors, fonts, and breakpoints by editing Bootstrap’s source Sass files.</li>
+</ul>
+<pre><code>
+/* Example: Override primary color */
+:root {
+  --bs-primary: #ff6600;
+}
+</code></pre>
+<p>Learn more about customization at <a href="https://getbootstrap.com/docs/5.3/customize/" target="_blank">Bootstrap Customize</a>.</p>
+'],
+        ['id' => 'bootstrap-6', 'title' => 'Topic 6: Bootstrap JS Plugins', 'description' => 'Add interactivity with Bootstrap plugins.', 'difficulty' => 'intermediate', 
+    'content' => '<h3>Bootstrap JavaScript Plugins</h3>
+<p>Bootstrap includes interactive plugins powered by JavaScript, such as dropdowns, modals, and tooltips.</p>
+<ul>
+  <li><strong>Modals</strong>: Pop-up windows for dialogs.</li>
+  <li><strong>Tooltips</strong>: Small pop-up info boxes.</li>
+  <li><strong>Dropdowns</strong>: Menus for navigation or actions.</li>
+  <li><strong>Collapse</strong>: Hide/show content panels.</li>
+</ul>
+<p>To use plugins, add Bootstrap’s JS bundle:</p>
+<pre><code>
+&lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
+</code></pre>
+<p>Example: Trigger a tooltip</p>
+<pre><code>
+&lt;button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" title="Tooltip text"&gt;
+  Hover me
+&lt;/button&gt;
+</code></pre>'],
+        ['id' => 'bootstrap-7', 'title' => 'Topic 7: Forms & Validation', 'description' => 'Build and validate forms with Bootstrap.', 'difficulty' => 'intermediate', 
+    'content' => '<h3>Bootstrap Forms & Validation</h3>
+<p>Build beautiful forms and validate inputs easily with Bootstrap classes.</p>
+<ul>
+  <li><strong>Form controls:</strong> <code>.form-control</code> for inputs, <code>.form-check</code> for checkboxes.</li>
+  <li><strong>Layout:</strong> Use <code>.row</code> and <code>.col</code> for grid forms.</li>
+  <li><strong>Validation:</strong> Add <code>.is-valid</code> or <code>.is-invalid</code> classes for feedback.</li>
+</ul>
+<pre><code>
+&lt;form&gt;
+  &lt;input type="text" class="form-control is-valid" placeholder="Valid input"&gt;
+  &lt;input type="text" class="form-control is-invalid" placeholder="Invalid input"&gt;
+  &lt;div class="valid-feedback"&gt;Looks good!&lt;/div&gt;
+  &lt;div class="invalid-feedback"&gt;Please enter a valid value.&lt;/div&gt;
+&lt;/form&gt;
+</code></pre>
+<p>Read more at <a href="https://getbootstrap.com/docs/5.3/forms/validation/" target="_blank">Bootstrap Form Validation</a>.</p>'],
+        ['id' => 'bootstrap-8', 'title' => 'Topic 8: Advanced Components', 'description' => 'Carousels, modals, and more.', 'difficulty' => 'expert', 
+    'content' => '<h3>Bootstrap Advanced Components</h3>
+<p>Go beyond basics with advanced UI components:</p>
+<ul>
+  <li><strong>Carousel</strong>: Create image or content sliders.</li>
+  <li><strong>Accordion</strong>: Expand/collapse sections for FAQs or content.</li>
+  <li><strong>Toast</strong>: Show notifications in small pop-up boxes.</li>
+</ul>
+<pre><code>
+&lt;div id="carouselExample" class="carousel slide"&gt;
+  &lt;div class="carousel-inner"&gt;
+    &lt;div class="carousel-item active"&gt;
+      &lt;img src="img1.jpg" class="d-block w-100" alt="..."&gt;
+    &lt;/div&gt;
+    &lt;div class="carousel-item"&gt;
+      &lt;img src="img2.jpg" class="d-block w-100" alt="..."&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev"&gt;
+    &lt;span class="carousel-control-prev-icon" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="visually-hidden"&gt;Previous&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next"&gt;
+    &lt;span class="carousel-control-next-icon" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="visually-hidden"&gt;Next&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+<p>See all advanced components at <a href="https://getbootstrap.com/docs/5.3/components/" target="_blank">Bootstrap Components</a>.</p>'],
+        ['id' => 'bootstrap-9', 'title' => 'Topic 9: Accessibility in Bootstrap', 'description' => 'Make Bootstrap sites accessible.', 'difficulty' => 'expert', 
+    'content' => '<h3>Accessibility in Bootstrap</h3>
+<p>Bootstrap helps make sites accessible by default, but you can improve further:</p>
+<ul>
+  <li>Use semantic HTML and Bootstrap’s accessible components.</li>
+  <li>Add <code>aria-*</code> attributes for screen readers (e.g., <code>aria-label</code>, <code>aria-expanded</code>).</li>
+  <li>Ensure colors and contrasts meet accessibility standards.</li>
+</ul>
+<p>Example:</p>
+<pre><code>
+&lt;button class="btn btn-primary" aria-label="Close"&gt;X&lt;/button&gt;
+</code></pre>
+<p>Learn more at <a href="https://getbootstrap.com/docs/5.3/accessibility/" target="_blank">Bootstrap Accessibility</a>.</p>'],
+        ['id' => 'bootstrap-10', 'title' => 'Topic 10: Bootstrap Best Practices', 'description' => 'Tips for scalable Bootstrap projects.', 'difficulty' => 'expert', 
+    'content' => '<h3>Bootstrap Best Practices</h3>
+<ul>
+  <li>Use utility classes for quick styling and less custom CSS.</li>
+  <li>Keep your markup clean and organized.</li>
+  <li>Customize variables or use your own CSS for brand consistency.</li>
+  <li>Test responsiveness on different devices.</li>
+  <li>Update to the latest Bootstrap version for new features and security.</li>
+</ul>'],
     ],
     'javascript' => [
-        ['id' => 'js-1', 'title' => 'JS Fundamentals', 'description' => 'Variables, data types, and operators.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'js-2', 'title' => 'Control Flow', 'description' => 'If statements, loops, and logic.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'js-3', 'title' => 'Functions', 'description' => 'Defining and using functions.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'js-4', 'title' => 'DOM Basics', 'description' => 'Manipulate the web page with JavaScript.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'js-5', 'title' => 'Events', 'description' => 'Respond to user actions.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'js-6', 'title' => 'Objects & Arrays', 'description' => 'Work with complex data structures.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'js-7', 'title' => 'ES6+ Features', 'description' => 'Modern JavaScript syntax and features.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'js-8', 'title' => 'Async JS', 'description' => 'Promises, async/await, and AJAX.', 'difficulty' => 'expert', 'content' => ''],
-        ['id' => 'js-9', 'title' => 'Modules & Tooling', 'description' => 'Organize and build JS projects.', 'difficulty' => 'expert', 'content' => ''],
-        ['id' => 'js-10', 'title' => 'JS Best Practices', 'description' => 'Write clean and efficient JavaScript.', 'difficulty' => 'expert', 'content' => ''],
+        ['id' => 'js-1', 'title' => 'JS Fundamentals', 'description' => 'Variables, data types, and operators.', 'difficulty' => 'beginner', 
+        'content' => '<h3>JavaScript Fundamentals</h3>
+<p>JavaScript is a programming language for web development. It lets you add interactivity, logic, and dynamic content to your pages.</p>
+<h4>Variables</h4>
+<pre><code>
+let name = "Alice";
+const age = 21;
+var isStudent = true;
+</code></pre>
+<ul>
+  <li><strong>let</strong>: Block-scoped variable.</li>
+  <li><strong>const</strong>: Block-scoped constant (cannot be reassigned).</li>
+  <li><strong>var</strong>: Function-scoped variable (legacy, use let/const instead).</li>
+</ul>
+<h4>Data Types</h4>
+<ul>
+  <li>Number, String, Boolean, Object, Array, Null, Undefined</li>
+</ul>
+<h4>Operators</h4>
+<pre><code>
+let sum = 3 + 5;
+let isEqual = (a === b);
+</code></pre>'],
+        ['id' => 'js-2', 'title' => 'Control Flow', 'description' => 'If statements, loops, and logic.', 'difficulty' => 'beginner', 
+        'content' => '<h3>Control Flow</h3>
+<p>Control the logic of your programs using if statements, loops, and conditions.</p>
+<h4>If Statements</h4>
+<pre><code>
+if (score &gt; 80) {
+  alert("Great job!");
+} else {
+  alert("Keep practicing!");
+}
+</code></pre>
+<h4>Loops</h4>
+<pre><code>
+for (let i = 0; i &lt; 5; i++) {
+  console.log(i);
+}
+
+let n = 0;
+while (n &lt; 3) {
+  console.log(n);
+  n++;
+}
+</code></pre>
+<h4>Logic</h4>
+<p>Use <code>&amp;&amp;</code> (and), <code>||</code> (or), <code>!</code> (not) to build complex conditions.</p>'],
+        ['id' => 'js-3', 'title' => 'Functions', 'description' => 'Defining and using functions.', 'difficulty' => 'beginner', 
+        'content' => '<h3>Functions</h3>
+<p>Functions group code to reuse and organize logic.</p>
+<pre><code>
+function greet(name) {
+  return "Hello, " + name + "!";
+}
+console.log(greet("Alice"));
+</code></pre>
+<h4>Arrow Functions (ES6)</h4>
+<pre><code>
+const add = (a, b) =&gt; a + b;
+console.log(add(2, 3));
+</code></pre>'],
+        ['id' => 'js-4', 'title' => 'DOM Basics', 'description' => 'Manipulate the web page with JavaScript.', 'difficulty' => 'beginner', 
+        'content' => '<h3>DOM Basics</h3>
+<p>The DOM (Document Object Model) lets JavaScript interact with HTML elements.</p>
+<pre><code>
+const heading = document.getElementById("main-title");
+heading.textContent = "New Title!";
+</code></pre>
+<ul>
+  <li><code>getElementById</code>, <code>querySelector</code>: Select elements.</li>
+  <li><code>textContent</code>, <code>innerHTML</code>: Change content.</li>
+  <li><code>style</code>: Change CSS.</li>
+</ul>
+<pre><code>
+document.body.style.backgroundColor = "lightblue";
+</code></pre>'],
+        ['id' => 'js-5', 'title' => 'Events', 'description' => 'Respond to user actions.', 'difficulty' => 'intermediate', 
+        'content' => '<h3>Events</h3>
+<p>Respond to user actions like clicks, keypresses, and more.</p>
+<pre><code>
+document.getElementById("btn").addEventListener("click", function() {
+  alert("Button clicked!");
+});
+</code></pre>
+<ul>
+  <li><code>addEventListener</code>: Attach event handlers.</li>
+  <li>Common events: <code>click</code>, <code>mouseover</code>, <code>keydown</code>, <code>submit</code></li>
+</ul>'],
+        ['id' => 'js-6', 'title' => 'Objects & Arrays', 'description' => 'Work with complex data structures.', 'difficulty' => 'intermediate', 
+        'content' => '<h3>Objects</h3>
+<pre><code>
+const user = {
+  name: "Bob",
+  age: 20,
+  isStudent: true
+};
+console.log(user.name);
+</code></pre>
+<h3>Arrays</h3>
+<pre><code>
+const fruits = ["apple", "banana", "cherry"];
+console.log(fruits[1]); // "banana"
+fruits.push("orange");
+</code></pre>'],
+        ['id' => 'js-7', 'title' => 'ES6+ Features', 'description' => 'Modern JavaScript syntax and features.', 'difficulty' => 'intermediate', 
+        'content' => '<h3>ES6+ Modern JavaScript Features</h3>
+<ul>
+  <li><strong>let</strong> and <strong>const</strong> for variables</li>
+  <li><strong>Arrow Functions</strong>: <code>(x) =&gt; x * 2</code></li>
+  <li><strong>Template Literals</strong>: <code>`Hello, ${name}!`</code></li>
+  <li><strong>Destructuring</strong>: <code>const [a, b] = arr;</code> or <code>const {name} = user;</code></li>
+  <li><strong>Default Parameters</strong>: <code>function f(x = 1) {...}</code></li>
+  <li><strong>Spread Operator</strong>: <code>const arr2 = [...arr1, 4]</code></li>
+</ul>'],
+        ['id' => 'js-8', 'title' => 'Async JS', 'description' => 'Promises, async/await, and AJAX.', 'difficulty' => 'expert', 
+        'content' => '<h3>Async JavaScript</h3>
+<p>Handle asynchronous operations like network requests and timers.</p>
+<h4>Promises</h4>
+<pre><code>
+const promise = fetch("https://api.example.com/data");
+promise.then(response =&gt; response.json()).then(data =&gt; {
+  console.log(data);
+});
+</code></pre>
+<h4>Async/Await</h4>
+<pre><code>
+async function getData() {
+  const response = await fetch("https://api.example.com/data");
+  const data = await response.json();
+  console.log(data);
+}
+getData();
+</code></pre>'],
+        ['id' => 'js-9', 'title' => 'Modules & Tooling', 'description' => 'Organize and build JS projects.', 'difficulty' => 'expert', 
+        'content' => '<h3>Modules & Tooling</h3>
+<p>Organize code into reusable files and use tools for building projects.</p>
+<h4>Modules (ES6)</h4>
+<pre><code>
+// math.js
+export function add(a, b) {
+  return a + b;
+}
+
+// app.js
+import { add } from "./math.js";
+console.log(add(2, 3));
+</code></pre>
+<h4>Tooling</h4>
+<ul>
+  <li>Use npm/yarn for package management.</li>
+  <li>Use build tools like Webpack, Vite, or Parcel.</li>
+</ul>'],
+        ['id' => 'js-10', 'title' => 'JS Best Practices', 'description' => 'Write clean and efficient JavaScript.', 'difficulty' => 'expert', 
+        'content' => '<h3>JavaScript Best Practices</h3>
+<ul>
+  <li>Use <code>let</code> and <code>const</code> for variables.</li>
+  <li>Comment your code and keep it readable.</li>
+  <li>Break logic into functions and modules.</li>
+  <li>Test your code and handle errors.</li>
+  <li>Keep up with modern JavaScript features.</li>
+</ul>'],
     ],
     'python' => [
-        ['id' => 'python-1', 'title' => 'Python Basics', 'description' => 'Syntax, variables, and data types.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'python-2', 'title' => 'Control Structures', 'description' => 'If statements, loops, and logic.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'python-3', 'title' => 'Functions', 'description' => 'Defining and using functions.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'python-4', 'title' => 'Data Structures', 'description' => 'Lists, tuples, sets, and dictionaries.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'python-5', 'title' => 'OOP in Python', 'description' => 'Classes and objects in Python.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'python-6', 'title' => 'Modules & Packages', 'description' => 'Organize and reuse code.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'python-7', 'title' => 'File I/O', 'description' => 'Read and write files in Python.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'python-8', 'title' => 'Error Handling', 'description' => 'Exceptions and debugging.', 'difficulty' => 'expert', 'content' => ''],
-        ['id' => 'python-9', 'title' => 'Advanced Topics', 'description' => 'Decorators, generators, and more.', 'difficulty' => 'expert', 'content' => ''],
-        ['id' => 'python-10', 'title' => 'Python Best Practices', 'description' => 'Tips for writing great Python code.', 'difficulty' => 'expert', 'content' => ''],
+        ['id' => 'python-1', 'title' => 'Python Basics', 'description' => 'Syntax, variables, and data types.', 'difficulty' => 'beginner', 
+        'content' => '<h3>Python Basics</h3>
+<p>Python is a popular, beginner-friendly programming language known for its simple syntax and readability.</p>
+<h4>Variables & Data Types</h4>
+<pre><code>
+name = "Alice"
+age = 21
+is_student = True
+</code></pre>
+<ul>
+  <li>Common data types: <strong>int</strong>, <strong>float</strong>, <strong>str</strong>, <strong>bool</strong>, <strong>list</strong>, <strong>dict</strong></li>
+</ul>
+<h4>Printing</h4>
+<pre><code>
+print("Hello, World!")
+</code></pre>
+'],
+        ['id' => 'python-2', 'title' => 'Control Structures', 'description' => 'If statements, loops, and logic.', 'difficulty' => 'beginner', 
+        'content' => '<h3>Control Structures</h3>
+<p>Control the flow of your programs using if statements and loops.</p>
+<h4>If Statements</h4>
+<pre><code>
+if age &gt;= 18:
+    print("Adult")
+else:
+    print("Minor")
+</code></pre>
+<h4>Loops</h4>
+<pre><code>
+for i in range(5):
+    print(i)
+
+n = 0
+while n &lt; 3:
+    print(n)
+    n += 1
+</code></pre>
+'],
+        ['id' => 'python-3', 'title' => 'Functions', 'description' => 'Defining and using functions.', 'difficulty' => 'beginner', 
+        'content' => '<h3>Functions</h3>
+<p>Functions let you organize code into reusable blocks.</p>
+<pre><code>
+def greet(name):
+    return "Hello, " + name + "!"
+
+print(greet("Alice"))
+</code></pre>
+<ul>
+  <li>Use <code>def</code> to define a function.</li>
+  <li>Return values using <code>return</code>.</li>
+</ul>'],
+        ['id' => 'python-4', 'title' => 'Data Structures', 'description' => 'Lists, tuples, sets, and dictionaries.', 'difficulty' => 'beginner', 
+        'content' => '<h3>Data Structures</h3>
+<ul>
+  <li><strong>Lists</strong>: Ordered, mutable collections.</li>
+  <li><strong>Tuples</strong>: Ordered, immutable collections.</li>
+  <li><strong>Sets</strong>: Unordered collections of unique elements.</li>
+  <li><strong>Dictionaries</strong>: Key-value pairs.</li>
+</ul>
+<pre><code>
+fruits = ["apple", "banana", "cherry"]
+info = {"name": "Alice", "age": 21}
+</code></pre>'],
+        ['id' => 'python-5', 'title' => 'OOP in Python', 'description' => 'Classes and objects in Python.', 'difficulty' => 'intermediate', 
+        'content' => '<h3>Object-Oriented Programming (OOP)</h3>
+<p>Python supports OOP with classes and objects.</p>
+<pre><code>
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def greet(self):
+        print("Hello, my name is", self.name)
+
+alice = Person("Alice", 21)
+alice.greet()
+</code></pre>
+<ul>
+  <li><code>__init__</code>: Constructor method.</li>
+  <li><code>self</code>: Refers to the instance.</li>
+</ul>'],
+        ['id' => 'python-6', 'title' => 'Modules & Packages', 'description' => 'Organize and reuse code.', 'difficulty' => 'intermediate', 
+        'content' => '<h3>Modules & Packages</h3>
+<p>Modules help you organize code, and packages group modules together.</p>
+<h4>Importing Modules</h4>
+<pre><code>
+import math
+print(math.sqrt(16))
+</code></pre>
+<h4>Creating Modules</h4>
+<pre><code>
+# mymodule.py
+def add(a, b):
+    return a + b
+
+# main.py
+import mymodule
+print(mymodule.add(2, 3))
+</code></pre>'],
+        ['id' => 'python-7', 'title' => 'File I/O', 'description' => 'Read and write files in Python.', 'difficulty' => 'intermediate', 
+        'content' => '<h3>File Input & Output</h3>
+<p>Read from and write to files using Python’s built-in functions.</p>
+<pre><code>
+# Writing to a file
+with open("output.txt", "w") as f:
+    f.write("Hello, file!")
+
+# Reading from a file
+with open("output.txt", "r") as f:
+    content = f.read()
+    print(content)
+</code></pre>'],
+        ['id' => 'python-8', 'title' => 'Error Handling', 'description' => 'Exceptions and debugging.', 'difficulty' => 'expert', 
+        'content' => '<h3>Error Handling</h3>
+<p>Handle exceptions gracefully using <code>try</code> and <code>except</code>.</p>
+<pre><code>
+try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("Cannot divide by zero!")
+finally:
+    print("This runs no matter what.")
+</code></pre>
+<p>Common exceptions: <code>ValueError</code>, <code>TypeError</code>, <code>IOError</code>, etc.</p>'],
+        ['id' => 'python-9', 'title' => 'Advanced Topics', 'description' => 'Decorators, generators, and more.', 'difficulty' => 'expert', 
+        'content' => '<h3>Advanced Python Topics</h3>
+<ul>
+  <li><strong>Decorators</strong>: Modify functions.</li>
+  <li><strong>Generators</strong>: Yield items one at a time.</li>
+  <li><strong>List Comprehensions</strong>: Compact ways to build lists.</li>
+</ul>
+<pre><code>
+# Decorator
+def logger(func):
+    def wrapper():
+        print("Calling function...")
+        func()
+    return wrapper
+
+@logger
+def say_hi():
+    print("Hi!")
+
+say_hi()
+
+# Generator
+def count_up(n):
+    i = 0
+    while i &lt; n:
+        yield i
+        i += 1
+
+for num in count_up(3):
+    print(num)
+
+# List comprehension
+squares = [x*x for x in range(5)]
+print(squares)
+</code></pre>'],
+        ['id' => 'python-10', 'title' => 'Python Best Practices', 'description' => 'Tips for writing great Python code.', 'difficulty' => 'expert', 
+        'content' => '<h3>Python Best Practices</h3>
+<ul>
+  <li>Use meaningful variable and function names.</li>
+  <li>Follow PEP 8 style guide for formatting.</li>
+  <li>Write modular, reusable code.</li>
+  <li>Comment your code and use docstrings.</li>
+  <li>Test your code and handle exceptions.</li>
+</ul>'],
     ],
     'java' => [
         ['id' => 'java-1', 'title' => 'Java Basics', 'description' => 'Syntax, variables, and data types.', 'difficulty' => 'beginner', 'content' => ''],
@@ -538,4 +1310,5 @@ function getDifficultyBadgeClass($difficulty) {
     window.languages = <?php echo json_encode($languages); ?>;
   </script>
 <script src="assets/js/tutorial.js"></script>
+
 <?php include 'includes/footer.php'; ?> 
