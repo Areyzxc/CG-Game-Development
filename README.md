@@ -1,13 +1,90 @@
-# Game-Development
-Code Kombat
+# Code Gaming: Educational Game System for Teaching Coding Skills
 
-Collaborators:
---> Belza, John Jaylyn <br>
---> Constantino, Alvin Jr.
---> Sabangan, Ybo
---> Santiago, James Aries
---> Silvestre, Jesse Lei
---> Valencia, Paul Dexter
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub issues](https://img.shields.io/github/issues/Areyzxc/Game-Development)](https://github.com/Areyzxc/Game-Development/issues)
+[![GitHub stars](https://img.shields.io/github/stars/Areyzxc/Game-Development)](https://github.com/Areyzxc/Game-Development/stargazers)
 
-Purpose: 
---> For our Capstone Project (2025 - 2026)
+## Project Overview
+
+**Code Gaming** is an interactive web-based educational game system designed to teach coding skills and programming languages in an engaging, gamified manner. Developed as a Capstone Project for BSIT/CSS Students and IT Experts at Pateros Technological College, this platform transforms traditional coding learning into fun challenges, tutorials, topics to read, and mini-games. It targets beginners, intermediate, and expert learners, focusing on languages like HTML, CSS, Bootstrap, JavaScript, Python, Java, Python, and C++, while incorporating points, progress tracking, motivational quotes from famous coding experts, and leaderboards to boost motivation.
+
+The system was evaluated using the ISO/IEC 25010 quality model, emphasizing aspects like functional suitability, performance efficiency, compatibility, usability, reliability, security, maintainability, and portability. This project aims to address common challenges in coding education, such as low engagement, by making learning feel like an adventure and a comfort.
+
+## Purpose and Objectives
+
+This repository serves as the codebase for our Capstone Project (Academic Year 2025-2026). The primary goals are:
+- To create an efficient web-based platform for completing coding challenges with thought-provoking items.
+- To assess user proficiency through progressively challenging questions and inspiring rewards (e.g., points).
+- To provide a user-friendly admin dashboard for monitoring progress, user management, post announcements, and system management.
+- To promote code gaming education at Pateros Technological College by integrating gamification principles, ultimately improving student engagement and skill retention.
+
+## Key Features
+
+- **User Profiles**: Customizable profiles with editable usernames, email, bios, kication, banners, avatars, and progress tracking.
+- **Interactive Tutorials**: Step-by-step guides with dynamic pop-ups, pagination, and progress indicators for learning coding concepts.
+- **Game Modes**: Mini-games like "Guess the Output" and "Speed Typing," quizzes, and challenges with scoring, timers, and feedback.
+- **Engagement Elements**: points, leaderboards, floating icons, background music, and a feedback container located at the About Us page for a personalized experience.
+- **Admin Dashboard**: Tools for user monitoring, announcements, and system stats, powered by charts and tables.
+- **Visitor Tracking**: Non-registered users' activities are logged to encourage sign-ups.
+
+## Technology Stack
+
+- **Frontend**: HTML5, CSS3, JavaScript, Bootstrap 5, Three.js (for 3D effects on Anchor page), Chart.js (for progress visuals), ScrollReveal.js (for animations).
+- **Backend**: PHP, MySQL (via XAMPP for local development), AJAX for seamless interactions.
+- **Database**: MySQL tables for users, visitors, questions, admins, logs, progress data, and much, much more.
+- **Deployment**: Hosted via GitHub Student Pack (e.g., Namecheap domains, Digital Ocean/Azure for free tier).
+- **Development Methodology**: Agile with weekly/monthly meetings and iterative sprints.
+
+## Installation and Setup
+
+1. **Prerequisites**:
+   - XAMPP (for local PHP/MySQL server).
+   - A modern web browser (e.g., Chrome, Brave, Firefox, MS Edge, etc).
+
+2. **Clone the Repository**:
+   ```
+   git clone https://github.com/your-repo-name/Game-Development.git
+   cd Game-Development
+   ```
+
+3. **Set Up Database**:
+   - Import the provided SQL file (e.g., `code_gaming.sql`) into MySQL via phpMyAdmin.
+   - Update database credentials in `config.php` and 'database.php'.
+
+4. **Run Locally**:
+   - Start XAMPP (Apache + MySQL).
+   - Open `http://localhost/Game-Development` in your browser.
+
+5. **Deployment** (Optional):
+   - Use GitHub Pages for static previews or a free host like Heroku/Netlify for full deployment.
+
+## Usage
+
+- **As a User**: Register/login, explore tutorials/topics, play mini-games, quiz, and challenges to earn points, and track progress on your dashboard or browse through the pages as a visitor/guest.
+- **As an Admin**: Access the dashboard to monitor users, post announcements, and view analytics.
+- **Testing**: Run surveys (included in `/surveys` or this Google Form link: ) to evaluate via ISO/IEC 25010—analyze results for Capstone reporting in Chapters 4 and 5.
+
+For detailed user guides, see the `/docs` folder.
+
+## Contributors
+
+This project is a collaborative effort by BSIT-4F students at Pateros Technological College:
+
+- **Belza, John Jaylyn**  
+- **Constantino, Alvin Jr.**  
+- **Sabangan, Ybo**  
+- **Santiago, James Aries**  
+- **Silvestre, Jesse Lei**  
+- **Valencia, Paul Dexter**
+
+We welcome contributions! Fork the repo, create a branch, and submit a pull request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+Special thanks to our professors and panelists from Capstone and Pateros Technological College for guidance. Inspired by gamification studies and open-source educational tools.
+
+For questions or collaborations, contact us via GitHub Issues and Discussions (Make sure to have a GitHub account registered) or email at [jamesariess76@gmail.com].
