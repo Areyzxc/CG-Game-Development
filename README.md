@@ -1,4 +1,4 @@
-# Code Gaming: Educational Game System for Teaching Coding Skills
+# An Educational Game System for Teaching Coding Skills and Programming Languages for Pateros Technological College
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub issues](https://img.shields.io/github/issues/Areyzxc/Game-Development)](https://github.com/Areyzxc/Game-Development/issues)
@@ -6,9 +6,9 @@
 
 ## Project Overview
 
-**Code Gaming** is an interactive web-based educational game system designed to teach coding skills and programming languages in an engaging, gamified manner. Developed as a Capstone Project for BSIT/CSS Students and IT Experts at Pateros Technological College, this platform transforms traditional coding learning into fun challenges, tutorials, topics to read, and mini-games. It targets beginners, intermediate, and expert learners, focusing on languages like HTML, CSS, Bootstrap, JavaScript, Python, Java, Python, and C++, while incorporating points, progress tracking, motivational quotes from famous coding experts, and leaderboards to boost motivation.
+**Code Gaming** is an interactive web-based educational game system designed to teach coding skills and programming languages in an engaging, gamified manner. Developed as a Capstone Project for BSIT/CSS Students and IT Experts at Pateros Technological College, this platform transforms traditional coding learning into fun challenges, tutorials, topics to read, and mini-games. It targets beginners, intermediate, and expert learners, focusing on languages such as HTML, CSS, Bootstrap, JavaScript, Python, Java, and C++. The platform incorporates points, progress tracking, motivational quotes from famous coding experts, and leaderboards to boost motivation.
 
-The system was evaluated using the ISO/IEC 25010 quality model, emphasizing aspects like functional suitability, performance efficiency, compatibility, usability, reliability, security, maintainability, and portability. This project aims to address common challenges in coding education, such as low engagement, by making learning feel like an adventure and a comfort.
+The system was evaluated using the ISO/IEC 25010 quality model, with an emphasis on aspects such as functional suitability, performance efficiency, compatibility, usability, reliability, security, maintainability, and portability. This project aims to address common challenges in coding education, such as low engagement, by making learning feel like an adventure and a comfort.
 
 ## Purpose and Objectives
 
@@ -31,7 +31,7 @@ This repository serves as the codebase for our Capstone Project (Academic Year 2
 
 - **Frontend**: HTML5, CSS3, JavaScript, Bootstrap 5, Three.js (for 3D effects on Anchor page), Chart.js (for progress visuals), ScrollReveal.js (for animations).
 - **Backend**: PHP, MySQL (via XAMPP for local development), AJAX for seamless interactions.
-- **Database**: MySQL tables for users, visitors, questions, admins, logs, progress data, and much, much more.
+- **Database**: MySQL tables for users, visitors, questions, admins, logs, progress-tracking data, and much, much more.
 - **Deployment**: Hosted via GitHub Student Pack (e.g., Namecheap domains, Digital Ocean/Azure for free tier).
 - **Development Methodology**: Agile with weekly/monthly meetings and iterative sprints.
 
@@ -57,10 +57,13 @@ This repository serves as the codebase for our Capstone Project (Academic Year 2
 
 5. **Deployment** (Optional):
    - Use GitHub Pages for static previews or a free host like Heroku/Netlify for full deployment.
+  
+6. **Recommendation**:
+   - Recommended Free Host: InfinityFree (reliable for PHP/MySQL, unlimited subdomains, HTTPS, no ads; alternatives: AeonFree or Byet.host if needed).
 
 ## Usage
 
-- **As a User**: Register/login, explore tutorials/topics, play mini-games, quiz, and challenges to earn points, and track progress on your dashboard or browse through the pages as a visitor/guest.
+- **As a User**: Register/login, explore tutorials/topics, play mini-games, quizzes, and challenges to earn points, and track progress on your dashboard or browse through the pages as a visitor/guest.
 - **As an Admin**: Access the dashboard to monitor users, post announcements, and view analytics.
 - **Testing**: Run surveys (included in `/surveys` or this Google Form link: ) to evaluate via ISO/IEC 25010—analyze results for Capstone reporting in Chapters 4 and 5.
 
