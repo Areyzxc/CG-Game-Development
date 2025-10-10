@@ -1,0 +1,15 @@
+[09-Oct-2025 11:03:58 Europe/Berlin] CSRF Validation Attempt - Token: 640f7b14cc...
+[09-Oct-2025 11:03:58 Europe/Berlin] Received status update - User ID: 14, Topic ID: css-10, Status: done_reading, Mapped Status: done_reading
+[09-Oct-2025 11:03:58 Europe/Berlin] Insert query executed. Rows affected: 1
+[2025-10-09 12:24:32] Error 0: Invalid or expired CSRF token in C:\xampp2\htdocs\CodeGaming\api\tutorial\track-progress.php on line 38
+Stack Trace:
+#0 {main}
+
+[2025-10-09 12:24:40] Error 0: Invalid or expired CSRF token in C:\xampp2\htdocs\CodeGaming\api\tutorial\track-progress.php on line 38
+Stack Trace:
+#0 {main}
+
+[2025-10-09 12:24:48] Error 0: Invalid or expired CSRF token in C:\xampp2\htdocs\CodeGaming\api\tutorial\track-progress.php on line 38
+Stack Trace:
+#0 {main}
+
