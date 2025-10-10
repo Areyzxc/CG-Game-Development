@@ -1,0 +1,486 @@
+/**
+ * Modern Profile Page Styles
+ * Clean, responsive design with geometric elements
+ */
+
+:root {
+    --primary-color: #4e54c8;
+    --secondary-color: #8f94fb;
+    --accent-color: #ff6b6b;
+    --dark-bg: #1a1a2e;
+    --card-bg: #16213e;
+    --text-light: #f8f9fa;
+    --text-muted: #adb5bd;
+    --border-radius: 12px;
+    --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Base Styles */
+.profile-page {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    padding: 0;
+}
+
+/* Header Banner */
+.profile-banner {
+    position: relative;
+    height: 300px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    overflow: hidden;
+    margin-bottom: 100px;
+}
+
+.banner-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Profile Banner Wrapper */
+.profile-banner-wrapper {
+    position: relative;
+    margin-bottom: 100px;
+}
+
+/* Profile Banner */
+.profile-banner {
+    position: relative;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    background-color: #f0f2f5;
+}
+
+/* Profile Avatar Container */
+.profile-avatar-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -75px;
+    margin: 0 auto;
+    width: 160px;
+    height: 160px;
+    z-index: 10;
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    object-fit: cover;
+    background-color: #f0f2f5;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+    display: block;
+}
+
+.avatar-accent {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    border: 2px dashed var(--primary-color);
+    pointer-events: none;
+    opacity: 0.6;
+    z-index: 1;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    opacity: 0.8;
+}
+
+/* Banner Upload Overlay */
+.profile-banner {
+    transition: background-image 0.3s ease;
+}
+
+.banner-upload-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.profile-banner:hover .banner-upload-overlay {
+    opacity: 1;
+}
+
+.banner-upload-overlay:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+/* Profile Header */
+.profile-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.profile-name {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--dark-bg);
+    margin-bottom: 0.5rem;
+}
+
+.profile-title {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.profile-location {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+/* Progress Ring */
+.progress-ring-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.progress-ring {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.progress-ring__circle {
+    transform: rotate(-90deg);
+}
+
+.progress-ring__circle-bg {
+    fill: none;
+    stroke: #e9ecef;
+    stroke-width: 6;
+}
+
+.progress-ring__circle-fill {
+    fill: none;
+    stroke: var(--primary-color);
+    stroke-width: 6;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s;
+}
+
+.progress-ring__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.progress-ring__percent {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--dark-bg);
+    line-height: 1;
+}
+
+.progress-ring__label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+/* Stats */
+.progress-stats {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-weight: 600;
+    padding: 1.25rem 1.5rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* About Section */
+.about-content {
+    line-height: 1.7;
+    color: #4a4a4a;
+}
+
+.read-more {
+    color: var(--primary-color);
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 0.75rem;
+    transition: color 0.2s;
+}
+
+.read-more:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+/* Stats Summary */
+.stats-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+.stat-card {
+    border-radius: var(--border-radius);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.stat-icon {
+    font-size: 1.5rem;
+    opacity: 0.8;
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    color: #4a4a4a;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.social-link:hover {
+    background-color: #f1f3f5;
+    color: var(--primary-color);
+    transform: translateX(5px);
+}
+
+.social-link i {
+    width: 24px;
+    margin-right: 0.75rem;
+    text-align: center;
+}
+
+/* Activity Feed */
+.activity-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.activity-item {
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    background-color: #f8f9fa;
+    transition: all 0.2s;
+}
+
+.activity-item:hover {
+    background-color: #f1f3f5;
+    transform: translateX(5px);
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Danger Zone */
+.danger-zone {
+    border-left: 4px solid #dc3545;
+}
+
+.danger-zone .card-header {
+    color: #dc3545;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .profile-banner {
+        height: 250px;
+        margin-bottom: 80px;
+    }
+    
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .avatar-accent {
+        width: 130px;
+        height: 130px;
+    }
+    
+    .progress-ring-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .progress-stats {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .stats-summary {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Utility Classes */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+#profileForm button[type="submit"] .spinner-border {
+    display: none;
+    margin-left: 0.5rem;
+}
+
+#profileForm button[type="submit"]:disabled .spinner-border {
+    display: inline-block;
+}
+
+/* Toast Styles */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1100;
+    min-width: 300px;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.toast-body {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+}
+
+.toast .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+    opacity: 0.8;
+}
+
+.toast .btn-close:hover {
+    opacity: 1;
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+    border: 1px solid var(--border-color);
+}
+
+.social-link:hover {
+    background-color: var(--bg-secondary);
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.social-link i {
+    font-size: 1.25rem;
+    width: 24px;
+    text-align: center;
+}
+
+/* Social Media Brand Colors */
+.text-instagram {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
