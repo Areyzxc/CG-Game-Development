@@ -23,32 +23,39 @@ require_once '../../includes/Database.php';
 require_once '../../includes/Auth.php';
 
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type');
 
-// Check if user is logged in
+// Prevent any output before JSON
+ob_start();
+
+// Check if user is logged in (allow guests)
 $auth = Auth::getInstance();
-if (!$auth->isLoggedIn()) {
-    http_response_code(401);
-    echo json_encode(['error' => 'User must be logged in to save results']);
-    exit;
-}
+$userId = null;
 
-// Get current user
-$currentUser = $auth->getCurrentUser();
-$userId = $currentUser['user_id'];
+if ($auth->isLoggedIn()) {
+    $currentUser = $auth->getCurrentUser();
+    $userId = $currentUser['id']; // Fixed: use 'id' not 'user_id'
+}
 
 // Get POST data
 $data = json_decode(file_get_contents('php://input'), true);
 
-// Validate required fields
-if (!isset($data['gameType']) || !isset($data['language']) || !isset($data['score'])) {
+// Validate required fields (support both formats)
+$gameType = $data['game_type'] ?? $data['gameType'] ?? null;
+$language = $data['language'] ?? null;
+$score = $data['score'] ?? null;
+
+if (!$gameType || !$language || !isset($score)) {
     http_response_code(400);
-    echo json_encode(['error' => 'Missing required fields']);
+    echo json_encode(['error' => 'Missing required fields: game_type, language, score']);
     exit;
 }
 
 // Validate game type
 $validGameTypes = ['guess', 'typing'];
-if (!in_array($data['gameType'], $validGameTypes)) {
+if (!in_array($gameType, $validGameTypes)) {
     http_response_code(400);
     echo json_encode(['error' => 'Invalid game type']);
     exit;
@@ -56,7 +63,7 @@ if (!in_array($data['gameType'], $validGameTypes)) {
 
 // Validate language
 $validLanguages = ['html', 'css', 'javascript', 'bootstrap', 'java', 'python', 'cpp'];
-if (!in_array($data['language'], $validLanguages)) {
+if (!in_array($language, $validLanguages)) {
     http_response_code(400);
     echo json_encode(['error' => 'Invalid language']);
     exit;
@@ -69,23 +76,26 @@ try {
     $sql = "INSERT INTO mini_game_results (user_id, game_type, score, time_taken, details) 
             VALUES (?, ?, ?, ?, ?)";
     
-    // Create details JSON
+    // Create details JSON with all submitted data
     $details = json_encode([
-        'language' => $data['language'],
-        'timestamp' => date('Y-m-d H:i:s')
+        'language' => $language,
+        'difficulty' => $data['difficulty'] ?? 'beginner',
+        'timestamp' => date('Y-m-d H:i:s'),
+        'details' => $data['details'] ?? []
     ]);
     
     // Execute the query
     $stmt = $db->prepare($sql);
     $stmt->execute([
         $userId,
-        $data['gameType'],
-        $data['score'],
-        $data['timeTaken'] ?? null,
+        $gameType,
+        $score,
+        $data['time_taken'] ?? null,
         $details
     ]);
     
-    // Return success response
+    // Clean output buffer and return success response
+    ob_clean();
     echo json_encode([
         'success' => true,
         'message' => 'Result saved successfully',
@@ -93,9 +103,20 @@ try {
     ]);
     
 } catch (PDOException $e) {
+    ob_clean();
     http_response_code(500);
     echo json_encode([
         'error' => 'Database error',
         'message' => $e->getMessage()
     ]);
-} 
+} catch (Exception $e) {
+    ob_clean();
+    http_response_code(500);
+    echo json_encode([
+        'error' => 'Server error',
+        'message' => $e->getMessage()
+    ]);
+}
+
+// Ensure clean exit
+exit;
