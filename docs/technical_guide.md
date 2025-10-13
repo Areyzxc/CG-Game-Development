@@ -1,22 +1,19 @@
-# User Guide for Code Gaming
+# Technical Guide for Code Gaming
 
-## Welcome to Code Gaming!
-This guide helps you get started with our educational game system. Whether you're a student learning coding or an admin managing the platform, follow these steps for a smooth experience.
+## System Architecture
+- **Frontend**: Built with HTML/CSS/JS and libraries like Bootstrap for responsive design, Three.js for animations, and Chart.js for dashboards.
+- **Backend**: PHP handles logic, MySQL stores data (e.g., users table with progress fields).
+- **Data Flow**: AJAX for real-time updates (e.g., quiz scoring); see UML diagrams in Capstone docs.
 
-### Getting Started as a User
-1. **Register/Login**: Visit the Anchor Page, click "Sign Up" or "Login." Use a valid email and password.
-2. **Explore Tutorials**: From the Home Page, select a coding topic (e.g., Python). Use pop-ups and pagination to progress—earn points for completions!
-3. **Play Games**: Try mini-games like "Guess the Output." Track your badges and leaderboard position on your Profile Page.
-4. **Customize**: Edit your bio/avatar and toggle light/dark mode for comfort.
+## Development Setup
+Follow the README installation steps. Key files:
+- `index.php`: Entry point (Anchor Page).
+- `game.php`: Handles mini-games and scoring.
+- `admin/dashboard.php`: Admin tools with SQL queries for stats.
 
-### Admin Features
-1. **Dashboard Access**: Login as admin (seed credentials in code).
-2. **Monitor Users**: View stats, logs, and charts for engagement.
-3. **Post Announcements**: Use the form to notify users about updates.
+## Maintenance Tips
+- **Debugging**: Use browser console for JS errors; check PHP logs in XAMPP.
+- **Updates**: Add new modes by extending `game_modes.js`—test for portability.
+- **Security**: Ensure prepared statements in PHP to prevent SQL injection.
 
-### Tips for Best Experience
-- Use Chrome for optimal Three.js effects.
-- Report bugs via the feedback form.
-- System Requirements: Modern browser, stable internet.
-
-For technical issues, check the troubleshooting section in `technical_guide.md`.
+Contribute by forking and PR-ing changes. See LICENSE for usage rights.
