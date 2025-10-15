@@ -1,5 +1,8 @@
 # User Guide for Code Gaming
 
+![Proponents with Professor](images/proponents_with_professor.jpg)  
+*Figure 1: The development team (Belza, Constantino, Sabangan, Santiago, Silvestre, Valencia) with our professor during a Capstone review session.*
+
 ## Welcome to Code Gaming!
 This guide helps you get started with our educational game system. Whether you're a student learning coding or an admin managing the platform, follow these steps for a smooth experience.
 
