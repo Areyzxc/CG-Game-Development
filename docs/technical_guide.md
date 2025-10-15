@@ -1,5 +1,8 @@
 # Technical Guide for Code Gaming
 
+![Team Collaboration](images/team_collaboration.jpg)  
+*Figure 2: Our team collaborating on the project—featuring Belza, Constantino, Sabangan, Santiago, Silvestre, and Valencia.*
+
 ## System Architecture
 - **Frontend**: Built with HTML/CSS/JS and libraries like Bootstrap for responsive design, Three.js for animations, and Chart.js for dashboards.
 - **Backend**: PHP handles logic, MySQL stores data (e.g., users table with progress fields).
