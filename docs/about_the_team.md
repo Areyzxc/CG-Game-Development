@@ -7,8 +7,8 @@ We're a group of BSIT students at Pateros Technological College, passionate abou
 
 ## Team Members
 - **Belza, John Jaylyn**: Focused on frontend design and user experience.  
-- **Constantino, Alvin Jr.**: Handled backend logic and database integration.  
-- **Sabangan, Ybo**: Developed game modes and interactive features.  
+- **Constantino, Alvin Jr.**: Developed game modes and interactive features.  
+- **Sabangan, Ybo**: Handled backend logic and database integration.
 - **Santiago, James Aries**: Project lead, coordinating documentation and methodology.  
 - **Silvestre, Jesse Lei**: Managed testing and quality assurance.  
 - **Valencia, Paul Dexter**: Created visuals, animations, and admin tools.  
