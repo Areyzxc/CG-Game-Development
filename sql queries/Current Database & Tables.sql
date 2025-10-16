@@ -29,7 +29,9 @@ CREATE TABLE IF NOT EXISTS users (
     profile_picture VARCHAR(255) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    last_seen TIMESTAMP NULL DEFAULT NULL
+    last_seen TIMESTAMP NULL DEFAULT NULL,
+    first_visit BOOLEAN DEFAULT TRUE,
+    welcome_dont_show BOOLEAN DEFAULT FALSE
 ) ENGINE=InnoDB;
 
 -- (2) --
@@ -44,7 +46,8 @@ CREATE TABLE IF NOT EXISTS admin_users (
     profile_picture VARCHAR(255) DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_seen TIMESTAMP NULL DEFAULT NULL,
-    INDEX idx_email (email)
+    first_visit BOOLEAN DEFAULT TRUE,
+    welcome_dont_show BOOLEAN DEFAULT FALSE
 ) ENGINE=InnoDB;
 
 -- (3) --
@@ -400,3 +403,194 @@ CREATE TABLE IF NOT EXISTS admin_actions_log (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (admin_id) REFERENCES admin_users(admin_id) ON DELETE SET NULL
 ); 
+
+-- (20) --
+-- Tracking: Welcome Modal Interactions
+-- Tracks interactions with the welcome modal for personalization.
+CREATE TABLE IF NOT EXISTS user_welcome_tracking (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    section_clicked VARCHAR(50) NOT NULL,
+    clicked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_clicked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    click_count INT DEFAULT 1,
+    is_admin BOOLEAN DEFAULT FALSE,
+    action_type VARCHAR(20) DEFAULT 'click',
+    INDEX idx_user_section (user_id, section_clicked),
+    INDEX idx_clicked_at (clicked_at),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) COMMENT 'Tracks user interactions with welcome modal for personalization';
+
+-- (21) --
+-- Tracking: User Feedback Likes
+-- Tracks likes on user feedback messages.
+CREATE TABLE IF NOT EXISTS user_feedback_likes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    feedback_id INT NOT NULL,
+    liked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (feedback_id) REFERENCES feedback_messages(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_user_feedback_like (user_id, feedback_id)
+) ENGINE=InnoDB;
+
+-- (22) --
+-- Team Members Table
+-- Stores detailed information about team members for the About page
+CREATE TABLE IF NOT EXISTS team_members (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    role VARCHAR(100) NOT NULL,
+    age INT,
+    email VARCHAR(100),
+    code VARCHAR(20) UNIQUE,
+    photo VARCHAR(255) DEFAULT 'images/background.png',
+    bio TEXT,
+    fun_fact TEXT,
+    mission_statement TEXT,
+    facebook_url VARCHAR(255),
+    instagram_url VARCHAR(255),
+    github_url VARCHAR(255),
+    linkedin_url VARCHAR(255),
+    is_active BOOLEAN DEFAULT TRUE,
+    display_order INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- (23) --
+-- Timeline Events Table
+-- Stores project development milestones for the timeline section
+CREATE TABLE IF NOT EXISTS timeline_events (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    event_date DATE NOT NULL,
+    image_url VARCHAR(255),
+    icon VARCHAR(50) DEFAULT 'fas fa-calendar',
+    category ENUM('milestone', 'development', 'testing', 'launch', 'update') DEFAULT 'milestone',
+    is_featured BOOLEAN DEFAULT FALSE,
+    display_order INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- (24) --
+-- Coding Playlist Table
+-- Stores music tracks for the coding playlist section
+CREATE TABLE IF NOT EXISTS coding_playlist (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    artist VARCHAR(255),
+    file_path VARCHAR(255),
+    external_url VARCHAR(255),
+    duration INT, -- in seconds
+    genre VARCHAR(50),
+    is_featured BOOLEAN DEFAULT FALSE,
+    play_count INT DEFAULT 0,
+    display_order INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- (25) --
+-- FAQ Items Table
+-- Stores frequently asked questions with search functionality
+CREATE TABLE IF NOT EXISTS faq_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    question VARCHAR(500) NOT NULL,
+    answer TEXT NOT NULL,
+    category ENUM('project', 'technology', 'team', 'general') DEFAULT 'general',
+    tags VARCHAR(255), -- comma-separated for search
+    is_featured BOOLEAN DEFAULT FALSE,
+    view_count INT DEFAULT 0,
+    display_order INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- (26) --
+-- Project Statistics Table
+-- Stores key project metrics for the impact section
+CREATE TABLE IF NOT EXISTS project_statistics (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    stat_name VARCHAR(100) NOT NULL UNIQUE,
+    stat_value INT NOT NULL,
+    stat_label VARCHAR(100) NOT NULL,
+    icon VARCHAR(50) DEFAULT 'fas fa-chart-line',
+    description TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    display_order INT DEFAULT 0,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- (27) --
+-- Mini-Game Modes Table
+-- Stores different game modes for the mini-game section
+CREATE TABLE IF NOT EXISTS mini_game_modes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mode_key VARCHAR(50) UNIQUE NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    instructions JSON NOT NULL,
+    icon VARCHAR(50) DEFAULT 'fas fa-code',
+    difficulty_levels JSON NOT NULL,
+    supported_languages JSON NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- (28) --
+-- Mini-Game Preferences Table
+-- Stores user preferences for the mini-game section
+CREATE TABLE IF NOT EXISTS user_mini_game_preferences (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    show_welcome_modal BOOLEAN DEFAULT TRUE,
+    preferred_language VARCHAR(50) DEFAULT 'javascript',
+    preferred_difficulty VARCHAR(20) DEFAULT 'beginner',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- Add indexes for better performance
+CREATE INDEX idx_mini_game_modes_active ON mini_game_modes(is_active);
+CREATE INDEX idx_user_preferences_user_id ON user_mini_game_preferences(user_id);
+
+-- (29) --
+-- Visitor Tracking Table
+-- Tracks visitor activity on the website
+CREATE TABLE IF NOT EXISTS `visitor_tracking` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(45) NOT NULL,
+  `user_agent` text,
+  `page_visited` varchar(255) NOT NULL,
+  `referrer` varchar(255) DEFAULT NULL,
+  `visit_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_unique` tinyint(1) DEFAULT '0',
+  `session_id` varchar(255) DEFAULT NULL,
+  `country` varchar(100) DEFAULT NULL,
+  `device_type` varchar(50) DEFAULT NULL,
+  `browser` varchar(100) DEFAULT NULL,
+  `os` varchar(100) DEFAULT NULL,
+  `is_bot` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `ip_address` (`ip_address`),
+  KEY `session_id` (`session_id`),
+  KEY `visit_time` (`visit_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- (30) --
+-- Visitor Stats Table
+-- Stores aggregated visitor data for analytics
+CREATE TABLE IF NOT EXISTS `visitor_stats` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `visit_date` date NOT NULL,
+  `total_visits` int(11) NOT NULL DEFAULT '0',
+  `unique_visits` int(11) NOT NULL DEFAULT '0',
+  `page_views` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `visit_date` (`visit_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
