@@ -1,0 +1,6 @@
+[2025-10-03 12:46:30] Starting test script
+[2025-10-03 12:46:30] Attempting to get database connection...
+[2025-10-03 12:46:30] Database connection successful
+[2025-10-03 12:46:30] Available tables: admin_actions_log, admin_users, announcements, challenge_answers, challenge_leaderboard, challenge_questions, challenge_test_cases, code_challenges, coding_playlist, faq_items, feedback_likes, feedback_messages, guest_challenge_attempts, guest_quiz_attempts, guest_sessions, login_logs, mini_game_modes, mini_game_results, password_reset_requests, programming_languages, project_statistics, quiz_answers, quiz_questions, team_members, timeline_events, tutorial_visits, user_achievements, user_challenge_attempts, user_code_submissions, user_mini_game_preferences, user_progress, user_quiz_attempts, user_tutorial_modes_progress, user_welcome_tracking, users, visitor_logs, visitor_stats, visitor_tracking
+[2025-10-03 12:46:30] Executing query: SELECT a.id, a.title, a.content, a.category as type, a.created_at, COALESCE(au.username, 'Admin') as author, a.is_active, a.is_pinned FROM announcements a LEFT JOIN admin_users au ON a.created_by = au.admin_id WHERE a.is_active = 1 AND a.status = 'published' ORDER BY a.is_pinned DESC, a.created_at DESC LIMIT 3
+[2025-10-03 12:46:30] Found 3 announcements
