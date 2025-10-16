@@ -50,7 +50,7 @@ if (!$id || !in_array($type, ['user', 'admin']) || !$username) {
 }
 
 $db = Database::getInstance();
-$table = $type === 'admin' ? 'admins' : 'users';
+$table = $type === 'admin' ? 'admin_users' : 'users';
 $idField = $type === 'admin' ? 'admin_id' : 'id';
 
 // Check for username uniqueness (excluding current user)
@@ -110,14 +110,68 @@ if (!$stmt->execute($params)) {
     exit;
 }
 
-// Return updated user info
+try {
+    // Get updated user info
+    $stmt = $db->prepare("SELECT $idField AS id, username, email, profile_picture, created_at FROM $table WHERE $idField = ?");
+    $stmt->execute([$id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$stmt = $db->prepare("SELECT $idField AS id, username, email, profile_picture, created_at FROM $table WHERE $idField = ?");
-$stmt->execute([$id]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if ($user) {
-    echo json_encode(['success' => true, 'data' => $user]);
-} else {
-    echo json_encode(['success' => false, 'error' => 'User not found after update.']);
+    if ($user) {
+        // Ensure profile_picture is always a string, even if NULL
+        $user['profile_picture'] = $user['profile_picture'] ?? '';
+        
+        // Update session if the updated user is the current user
+        if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $id) {
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['profile_picture'] = $user['profile_picture'];
+        }
+        
+        // Log the admin action
+        $action = 'updated';
+        if ($profilePicPath) {
+            $action = 'changed the profile picture of';
+        } elseif ($username !== $user['username']) {
+            $action = 'updated the username of';
+        }
+        
+        $logStmt = $db->prepare("
+            INSERT INTO admin_actions (admin_id, action_type, target_type, target_id, details)
+            VALUES (?, ?, ?, ?, ?)
+        ");
+        $logStmt->execute([
+            $_SESSION['user_id'] ?? 0,
+            'update_profile',
+            $type,
+            $id,
+            json_encode([
+                'action' => $action,
+                'username' => $username,
+                'profile_updated' => $profilePicPath ? true : false,
+                'old_username' => $oldUsername ?? null
+            ])
+        ]);
+        
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true, 
+            'data' => $user,
+            'message' => 'User updated successfully!'
+        ]);
+        exit;
+    } else {
+        throw new Exception('User not found after update.');
+    }
+} catch (Exception $e) {
+    http_response_code(500);
+    header('Content-Type: application/json');
+    echo json_encode([
+        'success' => false, 
+        'error' => $e->getMessage(),
+        'debug' => [
+            'id' => $id,
+            'type' => $type,
+            'table' => $table
+        ]
+    ]);
+    exit;
 }
