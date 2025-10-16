@@ -1,0 +1,19 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Allow direct access to files and directories that exist
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Handle API requests
+RewriteRule ^api/(.*)$ api/$1 [L,QSA]
+
+# Allow direct access to PHP files
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php [L,QSA]
+
+# Handle front controller pattern
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [L,QSA]
