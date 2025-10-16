@@ -46,7 +46,12 @@ try {
             'is_pinned' => $row['is_pinned'],
             'created_at' => date('F j, Y, g:i a', strtotime($row['created_at'])),
             'author_name' => $row['author_name'] ?? 'Admin',
-            'author_avatar' => !empty($row['author_avatar']) ? $row['author_avatar'] : 'images/PTC.png'
+            'author_avatar' => !empty($row['author_avatar']) ? 
+                (strpos($row['author_avatar'], 'http') === 0 ? $row['author_avatar'] : 
+                (file_exists($_SERVER['DOCUMENT_ROOT'] . '/CodeGaming/uploads/avatars/' . $row['author_avatar']) ? 
+                    '/CodeGaming/uploads/avatars/' . $row['author_avatar'] : 
+                    '/CodeGaming/assets/images/PTC.png')) : 
+                '/CodeGaming/assets/images/PTC.png'
         ];
     }
     // Total count for pagination
