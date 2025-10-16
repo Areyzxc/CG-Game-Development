@@ -1,15 +1,19 @@
 <?php
+// Include visitor tracking
+require_once 'includes/track_visitor.php';
+
 /**
- * Code Game - Tutorials Page
- *
- * This page serves as the main hub for all educational content, offering
- * tutorials for various programming languages (HTML, CSS, Bootstrap, JavaScript,
- * Java, Python, C++). It also provides descriptive tutorials for each game mode
- * (Quiz, Challenges, Mini-Game) to guide users on how to play and learn.
- *
- * Users can track their progress through topics/modules, ensuring a structured
- * and engaging learning path. Future enhancements will focus on user engagement
- * and a highly user-friendly experience.
+ * ==========================================================
+ * File: tutorial.php
+ * 
+ * Description:
+ *   - Tutorial page for Code Gaming platform
+ *   - Features:
+ *       • Sidebar navigation for tutorial categories
+ *       • Main content area for tutorial display
+ *       • Interactive code examples
+ *       • Progress tracking
+ *       • Responsive design for all devices
  *
  * Dependencies:
  * - includes/Database.php: For fetching programming languages and topics.
@@ -17,10 +21,9 @@
  * - includes/header.php: Centralized header for consistent navigation and styling.
  * - includes/footer.php: Centralized footer for consistent layout.
  * 
- * 
- * Author: [Santiago]
- * Last Updated: [July 22, 2025]
- * -- Code Gaming Team --
+ * @author [Santiago]
+ * @version 1.0.0
+ * @last_updated 2025-07-22
  */
 
 // Include required files
@@ -37,7 +40,7 @@ $languages = $db->getProgrammingLanguages();
 // Define topics for each language directly in PHP
 $topicsConfig = [
     'html' => [
-        ['id' => 'html-1', 'title' => 'HTML Fundamentals', 'description' => 'Learn the basic structure and elements of HTML documents.', 'difficulty' => 'beginner', 
+        ['id' => 'html-1', 'title' => 'Topic #1: HTML Fundamentals', 'description' => 'Learn the basic structure and elements of HTML documents.', 'difficulty' => 'beginner', 
     'content' => '
 <h3>What is HTML?</h3>
 <p>HTML (HyperText Markup Language) is the backbone of every web page. It provides the basic structure using elements (tags) that browsers understand and render visually.</p>
@@ -58,7 +61,7 @@ $topicsConfig = [
   <li><strong>&lt;body&gt;</strong>: Main content visible on the page.</li>
 </ul>
 '],
-        ['id' => 'html-2', 'title' => 'HTML Elements & Attributes', 'description' => 'Explore common HTML elements and their attributes.', 'difficulty' => 'beginner', 
+        ['id' => 'html-2', 'title' => 'Topic #2: HTML Elements & Attributes', 'description' => 'Explore common HTML elements and their attributes.', 'difficulty' => 'beginner', 
     'content' => '
 <h3>HTML Elements</h3>
 <p>Elements are the building blocks of HTML, defined by tags such as <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;div&gt;</code>, etc.</p>
@@ -73,7 +76,7 @@ $topicsConfig = [
   <li><strong>src</strong>: Specifies the image source for <code>&lt;img&gt;</code> tags.</li>
 </ul>
 '],
-        ['id' => 'html-3', 'title' => 'Links & Images', 'description' => 'How to add links and images to your web pages.', 'difficulty' => 'beginner', 
+        ['id' => 'html-3', 'title' => 'Topic #3: Links & Images', 'description' => 'How to add links and images to your web pages.', 'difficulty' => 'beginner', 
     'content' => '
 <h3>Hyperlinks</h3>
 <p>Use <code>&lt;a&gt;</code> to create hyperlinks to other pages or sites.</p>
@@ -86,7 +89,7 @@ $topicsConfig = [
   <li><strong>alt</strong>: Alternative text for accessibility.</li>
 </ul>
 '],
-        ['id' => 'html-4', 'title' => 'Lists & Tables', 'description' => 'Create lists and tables for structured content.', 'difficulty' => 'beginner', 
+        ['id' => 'html-4', 'title' => 'Topic #4: Lists & Tables', 'description' => 'Create lists and tables for structured content.', 'difficulty' => 'beginner', 
     'content' => '
 <h3>Lists</h3>
 <p>There are two basic types: ordered (<code>&lt;ol&gt;</code>) and unordered (<code>&lt;ul&gt;</code>).</p>
@@ -116,7 +119,7 @@ $topicsConfig = [
 &lt;/table&gt;
 </code></pre>
 '],
-        ['id' => 'html-5', 'title' => 'Forms & Input', 'description' => 'Master HTML forms and input types.', 'difficulty' => 'intermediate', 
+        ['id' => 'html-5', 'title' => 'Topic #5: Forms & Input', 'description' => 'Master HTML forms and input types.', 'difficulty' => 'intermediate', 
     'content' => '
 <h3>HTML Forms</h3>
 <p>Forms collect user input and send it to a server. Basic form elements include <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;button&gt;</code>, and <code>&lt;select&gt;</code>.</p>
@@ -132,7 +135,7 @@ $topicsConfig = [
   <li><strong>name</strong>: The name for the data submitted.</li>
 </ul>
 '],
-        ['id' => 'html-6', 'title' => 'Semantic HTML', 'description' => 'Use semantic tags for better accessibility and SEO.', 'difficulty' => 'intermediate', 
+        ['id' => 'html-6', 'title' => 'Topic #6: Semantic HTML', 'description' => 'Use semantic tags for better accessibility and SEO.', 'difficulty' => 'intermediate', 
     'content' => '
 <h3>Semantic Elements</h3>
 <p>Semantic tags clearly describe their meaning and structure (for both browsers and developers).</p>
@@ -149,7 +152,7 @@ $topicsConfig = [
 &lt;footer&gt;Site Footer&lt;/footer&gt;
 </code></pre>
 '],
-        ['id' => 'html-7', 'title' => 'Media Elements', 'description' => 'Embed audio, video, and other media.', 'difficulty' => 'intermediate', 'content' => ''],
+      ['id' => 'html-7', 'title' => 'Topic #7: Media Elements', 'description' => 'Embed audio, video, and other media.', 'difficulty' => 'intermediate',
     'content' => '
 <h3>Embedding Media</h3>
 <p>HTML lets you add audio, video, and other multimedia to your website.</p>
@@ -168,7 +171,7 @@ $topicsConfig = [
 &lt;/video&gt;
 </code></pre>
 '],
-        ['id' => 'html-8', 'title' => 'HTML APIs', 'description' => 'Introduction to HTML5 APIs.', 'difficulty' => 'expert', 
+        ['id' => 'html-8', 'title' => 'Topic #8: HTML APIs', 'description' => 'Introduction to HTML5 APIs.', 'difficulty' => 'expert', 
     'content' => '
 <h3>HTML5 APIs</h3>
 <p>HTML5 introduced powerful APIs for modern web applications:</p>
@@ -185,7 +188,7 @@ $topicsConfig = [
 &lt;/script&gt;
 </code></pre>
 '],
-        ['id' => 'html-9', 'title' => 'Accessibility', 'description' => 'Make your web pages accessible to all users.', 'difficulty' => 'expert', 
+        ['id' => 'html-9', 'title' => 'Topic #9: Accessibility', 'description' => 'Make your web pages accessible to all users.', 'difficulty' => 'expert', 
     'content' => '
 <h3>Accessible HTML</h3>
 <p>Accessibility ensures your site works for everyone, including users with disabilities.</p>
@@ -201,7 +204,7 @@ $topicsConfig = [
 &lt;button aria-label="Close"&gt;X&lt;/button&gt;
 </code></pre>
 '],
-        ['id' => 'html-10', 'title' => 'Best Practices', 'description' => 'Tips and tricks for writing clean HTML.', 'difficulty' => 'expert', 
+        ['id' => 'html-10', 'title' => 'Topic #10: Best Practices', 'description' => 'Tips and tricks for writing clean HTML.', 'difficulty' => 'expert', 
     'content' => '
 <h3>HTML Best Practices</h3>
 <ul>
@@ -212,9 +215,9 @@ $topicsConfig = [
   <li>Test your pages on multiple browsers and devices.</li>
 </ul>
 '],
-    ],
+  ],
     'css' => [
-        ['id' => 'css-1', 'title' => 'CSS Basics', 'description' => 'Introduction to CSS syntax and selectors.', 'difficulty' => 'beginner', 
+        ['id' => 'css-1', 'title' => 'Topic #1: CSS Basics', 'description' => 'Introduction to CSS syntax and selectors.', 'difficulty' => 'beginner', 
     'content' => '
 <h3>What is CSS?</h3>
 <p>CSS (Cascading Style Sheets) is used to style and layout web pages. It controls colors, fonts, spacing, and positioning of HTML elements.</p>
@@ -237,7 +240,7 @@ p {
   <li><strong>Values</strong> set the property’s value.</li>
 </ul>
 '],
-        ['id' => 'css-2', 'title' => 'Colors & Backgrounds', 'description' => 'Styling backgrounds and using color.', 'difficulty' => 'beginner', 
+        ['id' => 'css-2', 'title' => 'Topic #2: Colors & Backgrounds', 'description' => 'Styling backgrounds and using color.', 'difficulty' => 'beginner', 
     'content' => '
 <h3>Colors</h3>
 <p>Set colors using names, HEX, RGB, or HSL.</p>
@@ -261,7 +264,7 @@ div {
   <li><strong>background-image</strong>: Adds images behind content.</li>
 </ul>
 '],
-        ['id' => 'css-3', 'title' => 'Text & Fonts', 'description' => 'Control typography and font styles.', 'difficulty' => 'beginner', \
+        ['id' => 'css-3', 'title' => 'Topic #3: Text & Fonts', 'description' => 'Control typography and font styles.', 'difficulty' => 'beginner',
     'content' => '
 <h3>Text Styling</h3>
 <p>Change font, size, weight, and style with CSS.</p>
@@ -281,7 +284,7 @@ h1 {
   <li><strong>color</strong>: Sets text color.</li>
 </ul>
 '],
-        ['id' => 'css-4', 'title' => 'Box Model', 'description' => 'Understand margin, border, padding, and content.', 'difficulty' => 'beginner', 
+        ['id' => 'css-4', 'title' => 'Topic #4: Box Model', 'description' => 'Understand margin, border, padding, and content.', 'difficulty' => 'beginner', 
     'content' => '
 <h3>The CSS Box Model</h3>
 <p>Every HTML element is a box with four parts:</p>
@@ -300,7 +303,7 @@ div {
 </code></pre>
 <p>Understanding the box model helps with layout and spacing.</p>
 '],
-        ['id' => 'css-5', 'title' => 'Flexbox', 'description' => 'Modern layout with CSS Flexbox.', 'difficulty' => 'intermediate', 
+        ['id' => 'css-5', 'title' => 'Topic #5: Flexbox', 'description' => 'Modern layout with CSS Flexbox.', 'difficulty' => 'intermediate', 
     'content' => '
 <h3>CSS Flexbox</h3>
 <p>Flexbox is a modern layout tool for arranging items in rows or columns.</p>
@@ -318,7 +321,7 @@ div {
 </ul>
 <p>Flexbox makes it easy to build responsive layouts!</p>
 '],
-        ['id' => 'css-6', 'title' => 'Grid Layout', 'description' => 'Advanced layouts with CSS Grid.', 'difficulty' => 'intermediate', 
+        ['id' => 'css-6', 'title' => 'Topic #6:  Grid Layout', 'description' => 'Advanced layouts with CSS Grid.', 'difficulty' => 'intermediate', 
     'content' => '
 <h3>CSS Grid Layout</h3>
 <p>Grid is the most powerful CSS layout system for structuring content in rows and columns.</p>
@@ -335,7 +338,7 @@ div {
   <li><strong>gap</strong>: Sets spacing between items.</li>
 </ul>
 '],
-        ['id' => 'css-7', 'title' => 'Transitions & Animations', 'description' => 'Add motion to your web pages.', 'difficulty' => 'intermediate', 
+        ['id' => 'css-7', 'title' => 'Topic #7: Transitions & Animations', 'description' => 'Add motion to your web pages.', 'difficulty' => 'intermediate', 
     'content' => '
 <h3>CSS Transitions</h3>
 <p>Transitions create smooth changes between property values.</p>
@@ -360,7 +363,7 @@ div {
 }
 </code></pre>
 '],
-        ['id' => 'css-8', 'title' => 'Responsive Design', 'description' => 'Make your site look great on any device.', 'difficulty' => 'expert', 
+        ['id' => 'css-8', 'title' => 'Topic #8: Responsive Design', 'description' => 'Make your site look great on any device.', 'difficulty' => 'expert', 
     'content' => '
 <h3>Responsive Design</h3>
 <p>Make your site look good on all devices using media queries.</p>
@@ -379,7 +382,7 @@ div {
   <li>Use relative units (%, em, rem) for flexible layouts.</li>
 </ul>
 '],
-        ['id' => 'css-9', 'title' => 'CSS Variables', 'description' => 'Reusable values with custom properties.', 'difficulty' => 'expert', 
+        ['id' => 'css-9', 'title' => 'Topic #9: CSS Variables', 'description' => 'Reusable values with custom properties.', 'difficulty' => 'expert', 
     'content' => '
 <h3>CSS Variables (Custom Properties)</h3>
 <p>Variables help you reuse values and make your styles easier to update.</p>
@@ -396,7 +399,7 @@ h1 {
   <li>Use <code>var(--variable-name)</code> to apply them.</li>
 </ul>
 '],
-        ['id' => 'css-10', 'title' => 'CSS Best Practices', 'description' => 'Write maintainable and scalable CSS.', 'difficulty' => 'expert', 
+        ['id' => 'css-10', 'title' => 'Topic #10: CSS Best Practices', 'description' => 'Write maintainable and scalable CSS.', 'difficulty' => 'expert', 
     'content' => '
 <h3>CSS Best Practices</h3>
 <ul>
@@ -409,7 +412,7 @@ h1 {
 '],
     ],
     'bootstrap' => [
-        ['id' => 'bootstrap-1', 'title' => 'Topic 1: Bootstrap Introduction', 'description' => 'What is Bootstrap and why use it?', 'difficulty' => 'beginner',
+        ['id' => 'bootstrap-1', 'title' => 'Topic #1: Bootstrap Introduction', 'description' => 'What is Bootstrap and why use it?', 'difficulty' => 'beginner',
          'content' => '
          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
            <i class="bx bxl-bootstrap" style="font-size: 2.2rem; color: #7952b3;"></i>
@@ -438,7 +441,7 @@ h1 {
          </ul>
          <p style="margin-top: 1.5rem;">Learn more at <a href="https://getbootstrap.com/" target="_blank">getbootstrap.com</a>.</p>'
     ],
-        ['id' => 'bootstrap-2', 'title' => 'Topic 2: Bootstrap Grid', 'description' => 'Responsive layouts with the grid system.', 'difficulty' => 'beginner',
+        ['id' => 'bootstrap-2', 'title' => 'Topic #2: Bootstrap Grid', 'description' => 'Responsive layouts with the grid system.', 'difficulty' => 'beginner',
         'content' => '
         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
             <i class="bx bxl-bootstrap" style="font-size: 2.2rem; color: #7952b3;"></i>
@@ -450,7 +453,7 @@ h1 {
         <p>The grid system is a powerful tool that can help you create responsive and mobile-first websites. It is a great way to ensure that your content looks great on any device, and it is a great way to create complex layouts with ease.</p>
         <p>Learn more at <a href="https://getbootstrap.com/docs/5.3/layout/grid/" target="_blank">getbootstrap.com/docs/5.3/layout/grid/</a>.</p>'
     ],
-        ['id' => 'bootstrap-3', 'title' => 'Topic 3: Bootstrap Components', 'description' => 'Buttons, cards, navbars, and more.', 'difficulty' => 'beginner',
+        ['id' => 'bootstrap-3', 'title' => 'Topic #3: Bootstrap Components', 'description' => 'Buttons, cards, navbars, and more.', 'difficulty' => 'beginner',
         'content' => '
         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
     <i class="bx bxl-bootstrap" style="font-size: 2.2rem; color: #7952b3;"></i>
@@ -741,9 +744,9 @@ h1 {
   <li>Test responsiveness on different devices.</li>
   <li>Update to the latest Bootstrap version for new features and security.</li>
 </ul>'],
-    ],
+        ],
     'javascript' => [
-        ['id' => 'js-1', 'title' => 'JS Fundamentals', 'description' => 'Variables, data types, and operators.', 'difficulty' => 'beginner', 
+        ['id' => 'js-1', 'title' => 'Topic #1: JS Fundamentals', 'description' => 'Variables, data types, and operators.', 'difficulty' => 'beginner', 
         'content' => '<h3>JavaScript Fundamentals</h3>
 <p>JavaScript is a programming language for web development. It lets you add interactivity, logic, and dynamic content to your pages.</p>
 <h4>Variables</h4>
@@ -766,7 +769,7 @@ var isStudent = true;
 let sum = 3 + 5;
 let isEqual = (a === b);
 </code></pre>'],
-        ['id' => 'js-2', 'title' => 'Control Flow', 'description' => 'If statements, loops, and logic.', 'difficulty' => 'beginner', 
+        ['id' => 'js-2', 'title' => 'Topic #2: Control Flow', 'description' => 'If statements, loops, and logic.', 'difficulty' => 'beginner', 
         'content' => '<h3>Control Flow</h3>
 <p>Control the logic of your programs using if statements, loops, and conditions.</p>
 <h4>If Statements</h4>
@@ -791,7 +794,7 @@ while (n &lt; 3) {
 </code></pre>
 <h4>Logic</h4>
 <p>Use <code>&amp;&amp;</code> (and), <code>||</code> (or), <code>!</code> (not) to build complex conditions.</p>'],
-        ['id' => 'js-3', 'title' => 'Functions', 'description' => 'Defining and using functions.', 'difficulty' => 'beginner', 
+        ['id' => 'js-3', 'title' => 'Topic #3: Functions', 'description' => 'Defining and using functions.', 'difficulty' => 'beginner', 
         'content' => '<h3>Functions</h3>
 <p>Functions group code to reuse and organize logic.</p>
 <pre><code>
@@ -805,7 +808,7 @@ console.log(greet("Alice"));
 const add = (a, b) =&gt; a + b;
 console.log(add(2, 3));
 </code></pre>'],
-        ['id' => 'js-4', 'title' => 'DOM Basics', 'description' => 'Manipulate the web page with JavaScript.', 'difficulty' => 'beginner', 
+        ['id' => 'js-4', 'title' => 'Topic #4: DOM Basics', 'description' => 'Manipulate the web page with JavaScript.', 'difficulty' => 'beginner', 
         'content' => '<h3>DOM Basics</h3>
 <p>The DOM (Document Object Model) lets JavaScript interact with HTML elements.</p>
 <pre><code>
@@ -820,7 +823,7 @@ heading.textContent = "New Title!";
 <pre><code>
 document.body.style.backgroundColor = "lightblue";
 </code></pre>'],
-        ['id' => 'js-5', 'title' => 'Events', 'description' => 'Respond to user actions.', 'difficulty' => 'intermediate', 
+        ['id' => 'js-5', 'title' => 'Topic #5: Events', 'description' => 'Respond to user actions.', 'difficulty' => 'intermediate', 
         'content' => '<h3>Events</h3>
 <p>Respond to user actions like clicks, keypresses, and more.</p>
 <pre><code>
@@ -832,7 +835,7 @@ document.getElementById("btn").addEventListener("click", function() {
   <li><code>addEventListener</code>: Attach event handlers.</li>
   <li>Common events: <code>click</code>, <code>mouseover</code>, <code>keydown</code>, <code>submit</code></li>
 </ul>'],
-        ['id' => 'js-6', 'title' => 'Objects & Arrays', 'description' => 'Work with complex data structures.', 'difficulty' => 'intermediate', 
+        ['id' => 'js-6', 'title' => 'Topic #6: Objects & Arrays', 'description' => 'Work with complex data structures.', 'difficulty' => 'intermediate', 
         'content' => '<h3>Objects</h3>
 <pre><code>
 const user = {
@@ -848,7 +851,7 @@ const fruits = ["apple", "banana", "cherry"];
 console.log(fruits[1]); // "banana"
 fruits.push("orange");
 </code></pre>'],
-        ['id' => 'js-7', 'title' => 'ES6+ Features', 'description' => 'Modern JavaScript syntax and features.', 'difficulty' => 'intermediate', 
+        ['id' => 'js-7', 'title' => 'Topic #7:ES6+ Features', 'description' => 'Modern JavaScript syntax and features.', 'difficulty' => 'intermediate', 
         'content' => '<h3>ES6+ Modern JavaScript Features</h3>
 <ul>
   <li><strong>let</strong> and <strong>const</strong> for variables</li>
@@ -858,7 +861,7 @@ fruits.push("orange");
   <li><strong>Default Parameters</strong>: <code>function f(x = 1) {...}</code></li>
   <li><strong>Spread Operator</strong>: <code>const arr2 = [...arr1, 4]</code></li>
 </ul>'],
-        ['id' => 'js-8', 'title' => 'Async JS', 'description' => 'Promises, async/await, and AJAX.', 'difficulty' => 'expert', 
+        ['id' => 'js-8', 'title' => 'Topic #8: Async JS', 'description' => 'Promises, async/await, and AJAX.', 'difficulty' => 'expert', 
         'content' => '<h3>Async JavaScript</h3>
 <p>Handle asynchronous operations like network requests and timers.</p>
 <h4>Promises</h4>
@@ -877,7 +880,7 @@ async function getData() {
 }
 getData();
 </code></pre>'],
-        ['id' => 'js-9', 'title' => 'Modules & Tooling', 'description' => 'Organize and build JS projects.', 'difficulty' => 'expert', 
+        ['id' => 'js-9', 'title' => 'Topic #9: Modules & Tooling', 'description' => 'Organize and build JS projects.', 'difficulty' => 'expert', 
         'content' => '<h3>Modules & Tooling</h3>
 <p>Organize code into reusable files and use tools for building projects.</p>
 <h4>Modules (ES6)</h4>
@@ -896,7 +899,7 @@ console.log(add(2, 3));
   <li>Use npm/yarn for package management.</li>
   <li>Use build tools like Webpack, Vite, or Parcel.</li>
 </ul>'],
-        ['id' => 'js-10', 'title' => 'JS Best Practices', 'description' => 'Write clean and efficient JavaScript.', 'difficulty' => 'expert', 
+        ['id' => 'js-10', 'title' => 'Topic #10: JS Best Practices', 'description' => 'Write clean and efficient JavaScript.', 'difficulty' => 'expert', 
         'content' => '<h3>JavaScript Best Practices</h3>
 <ul>
   <li>Use <code>let</code> and <code>const</code> for variables.</li>
@@ -905,9 +908,9 @@ console.log(add(2, 3));
   <li>Test your code and handle errors.</li>
   <li>Keep up with modern JavaScript features.</li>
 </ul>'],
-    ],
+        ],
     'python' => [
-        ['id' => 'python-1', 'title' => 'Python Basics', 'description' => 'Syntax, variables, and data types.', 'difficulty' => 'beginner', 
+        ['id' => 'python-1', 'title' => 'Topic #1: Python Basics', 'description' => 'Syntax, variables, and data types.', 'difficulty' => 'beginner', 
         'content' => '<h3>Python Basics</h3>
 <p>Python is a popular, beginner-friendly programming language known for its simple syntax and readability.</p>
 <h4>Variables & Data Types</h4>
@@ -924,7 +927,7 @@ is_student = True
 print("Hello, World!")
 </code></pre>
 '],
-        ['id' => 'python-2', 'title' => 'Control Structures', 'description' => 'If statements, loops, and logic.', 'difficulty' => 'beginner', 
+        ['id' => 'python-2', 'title' => 'Topic #2: Control Structures', 'description' => 'If statements, loops, and logic.', 'difficulty' => 'beginner', 
         'content' => '<h3>Control Structures</h3>
 <p>Control the flow of your programs using if statements and loops.</p>
 <h4>If Statements</h4>
@@ -945,7 +948,7 @@ while n &lt; 3:
     n += 1
 </code></pre>
 '],
-        ['id' => 'python-3', 'title' => 'Functions', 'description' => 'Defining and using functions.', 'difficulty' => 'beginner', 
+        ['id' => 'python-3', 'title' => 'Topic #3: Functions', 'description' => 'Defining and using functions.', 'difficulty' => 'beginner', 
         'content' => '<h3>Functions</h3>
 <p>Functions let you organize code into reusable blocks.</p>
 <pre><code>
@@ -958,7 +961,7 @@ print(greet("Alice"))
   <li>Use <code>def</code> to define a function.</li>
   <li>Return values using <code>return</code>.</li>
 </ul>'],
-        ['id' => 'python-4', 'title' => 'Data Structures', 'description' => 'Lists, tuples, sets, and dictionaries.', 'difficulty' => 'beginner', 
+        ['id' => 'python-4', 'title' => 'Topic #4: Data Structures', 'description' => 'Lists, tuples, sets, and dictionaries.', 'difficulty' => 'beginner', 
         'content' => '<h3>Data Structures</h3>
 <ul>
   <li><strong>Lists</strong>: Ordered, mutable collections.</li>
@@ -970,7 +973,7 @@ print(greet("Alice"))
 fruits = ["apple", "banana", "cherry"]
 info = {"name": "Alice", "age": 21}
 </code></pre>'],
-        ['id' => 'python-5', 'title' => 'OOP in Python', 'description' => 'Classes and objects in Python.', 'difficulty' => 'intermediate', 
+        ['id' => 'python-5', 'title' => 'Topic #5: OOP in Python', 'description' => 'Classes and objects in Python.', 'difficulty' => 'intermediate', 
         'content' => '<h3>Object-Oriented Programming (OOP)</h3>
 <p>Python supports OOP with classes and objects.</p>
 <pre><code>
@@ -989,7 +992,7 @@ alice.greet()
   <li><code>__init__</code>: Constructor method.</li>
   <li><code>self</code>: Refers to the instance.</li>
 </ul>'],
-        ['id' => 'python-6', 'title' => 'Modules & Packages', 'description' => 'Organize and reuse code.', 'difficulty' => 'intermediate', 
+        ['id' => 'python-6', 'title' => 'Topic #6: Modules & Packages', 'description' => 'Organize and reuse code.', 'difficulty' => 'intermediate', 
         'content' => '<h3>Modules & Packages</h3>
 <p>Modules help you organize code, and packages group modules together.</p>
 <h4>Importing Modules</h4>
@@ -1007,7 +1010,7 @@ def add(a, b):
 import mymodule
 print(mymodule.add(2, 3))
 </code></pre>'],
-        ['id' => 'python-7', 'title' => 'File I/O', 'description' => 'Read and write files in Python.', 'difficulty' => 'intermediate', 
+        ['id' => 'python-7', 'title' => 'Topic #7: File I/O', 'description' => 'Read and write files in Python.', 'difficulty' => 'intermediate', 
         'content' => '<h3>File Input & Output</h3>
 <p>Read from and write to files using Python’s built-in functions.</p>
 <pre><code>
@@ -1020,7 +1023,7 @@ with open("output.txt", "r") as f:
     content = f.read()
     print(content)
 </code></pre>'],
-        ['id' => 'python-8', 'title' => 'Error Handling', 'description' => 'Exceptions and debugging.', 'difficulty' => 'expert', 
+        ['id' => 'python-8', 'title' => 'Topic #8: Error Handling', 'description' => 'Exceptions and debugging.', 'difficulty' => 'expert', 
         'content' => '<h3>Error Handling</h3>
 <p>Handle exceptions gracefully using <code>try</code> and <code>except</code>.</p>
 <pre><code>
@@ -1032,7 +1035,7 @@ finally:
     print("This runs no matter what.")
 </code></pre>
 <p>Common exceptions: <code>ValueError</code>, <code>TypeError</code>, <code>IOError</code>, etc.</p>'],
-        ['id' => 'python-9', 'title' => 'Advanced Topics', 'description' => 'Decorators, generators, and more.', 'difficulty' => 'expert', 
+        ['id' => 'python-9', 'title' => 'Topic #9: Advanced Topics', 'description' => 'Decorators, generators, and more.', 'difficulty' => 'expert', 
         'content' => '<h3>Advanced Python Topics</h3>
 <ul>
   <li><strong>Decorators</strong>: Modify functions.</li>
@@ -1067,7 +1070,7 @@ for num in count_up(3):
 squares = [x*x for x in range(5)]
 print(squares)
 </code></pre>'],
-        ['id' => 'python-10', 'title' => 'Python Best Practices', 'description' => 'Tips for writing great Python code.', 'difficulty' => 'expert', 
+        ['id' => 'python-10', 'title' => 'Topic #10: Python Best Practices', 'description' => 'Tips for writing great Python code.', 'difficulty' => 'expert', 
         'content' => '<h3>Python Best Practices</h3>
 <ul>
   <li>Use meaningful variable and function names.</li>
@@ -1076,30 +1079,656 @@ print(squares)
   <li>Comment your code and use docstrings.</li>
   <li>Test your code and handle exceptions.</li>
 </ul>'],
-    ],
+        ],
     'java' => [
-        ['id' => 'java-1', 'title' => 'Java Basics', 'description' => 'Syntax, variables, and data types.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'java-2', 'title' => 'Control Flow', 'description' => 'If statements, loops, and logic.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'java-3', 'title' => 'Methods', 'description' => 'Defining and using methods.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'java-4', 'title' => 'OOP Concepts', 'description' => 'Classes, objects, and inheritance.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'java-5', 'title' => 'Collections', 'description' => 'Lists, sets, and maps.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'java-6', 'title' => 'Exception Handling', 'description' => 'Try-catch and error management.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'java-7', 'title' => 'File I/O', 'description' => 'Read and write files in Java.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'java-8', 'title' => 'Multithreading', 'description' => 'Concurrency in Java.', 'difficulty' => 'expert', 'content' => ''],
-        ['id' => 'java-9', 'title' => 'Java Streams', 'description' => 'Functional programming with streams.', 'difficulty' => 'expert', 'content' => ''],
-        ['id' => 'java-10', 'title' => 'Java Best Practices', 'description' => 'Tips for writing robust Java code.', 'difficulty' => 'expert', 'content' => ''],
+        ['id' => 'java-1', 'title' => 'Topic #1: Java Basics', 'description' => 'Syntax, variables, and data types.', 'difficulty' => 'beginner', 
+        'content' => '<h3>Java Basics</h3>
+
+        <ul> <li><strong>Syntax:</strong> Java code is organized into classes and methods. Statements end with a semicolon (<code>;</code>).
+        </li> <li><strong>Variables:</strong> Declare variables with a specific type before use, 
+        for example: <code>int age = 25;</code> or <code>String name = "Alice";</code></li> <li><strong>Data 
+        Types:</strong> Java has primitive types (<code>int</code>, <code>double</code>, <code>char</code>, <code>boolean</code>) and reference types (like <code>String</code> and arrays).
+        </li> <li><strong>Operators:</strong> Use arithmetic (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>), relational (<code>==</code>, <code>!=</code>, <code>&lt;</code>, 
+        <code>&gt;</code>), and logical (<code>&&</code>, <code>||</code>, <code>!</code>) operators to work with data.</li> <li><strong>Comments:</strong> 
+        Add single-line comments with <code>//</code> and multi-line comments with <code>/* ... */</code> to explain your code.</li> </ul> 
+        // <pre><code>public class Main { public static void main(String[] args) { int age = 25; String name = "Alice"; boolean isJavaFun = true; System.out.println("Hello, " + name + "! Age: " + age); // Output: Hello, Alice! Age: 25 } } </code></pre>'],
+        ['id' => 'java-2', 'title' => 'Topic #2: Control Flow', 'description' => 'If statements, loops, and logic.', 'difficulty' => 'beginner', 
+        'content' => '<h3>Control Flow</h3>
+
+<ul> <li><strong>If Statements:</strong> Use <code>if</code>, <code>else if</code>, and <code>else</code> to make decisions based on conditions.</li> <li><strong>Switch Statements:</strong> Use <code>switch</code> to select one of many code blocks to execute based on the value of a variable.</li> <li><strong>Loops:</strong> Implement <code>for</code>, <code>while</code>, and <code>do-while</code> loops to repeat code.</li> <li><strong>Break and Continue:</strong> Use <code>break</code> to exit a loop early, and <code>continue</code> to skip to the next iteration.</li> <li><strong>Logic:</strong> Combine conditions using <code>&&</code> (and), <code>||</code> (or), and <code>!</code> (not) to create complex conditions.</li> </ul> <pre><code>public class Main { public static void main(String[] args) { int number = 10; // If-else statement if (number > 0) { System.out.println("Number is positive"); } else if (number == 0) { System.out.println("Number is zero"); } else { System.out.println("Number is negative"); }
+text
+    // Switch statement
+    int day = 2;
+    switch (day) {
+        case 1:
+            System.out.println("Monday");
+            break;
+        case 2:
+            System.out.println("Tuesday");
+            break;
+        default:
+            System.out.println("Other day");
+    }
+
+    // For loop
+    for (int i = 0; i < 5; i++) {
+        if (i == 3) continue; // Skip 3
+        System.out.println(i);
+    }
+
+    // While loop
+    int count = 0;
+    while (count < 3) {
+        System.out.println("Count: " + count);
+        count++;
+    }
+
+    // Do-while loop
+    int x = 0;
+    do {
+        System.out.println("x is " + x);
+        x++;
+    } while (x < 2);
+}
+}
+</code></pre>'],
+        ['id' => 'java-3', 'title' => 'Topic #3: Methods', 'description' => 'Defining and using methods.', 'difficulty' => 'beginner', 
+        'content' => '<h3>Methods</h3>
+
+        <ul> <li><strong>Method Definition:</strong> Define methods with a return type, name, and parameters. 
+        For example: <code>public int add(int a, int b) { return a + b; }</code></li> <li><strong>Method Invocation:</strong> Call methods by their name and pass arguments. For example: <code>int result = add(2, 3);</code></li> <li><strong>Method Overloading:</strong> Define multiple methods with the same name but different parameters to perform similar but distinct operations.</li> 
+        <li><strong>Method Overriding:</strong> Implement methods from parent classes to provide specific behavior in child classes.</li> <li><strong>Static Methods:</strong> Use <code>static</code> to define methods that belong to the class rather than an instance.</li> </ul> <pre><code>public class Calculator { // Method Overloading public int add(int a, int b) { return a + b; } public double add(double a, double b) { return a + b; } // Static Method public static int multiply(int a, int b) { return a * b; } public static void main(String[] args) { Calculator calc = new Calculator(); int result1 = calc.add(2, 3); // Method invocation double result2 = calc.add(2.5, 3.5); // Overloaded method int result3 = Calculator.multiply(4, 5); // Static method invocation System.out.println("Result 1: " + result1); System.out.println("Result 2: " + result2); System.out.println("Result 3: " + result3); } } </code></pre>'],
+        ['id' => 'java-4', 'title' => 'Topic #4: OOP Concepts', 'description' => 'Classes, objects, and inheritance.', 'difficulty' => 'beginner', 
+        'content' => '<h3>OOP Concepts</h3> <ul> <li><strong>Classes:</strong> Blueprints for creating objects. Define properties (fields) and behaviors (methods). For example: <code>public class Car { ... }</code></li> <li><strong>Objects:</strong> Instances of classes. Each object has its own values for the class\'s fields. For example: <code>Car myCar = new Car();</code></li> <li><strong>Encapsulation:</strong> Bundling data (fields) and methods together, and restricting direct access to some components using <code>private</code>, <code>public</code>, or <code>protected</code> keywords.</li> <li><strong>Inheritance:</strong> Allows a class to inherit fields and methods from another class using the <code>extends</code> keyword. For example: <code>public class ElectricCar extends Car { ... }</code></li> <li><strong>Polymorphism:</strong> The ability for different classes to be treated as instances of the same parent class, often using method overriding.</li> <li><strong>Abstraction:</strong> Hiding complex implementation details and showing only the necessary features of an object.</li> </ul> <pre><code>// Example of classes, objects, and inheritance class Animal { String name; public void speak() { System.out.println("The animal makes a sound."); } }
+class Dog extends Animal {
+public void speak() { // Method overriding
+System.out.println("Woof!");
+}
+}
+
+public class Main {
+public static void main(String[] args) {
+Animal genericAnimal = new Animal();
+Dog myDog = new Dog();
+genericAnimal.speak(); // Output: The animal makes a sound.
+myDog.speak(); // Output: Woof!
+}
+}
+</code></pre>'],
+        ['id' => 'java-5', 'title' => 'Topic #5: Collections', 'description' => 'Lists, sets, and maps.', 'difficulty' => 'intermediate', 
+        'content' => '<h3>Collections</h3>
+
+        <ul> <li><strong>Lists:</strong> Ordered collections that allow duplicates. Common implementations include <code>ArrayList</code> and <code>LinkedList</code>. Use when you need indexed access.</li> <li><strong>Sets:</strong> Collections that do not allow duplicates. Common implementations include <code>HashSet</code> and <code>TreeSet</code>. Use when uniqueness is important.</li> <li><strong>Maps:</strong> Key-value pairs where each key maps to a value. Common implementations include <code>HashMap</code> and <code>TreeMap</code>. Use for fast lookup by key.</li> <li><strong>Iteration:</strong> Use enhanced <code>for</code> loops or iterators to traverse collections.</li> <li><strong>Generics:</strong> Collections use generics to specify the type of elements they contain, improving type safety.</li> </ul> <pre><code>import java.util.*;
+        public class CollectionsExample {
+        public static void main(String[] args) {
+        // List example
+        List<String> fruits = new ArrayList<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Apple"); // Duplicates allowed
+        System.out.println("List: " + fruits);
+        
+        text
+            // Set example
+            Set<String> uniqueFruits = new HashSet<>();
+            uniqueFruits.add("Apple");
+            uniqueFruits.add("Banana");
+            uniqueFruits.add("Apple"); // Duplicate ignored
+            System.out.println("Set: " + uniqueFruits);
+        
+            // Map example
+            Map<String, Integer> fruitCounts = new HashMap<>();
+            fruitCounts.put("Apple", 3);
+            fruitCounts.put("Banana", 2);
+            System.out.println("Map: " + fruitCounts);
+        
+            // Iterating over a list
+            for (String fruit : fruits) {
+                System.out.println("Fruit: " + fruit);
+            }
+        }
+        }
+        </code></pre>'],
+        ['id' => 'java-6', 'title' => 'Topic #6: Exception Handling', 'description' => 'Try-catch and error management.', 'difficulty' => 'intermediate', 
+        'content' => '<h3>Exception Handling</h3>
+
+<ul> <li><strong>Exceptions:</strong> Errors that occur during program execution. Java distinguishes between checked and unchecked exceptions.</li> <li><strong>Try-Catch:</strong> Use <code>try</code> and <code>catch</code> blocks to handle exceptions and prevent program crashes.</li> <li><strong>Finally:</strong> The <code>finally</code> block executes code after <code>try</code> and <code>catch</code>, regardless of whether an exception occurred.</li> <li><strong>Throwing Exceptions:</strong> Use <code>throw</code> to manually trigger an exception.</li> <li><strong>Custom Exceptions:</strong> Create your own exception classes by extending <code>Exception</code> or <code>RuntimeException</code>.</li> </ul> <pre><code>public class ExceptionExample { public static void main(String[] args) { try { int result = divide(10, 0); System.out.println("Result: " + result); } catch (ArithmeticException e) { System.out.println("Error: " + e.getMessage()); } finally { System.out.println("Operation complete."); } }
+text
+public static int divide(int a, int b) {
+    if (b == 0) {
+        throw new ArithmeticException("Cannot divide by zero");
+    }
+    return a / b;
+}
+}
+</code></pre>'],
+        ['id' => 'java-7', 'title' => 'Topic #7: File I/O', 'description' => 'Read and write files in Java.', 'difficulty' => 'intermediate', 
+        'content' => '<h3>File I/O</h3>
+
+<ul> <li><strong>Reading Files:</strong> Use classes like <code>FileReader</code>, <code>BufferedReader</code>, and <code>Scanner</code> to read data from files.</li> <li><strong>Writing Files:</strong> Use <code>FileWriter</code> and <code>BufferedWriter</code> to write data to files.</li> <li><strong>Try-with-Resources:</strong> Automatically closes file resources using the <code>try-with-resources</code> statement for safer file handling.</li> <li><strong>Exception Handling:</strong> Always handle <code>IOException</code> when working with files to manage errors gracefully.</li> </ul> <pre><code>import java.io.*;
+public class FileIOExample {
+public static void main(String[] args) {
+// Writing to a file
+try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
+writer.write("Hello, Java File I/O!");
+} catch (IOException e) {
+System.out.println("Write error: " + e.getMessage());
+}
+
+text
+    // Reading from a file
+    try (BufferedReader reader = new BufferedReader(new FileReader("output.txt"))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            System.out.println("Read: " + line);
+        }
+    } catch (IOException e) {
+        System.out.println("Read error: " + e.getMessage());
+    }
+}
+}
+</code></pre>'],
+        ['id' => 'java-8', 'title' => 'Topic #8: Multithreading', 'description' => 'Concurrency in Java.', 'difficulty' => 'expert', 
+        'content' => '<h3>Multithreading</h3>
+
+<ul> <li><strong>Threads:</strong> A thread is a lightweight process. Java supports multithreading to perform multiple tasks simultaneously.</li> <li><strong>Creating Threads:</strong> Create threads by extending the <code>Thread</code> class or implementing the <code>Runnable</code> interface.</li> <li><strong>Starting Threads:</strong> Use the <code>start()</code> method to begin thread execution.</li> <li><strong>Synchronization:</strong> Use the <code>synchronized</code> keyword to control access to shared resources and prevent race conditions.</li> <li><strong>Thread Communication:</strong> Use methods like <code>wait()</code>, <code>notify()</code>, and <code>notifyAll()</code> for inter-thread communication.</li> <li><strong>Executors:</strong> Use the <code>ExecutorService</code> framework for advanced thread management and pooling.</li> </ul> <pre><code>// Creating a thread by implementing Runnable class MyRunnable implements Runnable { public void run() { System.out.println("Thread is running: " + Thread.currentThread().getName()); } }
+public class MultithreadingExample {
+public static void main(String[] args) {
+Thread thread1 = new Thread(new MyRunnable());
+Thread thread2 = new Thread(new MyRunnable());
+thread1.start();
+thread2.start();
+
+text
+    // Using synchronization
+    synchronized (MultithreadingExample.class) {
+        System.out.println("Synchronized block accessed by: " + Thread.currentThread().getName());
+    }
+}
+}
+</code></pre>'],
+        ['id' => 'java-9', 'title' => 'Topic #9: Java Streams', 'description' => 'Functional programming with streams.', 'difficulty' => 'expert', 
+        'content' => '<h3>Java Streams</h3>
+
+<ul> <li><strong>Stream:</strong> A sequence of elements supporting sequential and parallel aggregate operations.</li> <li><strong>Stream Operations:</strong> Use <code>map</code>, <code>filter</code>, <code>reduce</code>, and other operations to process collections of data.</li> <li><strong>Intermediate Operations:</strong> Operations that return a stream (e.g., <code>filter</code>, <code>map</code>).</li> <li><strong>Terminal Operations:</strong> Operations that produce a result or a side effect (e.g., <code>forEach</code>, <code>collect</code>).</li> <li><strong>Parallel Streams:</strong> Use parallel streams to perform operations on multiple threads for better performance.</li> </ul> <pre><code>import java.util.List;
+import java.util.stream.Collectors;
+public class StreamExample {
+public static void main(String[] args) {
+List<String> names = List.of("Alice", "Bob", "Charlie", "David");
+
+// Filtering and mapping names
+List<String> filteredNames = names.stream()
+    .filter(name -> name.startsWith("A"))
+    .map(String::toUpperCase)
+    .collect(Collectors.toList());
+
+System.out.println("Filtered Names: " + filteredNames);
+}
+}
+</code></pre>'],
+        ['id' => 'java-10', 'title' => 'Topic #10: Java Best Practices', 'description' => 'Tips for writing robust Java code.', 'difficulty' => 'expert', 
+        'content' => '<h3>Java Best Practices</h3>
+
+<p> Writing robust Java code involves following established best practices that enhance readability, maintainability, and performance. Always use meaningful variable and method names to make your code self-explanatory. Adhere to Java naming conventions and consistently format your code for clarity. Modularize your code by breaking it into small, reusable methods and classes. Handle exceptions thoughtfully, using specific exception types and providing helpful error messages. Favor immutability where possible to reduce bugs and make your code thread-safe. Use Java’s built-in libraries and frameworks instead of reinventing the wheel, and always write unit tests to verify your code’s correctness. Document your code with comments and Javadoc to help others (and your future self) understand your logic. </p> <ul> <li>Use clear and descriptive names for variables, methods, and classes.</li> <li>Follow Java naming conventions and consistent code formatting.</li> <li>Write modular, reusable, and single-responsibility methods and classes.</li> <li>Handle exceptions properly and avoid catching generic exceptions.</li> <li>Favor immutability and thread safety when possible.</li> <li>Leverage standard libraries and frameworks.</li> <li>Write unit tests and use assertions to ensure code quality.</li> <li>Document your code with comments and Javadoc.</li> </ul> <p> Key points to discuss include the importance of code readability, the benefits of modular design, strategies for effective exception handling, and the role of testing and documentation in professional Java development. </p>'],
     ],
     'cpp' => [
-        ['id' => 'cpp-1', 'title' => 'C++ Basics', 'description' => 'Syntax, variables, and data types.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'cpp-2', 'title' => 'Control Flow', 'description' => 'If statements, loops, and logic.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'cpp-3', 'title' => 'Functions', 'description' => 'Defining and using functions.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'cpp-4', 'title' => 'OOP in C++', 'description' => 'Classes, objects, and inheritance.', 'difficulty' => 'beginner', 'content' => ''],
-        ['id' => 'cpp-5', 'title' => 'Pointers & Memory', 'description' => 'Pointers and memory management.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'cpp-6', 'title' => 'STL', 'description' => 'Standard Template Library.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'cpp-7', 'title' => 'File I/O', 'description' => 'Read and write files in C++.', 'difficulty' => 'intermediate', 'content' => ''],
-        ['id' => 'cpp-8', 'title' => 'Templates', 'description' => 'Generic programming with templates.', 'difficulty' => 'expert', 'content' => ''],
-        ['id' => 'cpp-9', 'title' => 'Advanced Topics', 'description' => 'Move semantics, smart pointers, etc.', 'difficulty' => 'expert', 'content' => ''],
-        ['id' => 'cpp-10', 'title' => 'C++ Best Practices', 'description' => 'Tips for writing efficient C++ code.', 'difficulty' => 'expert', 'content' => ''],
+        ['id' => 'cpp-1', 'title' => 'Topic #1: C++ Basics', 'description' => 'Syntax, variables, and data types.', 'difficulty' => 'beginner', 
+        'content' => '<h3>C++ Basics</h3>
+
+<ul> <li><strong>Syntax:</strong> C++ programs are structured with functions, most importantly <code>main()</code>, which serves as the entry point. Statements end with a semicolon (<code>;</code>).</li> <li><strong>Variables:</strong> Declare variables with a specific type before use, such as <code>int age = 25;</code> or <code>std::string name = "Alice";</code>.</li> <li><strong>Data Types:</strong> C++ supports primitive types (<code>int</code>, <code>double</code>, <code>char</code>, <code>bool</code>) and complex types like <code>std::string</code> and arrays.</li> <li><strong>Operators:</strong> Use arithmetic (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>), relational (<code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>), and logical (<code>&&</code>, <code>||</code>, <code>!</code>) operators.</li> <li><strong>Comments:</strong> Add single-line comments with <code>//</code> and multi-line comments with <code>/* ... */</code> to explain your code.</li> </ul> <pre><code>#include &lt;iostream&gt; #include &lt;string&gt;
+int main() {
+int age = 25;
+std::string name = "Alice";
+bool isCppFun = true;
+std::cout << "Hello, " << name << "! Age: " << age << std::endl;
+// Output: Hello, Alice! Age: 25
+return 0;
+}
+</code></pre>'],
+        ['id' => 'cpp-2', 'title' => 'Topic #2: Control Flow', 'description' => 'If statements, loops, and logic.', 'difficulty' => 'beginner', 
+        'content' => '<h3>Control Flow</h3>
+
+<ul> <li><strong>If Statements:</strong> Use <code>if</code>, <code>else if</code>, and <code>else</code> to make decisions based on conditions.</li> <li><strong>Switch Statements:</strong> Use <code>switch</code> to select one of many code blocks to execute based on the value of a variable.</li> <li><strong>Loops:</strong> Implement <code>for</code>, <code>while</code>, and <code>do-while</code> loops to repeat code.</li> <li><strong>Break and Continue:</strong> Use <code>break</code> to exit a loop early, and <code>continue</code> to skip to the next iteration.</li> <li><strong>Logic:</strong> Combine conditions using <code>&&</code> (and), <code>||</code> (or), and <code>!</code> (not) to create complex conditions.</li> </ul> <pre><code>#include &lt;iostream&gt;
+int main() {
+int number = 10;
+// If-else statement
+if (number > 0) {
+std::cout << "Number is positive" << std::endl;
+} else if (number == 0) {
+std::cout << "Number is zero" << std::endl;
+} else {
+std::cout << "Number is negative" << std::endl;
+}
+
+text
+// Switch statement
+int day = 2;
+switch (day) {
+    case 1:
+        std::cout << "Monday" << std::endl;
+        break;
+    case 2:
+        std::cout << "Tuesday" << std::endl;
+        break;
+    default:
+        std::cout << "Other day" << std::endl;
+}
+
+// For loop
+for (int i = 0; i < 5; i++) {
+    if (i == 3) continue; // Skip 3
+    std::cout << i << std::endl;
+}
+
+// While loop
+int count = 0;
+while (count < 3) {
+    std::cout << "Count: " << count << std::endl;
+    count++;
+}
+
+// Do-while loop
+int x = 0;
+do {
+    std::cout << "x is " << x << std::endl;
+    x++;
+} while (x < 2);
+
+return 0;
+}
+</code></pre>
+
+<ul> <li><strong>If Statements:</strong> Use <code>if</code>, <code>else if</code>, and <code>else</code> to make decisions based on conditions.</li> <li><strong>Switch Statements:</strong> Use <code>switch</code> to select one of many code blocks to execute based on the value of a variable.</li> <li><strong>Loops:</strong> Implement <code>for</code>, <code>while</code>, and <code>do-while</code> loops to repeat code.</li> <li><strong>Break and Continue:</strong> Use <code>break</code> to exit a loop early, and <code>continue</code> to skip to the next iteration.</li> <li><strong>Logic:</strong> Combine conditions using <code>&&</code> (and), <code>||</code> (or), and <code>!</code> (not) to create complex conditions.</li> </ul> <pre><code>#include &lt;iostream&gt;
+int main() {
+int number = 10;
+// If-else statement
+if (number > 0) {
+std::cout << "Number is positive" << std::endl;
+} else if (number == 0) {
+std::cout << "Number is zero" << std::endl;
+} else {
+std::cout << "Number is negative" << std::endl;
+}
+
+text
+// Switch statement
+int day = 2;
+switch (day) {
+    case 1:
+        std::cout << "Monday" << std::endl;
+        break;
+    case 2:
+        std::cout << "Tuesday" << std::endl;
+        break;
+    default:
+        std::cout << "Other day" << std::endl;
+}
+
+// For loop
+for (int i = 0; i < 5; i++) {
+    if (i == 3) continue; // Skip 3
+    std::cout << i << std::endl;
+}
+
+// While loop
+int count = 0;
+while (count < 3) {
+    std::cout << "Count: " << count << std::endl;
+    count++;
+}
+
+// Do-while loop
+int x = 0;
+do {
+    std::cout << "x is " << x << std::endl;
+    x++;
+} while (x < 2);
+
+return 0;
+}
+</code></pre>'],
+        ['id' => 'cpp-3', 'title' => 'Topic #3: Functions', 'description' => 'Defining and using functions.', 'difficulty' => 'beginner', 
+        'content' => '<h3>Functions</h3>
+
+<ul> <li><strong>Function Definition:</strong> Define functions with a return type, name, and parameters. For example: <code>int add(int a, int b) { return a + b; }</code></li> <li><strong>Function Invocation:</strong> Call functions by their name and pass arguments. For example: <code>int result = add(2, 3);</code></li> <li><strong>Function Overloading:</strong> Define multiple functions with the same name but different parameters to perform similar but distinct operations.</li> <li><strong>Default Arguments:</strong> Provide default values for function parameters to make them optional.</li> </ul> <pre><code>#include &lt;iostream&gt;
+// Function definition
+int add(int a, int b) {
+return a + b;
+}
+
+// Function overloading
+double add(double a, double b) {
+return a + b;
+}
+
+// Function with default argument
+int multiply(int a, int b = 2) {
+return a * b;
+}
+
+int main() {
+int result1 = add(2, 3); // Function invocation
+double result2 = add(2.5, 3.5); // Overloaded function
+int result3 = multiply(4); // Uses default argument
+std::cout << "Result 1: " << result1 << std::endl;
+std::cout << "Result 2: " << result2 << std::endl;
+std::cout << "Result 3: " << result3 << std::endl;
+return 0;
+}
+</code></pre>
+
+<ul> <li><strong>Function Definition:</strong> Define functions with a return type, name, and parameters. For example: <code>int add(int a, int b) { return a + b; }</code></li> <li><strong>Function Invocation:</strong> Call functions by their name and pass arguments. For example: <code>int result = add(2, 3);</code></li> <li><strong>Function Overloading:</strong> Define multiple functions with the same name but different parameters to perform similar but distinct operations.</li> <li><strong>Default Arguments:</strong> Provide default values for function parameters to make them optional.</li> </ul> <pre><code>#include &lt;iostream&gt;
+// Function definition
+int add(int a, int b) {
+return a + b;
+}
+
+// Function overloading
+double add(double a, double b) {
+return a + b;
+}
+
+// Function with default argument
+int multiply(int a, int b = 2) {
+return a * b;
+}
+
+int main() {
+int result1 = add(2, 3); // Function invocation
+double result2 = add(2.5, 3.5); // Overloaded function
+int result3 = multiply(4); // Uses default argument
+std::cout << "Result 1: " << result1 << std::endl;
+std::cout << "Result 2: " << result2 << std::endl;
+std::cout << "Result 3: " << result3 << std::endl;
+return 0;
+}
+</code></pre>'],
+        ['id' => 'cpp-4', 'title' => 'Topic #4: OOP in C++', 'description' => 'Classes, objects, and inheritance.', 'difficulty' => 'beginner', 
+        'content' => '<h3>OOP in C++</h3>
+
+<p> Object-Oriented Programming (OOP) in C++ allows you to model real-world entities using classes and objects. A <strong>class</strong> is a blueprint that defines properties (data members) and behaviors (member functions). An <strong>object</strong> is an instance of a class with its own unique data. C++ supports key OOP principles such as encapsulation, inheritance, and polymorphism. Encapsulation hides internal details using access specifiers like <code>private</code> and <code>public</code>. Inheritance enables a class (derived class) to inherit attributes and methods from another class (base class), promoting code reuse. Polymorphism allows methods to behave differently based on the object’s actual type, often implemented via method overriding and virtual functions. </p> <ul> <li><strong>Classes and Objects:</strong> Define classes with data members and member functions; create objects to use them.</li> <li><strong>Encapsulation:</strong> Use access specifiers (<code>private</code>, <code>public</code>, <code>protected</code>) to control access.</li> <li><strong>Inheritance:</strong> Derive new classes from existing ones using the <code>:</code> syntax.</li> <li><strong>Polymorphism:</strong> Use virtual functions to override base class methods in derived classes.</li> </ul> <pre><code>#include &lt;iostream&gt; #include &lt;string&gt;
+class Animal {
+public:
+std::string name;
+Animal(std::string n) : name(n) {}
+virtual void speak() {
+std::cout << "The animal makes a sound." << std::endl;
+}
+};
+
+class Dog : public Animal {
+public:
+Dog(std::string n) : Animal(n) {}
+void speak() override {
+std::cout << name << " says: Woof!" << std::endl;
+}
+};
+
+int main() {
+Animal genericAnimal("Generic");
+Dog myDog("Buddy");
+genericAnimal.speak(); // Output: The animal makes a sound.
+myDog.speak(); // Output: Buddy says: Woof!
+return 0;
+}
+</code></pre>'],
+        ['id' => 'cpp-5', 'title' => 'Topic #5: Pointers & Memory', 'description' => 'Pointers and memory management.', 'difficulty' => 'intermediate', 
+        'content' => '<h3>Pointers & Memory</h3>
+
+<p> Pointers are variables that store memory addresses, allowing direct access and manipulation of memory in C++. Understanding pointers is essential for dynamic memory management and efficient programming. Use the <code>*</code> operator to declare a pointer and the <code>&amp;</code> operator to get the address of a variable. Dynamic memory allocation is performed using <code>new</code> and deallocation with <code>delete</code>. Proper memory management is crucial to avoid memory leaks and undefined behavior. </p> <ul> <li><strong>Pointer Declaration:</strong> Use <code>*</code> to declare a pointer, e.g., <code>int* ptr;</code></li> <li><strong>Address-of Operator:</strong> Use <code>&amp;</code> to get the address of a variable, e.g., <code>ptr = &amp;value;</code></li> <li><strong>Dereferencing:</strong> Use <code>*</code> to access the value pointed to by a pointer, e.g., <code>*ptr = 10;</code></li> <li><strong>Dynamic Memory:</strong> Allocate memory with <code>new</code> and free it with <code>delete</code>.</li> <li><strong>Null Pointers:</strong> Initialize pointers to <code>nullptr</code> to avoid dangling references.</li> </ul> <pre><code>#include &lt;iostream&gt;
+int main() {
+int value = 42;
+int* ptr = &value; // Pointer declaration and initialization
+std::cout << "Value: " << value << std::endl;
+std::cout << "Pointer points to: " << *ptr << std::endl;
+
+text
+// Dynamic memory allocation
+int* dynamicInt = new int(100);
+std::cout << "Dynamically allocated value: " << *dynamicInt << std::endl;
+delete dynamicInt; // Free memory
+
+// Null pointer
+ptr = nullptr;
+if (ptr == nullptr) {
+    std::cout << "Pointer is null." << std::endl;
+}
+return 0;
+}
+</code></pre>
+
+<p> Pointers are variables that store memory addresses, allowing direct access and manipulation of memory in C++. Understanding pointers is essential for dynamic memory management and efficient programming. Use the <code>*</code> operator to declare a pointer and the <code>&amp;</code> operator to get the address of a variable. Dynamic memory allocation is performed using <code>new</code> and deallocation with <code>delete</code>. Proper memory management is crucial to avoid memory leaks and undefined behavior. </p> <ul> <li><strong>Pointer Declaration:</strong> Use <code>*</code> to declare a pointer, e.g., <code>int* ptr;</code></li> <li><strong>Address-of Operator:</strong> Use <code>&amp;</code> to get the address of a variable, e.g., <code>ptr = &amp;value;</code></li> <li><strong>Dereferencing:</strong> Use <code>*</code> to access the value pointed to by a pointer, e.g., <code>*ptr = 10;</code></li> <li><strong>Dynamic Memory:</strong> Allocate memory with <code>new</code> and free it with <code>delete</code>.</li> <li><strong>Null Pointers:</strong> Initialize pointers to <code>nullptr</code> to avoid dangling references.</li> </ul> <pre><code>#include &lt;iostream&gt;
+int main() {
+int value = 42;
+int* ptr = &value; // Pointer declaration and initialization
+std::cout << "Value: " << value << std::endl;
+std::cout << "Pointer points to: " << *ptr << std::endl;
+
+text
+// Dynamic memory allocation
+int* dynamicInt = new int(100);
+std::cout << "Dynamically allocated value: " << *dynamicInt << std::endl;
+delete dynamicInt; // Free memory
+
+// Null pointer
+ptr = nullptr;
+if (ptr == nullptr) {
+    std::cout << "Pointer is null." << std::endl;
+}
+return 0;
+}
+</code></pre>'],
+        ['id' => 'cpp-6', 'title' => 'Topic #6: STL', 'description' => 'Standard Template Library.', 'difficulty' => 'intermediate', 
+        'content' => '<h3>STL (Standard Template Library)</h3>
+
+<p> The Standard Template Library (STL) in C++ provides a collection of powerful, reusable classes and functions for handling common data structures and algorithms. STL includes containers like <code>vector</code>, <code>list</code>, <code>set</code>, and <code>map</code>, as well as algorithms for sorting, searching, and manipulating data. Iterators are used to traverse elements in containers, and STL uses templates to support generic programming. </p> <ul> <li><strong>Containers:</strong> Store collections of data. Common containers include <code>vector</code> (dynamic array), <code>list</code> (doubly linked list), <code>set</code> (unique elements), and <code>map</code> (key-value pairs).</li> <li><strong>Iterators:</strong> Objects that point to elements in containers and allow traversal.</li> <li><strong>Algorithms:</strong> Functions for operations like <code>sort</code>, <code>find</code>, <code>count</code>, and <code>reverse</code>.</li> <li><strong>Generic Programming:</strong> STL uses templates to work with any data type.</li> </ul> <pre><code>#include &lt;iostream&gt; #include &lt;vector&gt; #include &lt;set&gt; #include &lt;map&gt; #include &lt;algorithm&gt;
+int main() {
+// Vector example
+std::vector<int> numbers = {1, 2, 3, 4, 5};
+numbers.push_back(6);
+for (int n : numbers) {
+std::cout << n << " ";
+}
+std::cout << std::endl;
+
+text
+// Set example
+std::set&lt;std::string&gt; fruits = {"apple", "banana", "apple"};
+for (const auto& fruit : fruits) {
+    std::cout << fruit << " ";
+}
+std::cout << std::endl;
+
+// Map example
+std::map&lt;std::string, int&gt; ages;
+ages["Alice"] = 30;
+ages["Bob"] = 25;
+for (const auto& pair : ages) {
+    std::cout << pair.first << ": " << pair.second << std::endl;
+}
+
+// Algorithm example
+std::sort(numbers.begin(), numbers.end(), std::greater&lt;int&gt;());
+std::cout << "Sorted in descending order: ";
+for (int n : numbers) {
+    std::cout << n << " ";
+}
+std::cout << std::endl;
+
+return 0;
+}
+</code></pre>
+
+<p> The Standard Template Library (STL) in C++ provides a collection of powerful, reusable classes and functions for handling common data structures and algorithms. STL includes containers like <code>vector</code>, <code>list</code>, <code>set</code>, and <code>map</code>, as well as algorithms for sorting, searching, and manipulating data. Iterators are used to traverse elements in containers, and STL uses templates to support generic programming. </p> <ul> <li><strong>Containers:</strong> Store collections of data. Common containers include <code>vector</code> (dynamic array), <code>list</code> (doubly linked list), <code>set</code> (unique elements), and <code>map</code> (key-value pairs).</li> <li><strong>Iterators:</strong> Objects that point to elements in containers and allow traversal.</li> <li><strong>Algorithms:</strong> Functions for operations like <code>sort</code>, <code>find</code>, <code>count</code>, and <code>reverse</code>.</li> <li><strong>Generic Programming:</strong> STL uses templates to work with any data type.</li> </ul> <pre><code>#include &lt;iostream&gt; #include &lt;vector&gt; #include &lt;set&gt; #include &lt;map&gt; #include &lt;algorithm&gt;
+int main() {
+// Vector example
+std::vector<int> numbers = {1, 2, 3, 4, 5};
+numbers.push_back(6);
+for (int n : numbers) {
+std::cout << n << " ";
+}
+std::cout << std::endl;
+
+text
+// Set example
+std::set&lt;std::string&gt; fruits = {"apple", "banana", "apple"};
+for (const auto& fruit : fruits) {
+    std::cout << fruit << " ";
+}
+std::cout << std::endl;
+
+// Map example
+std::map&lt;std::string, int&gt; ages;
+ages["Alice"] = 30;
+ages["Bob"] = 25;
+for (const auto& pair : ages) {
+    std::cout << pair.first << ": " << pair.second << std::endl;
+}
+
+// Algorithm example
+std::sort(numbers.begin(), numbers.end(), std::greater&lt;int&gt;());
+std::cout << "Sorted in descending order: ";
+for (int n : numbers) {
+    std::cout << n << " ";
+}
+std::cout << std::endl;
+
+return 0;
+}
+</code></pre>'],
+        ['id' => 'cpp-7', 'title' => 'Topic #7: File I/O', 'description' => 'Read and write files in C++.', 'difficulty' => 'intermediate', 
+        'content' => '<h3>File I/O</h3>
+
+<ul> <li><strong>Reading Files:</strong> Use <code>std::ifstream</code> to read data from files.</li> <li><strong>Writing Files:</strong> Use <code>std::ofstream</code> to write data to files.</li> <li><strong>File Streams:</strong> <code>std::fstream</code> can be used for both reading and writing.</li> <li><strong>Error Handling:</strong> Always check if the file was opened successfully before reading or writing.</li> <li><strong>Closing Files:</strong> Files are automatically closed when the stream object goes out of scope, but you can also close them manually using <code>close()</code>.</li> </ul> <pre><code>#include &lt;iostream&gt; #include &lt;fstream&gt; #include &lt;string&gt;
+int main() {
+// Writing to a file
+std::ofstream outFile("output.txt");
+if (outFile.is_open()) {
+outFile << "Hello, C++ File I/O!" << std::endl;
+outFile.close();
+} else {
+std::cout << "Unable to open file for writing." << std::endl;
+}
+
+text
+// Reading from a file
+std::ifstream inFile("output.txt");
+std::string line;
+if (inFile.is_open()) {
+    while (std::getline(inFile, line)) {
+        std::cout << "Read: " << line << std::endl;
+    }
+    inFile.close();
+} else {
+    std::cout << "Unable to open file for reading." << std::endl;
+}
+
+return 0;
+}
+</code></pre>
+
+<ul> <li><strong>Reading Files:</strong> Use <code>std::ifstream</code> to read data from files.</li> <li><strong>Writing Files:</strong> Use <code>std::ofstream</code> to write data to files.</li> <li><strong>File Streams:</strong> <code>std::fstream</code> can be used for both reading and writing.</li> <li><strong>Error Handling:</strong> Always check if the file was opened successfully before reading or writing.</li> <li><strong>Closing Files:</strong> Files are automatically closed when the stream object goes out of scope, but you can also close them manually using <code>close()</code>.</li> </ul> <pre><code>#include &lt;iostream&gt; #include &lt;fstream&gt; #include &lt;string&gt;
+int main() {
+// Writing to a file
+std::ofstream outFile("output.txt");
+if (outFile.is_open()) {
+outFile << "Hello, C++ File I/O!" << std::endl;
+outFile.close();
+} else {
+std::cout << "Unable to open file for writing." << std::endl;
+}
+
+text
+// Reading from a file
+std::ifstream inFile("output.txt");
+std::string line;
+if (inFile.is_open()) {
+    while (std::getline(inFile, line)) {
+        std::cout << "Read: " << line << std::endl;
+    }
+    inFile.close();
+} else {
+    std::cout << "Unable to open file for reading." << std::endl;
+}
+
+return 0;
+}
+</code></pre>'],
+        ['id' => 'cpp-8', 'title' => 'Topic #8: Templates', 'description' => 'Generic programming with templates.', 'difficulty' => 'expert', 
+        'content' => '<h3>Templates</h3>
+
+<p> Templates in C++ enable generic programming by allowing functions and classes to operate with any data type. This promotes code reuse and type safety. Function templates let you write a single function to work with different types, while class templates allow you to define classes that can handle various data types. </p> <ul> <li><strong>Function Templates:</strong> Define generic functions using the <code>template&lt;typename T&gt;</code> syntax.</li> <li><strong>Class Templates:</strong> Create generic classes that can store or process any data type.</li> <li><strong>Type Parameters:</strong> Use <code>typename</code> or <code>class</code> as template parameters.</li> <li><strong>Template Instantiation:</strong> The compiler generates specific versions of the template for each type used.</li> </ul> <pre><code>#include &lt;iostream&gt;
+// Function template
+template<typename T>
+T add(T a, T b) {
+return a + b;
+}
+
+// Class template
+template<typename T>
+class Box {
+public:
+T value;
+Box(T v) : value(v) {}
+void show() {
+std::cout << "Value: " << value << std::endl;
+}
+};
+
+int main() {
+int sumInt = add(2, 3);
+double sumDouble = add(2.5, 3.5);
+std::cout << "Sum (int): " << sumInt << std::endl;
+std::cout << "Sum (double): " << sumDouble << std::endl;
+
+text
+Box&lt;int&gt; intBox(100);
+Box&lt;std::string&gt; strBox("Template");
+intBox.show();
+strBox.show();
+
+return 0;
+}
+</code></pre>'],
+        ['id' => 'cpp-9', 'title' => 'Topic #9: Advanced Topics', 'description' => 'Move semantics, smart pointers, etc.', 'difficulty' => 'expert', 
+        'content' => '<h3>Advanced Topics</h3>
+
+<p> Modern C++ introduces advanced features that improve performance, safety, and resource management. <strong>Move semantics</strong> allow efficient transfer of resources from one object to another, reducing unnecessary copying. <strong>Smart pointers</strong> like <code>std::unique_ptr</code>, <code>std::shared_ptr</code>, and <code>std::weak_ptr</code> automate memory management and help prevent memory leaks. <strong>Lambda expressions</strong> provide a concise way to define anonymous functions, often used with STL algorithms. <strong>RAII</strong> (Resource Acquisition Is Initialization) ensures resources are properly released when objects go out of scope. </p> <ul> <li><strong>Move Semantics:</strong> Use <code>std::move</code> and move constructors to transfer resources efficiently.</li> <li><strong>Smart Pointers:</strong> Manage dynamic memory safely with <code>std::unique_ptr</code>, <code>std::shared_ptr</code>, and <code>std::weak_ptr</code>.</li> <li><strong>Lambda Expressions:</strong> Define inline, anonymous functions for use with algorithms and callbacks.</li> <li><strong>RAII:</strong> Use constructors and destructors to manage resources automatically.</li> </ul> <pre><code>#include &lt;iostream&gt; #include &lt;memory&gt; #include &lt;vector&gt; #include &lt;algorithm&gt;
+int main() {
+// Move semantics
+std::vector<int> v1 = {1, 2, 3};
+std::vector<int> v2 = std::move(v1); // v1 is now empty
+
+text
+// Smart pointers
+std::unique_ptr&lt;int&gt; ptr1 = std::make_unique&lt;int&gt;(42);
+std::shared_ptr&lt;int&gt; ptr2 = std::make_shared&lt;int&gt;(100);
+
+// Lambda expression
+std::vector&lt;int&gt; nums = {1, 2, 3, 4, 5};
+std::for_each(nums.begin(), nums.end(), [](int n) {
+    std::cout << n << " ";
+});
+std::cout << std::endl;
+
+// RAII example
+struct FileWrapper {
+    FILE* file;
+    FileWrapper(const char* filename) { file = fopen(filename, "w"); }
+    ~FileWrapper() { if (file) fclose(file); }
+};
+{
+    FileWrapper fw("example.txt");
+    // File is automatically closed when fw goes out of scope
+}
+
+return 0;
+}
+</code></pre>'],
+        ['id' => 'cpp-10', 'title' => 'Topic #10: C++ Best Practices', 'description' => 'Tips for writing efficient C++ code.', 'difficulty' => 'expert', 
+        'content' => '<h3>C++ Best Practices</h3>
+
+<p> Writing efficient and maintainable C++ code requires following best practices that promote clarity, safety, and performance. Start by using meaningful and consistent naming conventions for variables, functions, and classes to improve code readability. Prefer modern C++ features such as smart pointers over raw pointers to manage memory safely and avoid leaks. Embrace the use of the Standard Template Library (STL) for common data structures and algorithms instead of reinventing the wheel. Use const-correctness to protect data from unintended modification and improve optimization opportunities. Avoid premature optimization; write clear code first, then profile and optimize bottlenecks. Leverage RAII (Resource Acquisition Is Initialization) to manage resources automatically and prevent resource leaks. When dealing with concurrency, use thread-safe constructs and avoid data races by properly synchronizing access to shared data. Write modular code by breaking functionality into small, reusable functions and classes that follow the single responsibility principle. Document your code thoroughly with comments and use tools like Doxygen for generating documentation. Finally, write unit tests to verify correctness and facilitate future maintenance. Following these practices will help you write robust, efficient, and maintainable C++ applications. </p>'],
     ],
 ];
 
