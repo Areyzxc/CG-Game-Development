@@ -31,9 +31,17 @@ if (!in_array($difficulty, ['beginner','intermediate','expert'])) {
 
 try {
     $db = Database::getInstance()->getConnection();
+    
+    // Validate scope parameter
+    if (!in_array($scope, ['alltime', 'weekly', 'monthly'])) {
+        throw new Exception('Invalid scope parameter');
+    }
+    
     $date_limit = '';
     if ($scope === 'weekly') {
         $date_limit = "AND attempted_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
+    } elseif ($scope === 'monthly') {
+        $date_limit = "AND attempted_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)";
     }
     
     // Get top 10 users by correct answers for this difficulty
@@ -124,5 +132,13 @@ try {
 
     echo json_encode(['success'=>true, 'leaderboard'=>$leaderboard, 'user_stats'=>$user_stats, 'top_player'=>$top_player]);
 } catch (Exception $e) {
-    echo json_encode(['success'=>false, 'error'=>'Server error']);
+    // Log the error for debugging
+    error_log("Quiz leaderboard error: " . $e->getMessage());
+    
+    // Return user-friendly error message
+    echo json_encode([
+        'success' => false, 
+        'error' => 'Unable to load leaderboard data. Please try again later.',
+        'debug' => getenv('ENVIRONMENT') !== 'production' ? $e->getMessage() : null
+    ]);
 }
