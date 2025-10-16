@@ -37,6 +37,10 @@ try {
         LIMIT 20
     ");
     
+    if (!$stmt) {
+        throw new Exception('Failed to prepare database statement');
+    }
+    
     $stmt->execute();
     $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
@@ -57,6 +61,10 @@ try {
             LIMIT 20
         ");
         
+        if (!$stmt) {
+            throw new Exception('Failed to prepare fallback database statement');
+        }
+        
         $stmt->execute();
         $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -66,15 +74,28 @@ try {
         $questions = generateSampleQuestions();
     }
     
+    // Validate questions data
+    foreach ($questions as $question) {
+        if (!isset($question['id']) || !isset($question['type']) || !isset($question['title'])) {
+            throw new Exception('Invalid question data structure');
+        }
+    }
+    
     echo json_encode([
         'success' => true,
-        'questions' => $questions
+        'questions' => $questions,
+        'count' => count($questions)
     ]);
     
 } catch (Exception $e) {
+    // Log the error for debugging
+    error_log("Challenge questions error: " . $e->getMessage());
+    
+    // Return user-friendly error message
     echo json_encode([
         'success' => false,
-        'error' => 'Failed to load questions: ' . $e->getMessage()
+        'error' => 'Unable to load challenge questions. Please try again later.',
+        'debug' => getenv('ENVIRONMENT') !== 'production' ? $e->getMessage() : null
     ]);
 }
 
