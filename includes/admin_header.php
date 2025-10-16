@@ -27,8 +27,17 @@ require_once 'Auth.php';
 $auth = Auth::getInstance();
 $currentUser = $auth->getCurrentUser();
 $currentRole = $auth->getCurrentRole();
-$username = $currentUser['username'] ?? $_SESSION['username'] ?? 'Admin';
-$profilePicture = !empty($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : 'images/PTC.png';
+$username = $currentUser['username'] ?? ($_SESSION['username'] ?? 'Admin');
+$userId = $currentUser['id'] ?? ($_SESSION['user_id'] ?? '0');
+
+// Handle profile picture with proper path and fallback
+$profilePicture = 'assets/images/PTC.png'; // Default fallback
+if (!empty($currentUser['profile_picture'])) {
+    $profilePicture = (strpos($currentUser['profile_picture'], 'http') === 0) 
+        ? $currentUser['profile_picture'] 
+        : 'uploads/avatars/' . ltrim($currentUser['profile_picture'], '/');
+}
+$profilePicture = htmlspecialchars($profilePicture);
 ?>
 
 <!-- Main Navigation & Sidebar -->
@@ -40,17 +49,16 @@ $profilePicture = !empty($currentUser['profile_picture']) ? htmlspecialchars($cu
             
             <!-- Mobile Sidebar Toggler -->
             <button class="navbar-toggler" type="button" id="sidebarToggler">
-                <span class="navbar-toggler-icon"></span>
             </button>
 
             <!-- Desktop Navigation -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin_announcements.php"></i>Announcements</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin_users.php">Users</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Content</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Analytics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.php"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_announcements.php"><i class="fas fa-bullhorn me-1"></i>Announcements</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_users.php"><i class="fas fa-users me-1"></i>Users</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_analytics.php"><i class="fas fa-chart-line me-1"></i>Analytics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_content.php"><i class="fas fa-pencil-alt me-1"></i>Content</a></li>
                 </ul>
                 <div class="d-flex align-items-center ms-3">
                     <span class="vr mx-3 d-none d-lg-block" style="height:32px; opacity:0.2;"></span>
@@ -66,12 +74,24 @@ $profilePicture = !empty($currentUser['profile_picture']) ? htmlspecialchars($cu
                     <span class="vr mx-2 d-none d-lg-block" style="height:32px; opacity:0.2;"></span>
                     <div class="dropdown">
                         <a href="#" class="nav-link nav-icon d-flex align-items-center" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="<?php echo htmlspecialchars($profilePicture); ?>" alt="User" class="rounded-circle" width="30" height="30">
+                            <img src="<?php echo $profilePicture; ?>" 
+     alt="User" 
+     class="rounded-circle admin-profile-pic" 
+     width="30" 
+     height="30" 
+     data-user-id="<?php echo $userId; ?>" 
+     data-user-type="admin">
                             <span class="ms-2 fw-bold d-none d-lg-inline"><?php echo htmlspecialchars($username); ?></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="userDropdown" style="min-width:220px;">
                             <li class="bg-dark text-light p-3 text-center" style="border-bottom:1px solid #222;">
-                                <img src="<?php echo htmlspecialchars($profilePicture); ?>" alt="Profile" class="rounded-circle mb-2" width="56" height="56">
+                                <img src="<?php echo $profilePicture; ?>" 
+     alt="Profile" 
+     class="rounded-circle mb-2 admin-profile-pic" 
+     width="56" 
+     height="56" 
+     data-user-id="<?php echo $userId; ?>" 
+     data-user-type="admin">
                                 <div class="fw-bold" style="font-size:1.1rem;"><?php echo htmlspecialchars($username); ?></div>
                                 <div class="text-muted small"><?php echo htmlspecialchars($currentUser['email'] ?? ''); ?></div>
                             </li>
