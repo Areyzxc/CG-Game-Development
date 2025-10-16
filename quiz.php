@@ -1,4 +1,7 @@
 <?php
+// Include visitor tracking
+require_once 'includes/track_visitor.php';
+
 /**
  * ==========================================================
  * File: quiz.php
@@ -14,21 +17,21 @@
  *       • Pixel-art styled UI and animated elements
  *       • Leaderboard, feedback, and end-of-quiz modals
  *       • Guest nickname input and validation
- *       • Responsive design and sound/pixel art credits
  * 
  * Usage:
  *   - Accessible to all users and guests
  *   - Allows users to test programming knowledge and compete for high scores
  * 
- * Author: [Santiago]
- * Last Updated: [July 22, 2025]
+ * @author [Santiago]
+ * @version 1.0.0
+ * @last_updated 2025-07-22
  * -- Code Gaming Team --
  * ==========================================================
  */
 
-// Include required files
-require_once 'includes/Database.php';
-require_once 'includes/Auth.php';
+// With the actual required includes, for example:
+  require_once 'includes/Database.php';
+  require_once 'includes/Auth.php';
 
 // Initialize core components
 $db = Database::getInstance();
@@ -53,7 +56,7 @@ $pageTitle = "Quiz";
     <div class="quiz-welcome-screen">
       <div class="welcome-content">
         <div class="welcome-icon">🚀</div>
-        <h2 class="welcome-title">Ready to Code?</h2>
+        <h2 class="welcome-title">Ready to take the quiz?</h2>
         <p class="welcome-message">
           Embark on an epic journey through the world of programming! 
           Choose your difficulty, test your skills, and climb the leaderboard.
@@ -76,7 +79,12 @@ $pageTitle = "Quiz";
             <span class="feature-text">Leaderboards</span>
           </div>
         </div>
-        <button class="btn-pixel welcome-start-btn">Begin Adventure</button>
+        <button class="btn-pixel welcome-start-btn" id="startQuizBtn" 
+        onclick="document.querySelector('.quiz-welcome-screen').style.display='none'; 
+                document.querySelector('.quiz-start-screen').style.display='block';
+                if(window.initDifficultySelection) initDifficultySelection();">
+  Take the Quiz
+</button>
       </div>
     </div>
 
@@ -170,22 +178,26 @@ $pageTitle = "Quiz";
     </div>
   </div>
 
-  <!-- Pixel Art & Sound Credits Placeholder -->
   <section class="quiz-credits-section">
     <div class="credits-content">
-      <span>Pixel art & sound credits will be listed here.</span>
+      <span>Enjoy answering questions!</span>
     </div>
   </section>
+  
+  <!-- Quiz Scripts - Must be inside main/body -->
+  <script>
+  // Set user variables BEFORE loading quiz.js
+  <?php if ($auth->isLoggedIn()): ?>
+    <?php $currentUser = $auth->getCurrentUser(); ?>
+    window.CG_USER_ID = <?php echo json_encode($currentUser['id'] ?? null); ?>;
+    window.CG_USERNAME = <?php echo json_encode($currentUser['username'] ?? null); ?>;
+    console.log('User variables set:', { userId: window.CG_USER_ID, username: window.CG_USERNAME });
+  <?php else: ?>
+    console.log('User not logged in');
+  <?php endif; ?>
+  </script>
+  <script src="assets/js/quiz.js"></script>
 </main>
 
  <!-- ===== Footer ===== -->
  <?php include 'includes/footer.php'; ?>
- 
-<script>
-<?php if ($auth->isLoggedIn()): ?>
-window.CG_USER_ID = <?php echo json_encode($auth->getUserId()); ?>;
-window.CG_USERNAME = <?php echo json_encode($auth->getUsername()); ?>;
-<?php endif; ?>
-</script>
-<script src="assets/js/quiz.js"></script>
-<?php include 'includes/footer.php'; ?>
