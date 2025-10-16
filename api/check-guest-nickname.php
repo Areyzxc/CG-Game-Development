@@ -23,6 +23,15 @@ if ($nickname === '') {
     exit;
 }
 
+// Validate nickname length
+if (strlen($nickname) < 2 || strlen($nickname) > 50) {
+    echo json_encode(['available' => false]);
+    exit;
+}
+
+// Sanitize nickname
+$nickname = htmlspecialchars($nickname, ENT_QUOTES, 'UTF-8');
+
 try {
     $db = Database::getInstance()->getConnection();
     $stmt = $db->prepare('SELECT COUNT(*) FROM guest_sessions WHERE nickname = :nickname');
