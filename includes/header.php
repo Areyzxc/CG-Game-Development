@@ -29,6 +29,10 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 // Ensure $auth is available from the global scope
 global $auth;
 
+// CSRF meta support for AJAX and forms
+require_once __DIR__ . '/CSRFProtection.php';
+$csrf = CSRFProtection::getInstance();
+
 // Check if user is logged in
 $isLoggedIn = isset($auth) && $auth->isLoggedIn();
 $currentUser = $isLoggedIn ? $auth->getCurrentUser() : null;
@@ -38,21 +42,30 @@ $currentUser = $isLoggedIn ? $auth->getCurrentUser() : null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php echo $csrf->getTokenMeta(); ?>
     <title><?php echo isset($pageTitle) ? $pageTitle . ' • ' : ''; ?>Code Game</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="assets/css/user-journey.css" rel="stylesheet">
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/api-helper.js"></script>
+    <script src="assets/js/home-init.js"></script>
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/audio-player.css" rel="stylesheet">
     <?php if (isset($additionalStyles)) echo $additionalStyles; ?>  
-</head>
+    <?php echo $csrf->getTokenMeta(); ?>
 <body class="bg-dark text-light">
     <!-- Enhanced Navigation Bar -->
     <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
         <div class="container-fluid">
             <!-- Brand with Logo -->
             <a class="navbar-brand d-flex align-items-center" href="home_page.php">
-                <img src="images/logo.png" alt="Code Game Logo" class="navbar-logo me-2" width="40" height="40">
+                <img src="assets/images/PTC.png" alt="Code Game Logo" class="navbar-logo me-2" width="40" height="40">
                 <span class="brand-text">Code Gaming</span>
             </a>
 
@@ -115,6 +128,19 @@ $currentUser = $isLoggedIn ? $auth->getCurrentUser() : null;
                         </ul>
                     </li>
                     
+                            <!-- Toast Container -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="fas fa-check-circle me-2"></i>
+                <span id="toastMessage">Operation completed successfully!</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
                     <!-- Profile (Only for logged-in users) -->
                     <?php if ($isLoggedIn): ?>
                     <li class="nav-item">
@@ -241,7 +267,7 @@ $currentUser = $isLoggedIn ? $auth->getCurrentUser() : null;
 
     <script>
     // Mobile menu functionality
-    document.addEventListener('DOMContentLoaded', function() {
+    $(document).ready(function() {
         const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
         const navbarToggler = document.querySelector('.navbar-toggler');
         const mobileMenuClose = document.getElementById('mobileMenuClose');
@@ -290,5 +316,14 @@ $currentUser = $isLoggedIn ? $auth->getCurrentUser() : null;
         });
     });
     </script>
+    <script>
+    // Set up AJAX to include CSRF token in all requests
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
+
 </body>
 </html> 
