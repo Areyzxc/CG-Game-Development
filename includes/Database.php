@@ -9,57 +9,73 @@
  *  - Provides methods for user authentication, session management, and CRUD operations.
  *  - Includes error handling and logging for database operations.
  *  - Supports prepared statements for secure database queries.
- * Usage:
- *  - Used across various API endpoints and includes for database access.
- *  - Provides helper functions for input sanitization and error logging.
- *  - Supports user and admin operations, including login, registration, and progress tracking.
- * Included Files/Dependencies:
- *  - PDO for database interactions.
- *  - Requires PHP 7.4+ for type declarations and error handling.
  * 
- * Author: CodeGaming Team
- * Last Updated: July 26, 2025
+ * @package CodeGaming
+ * @subpackage Core
+ * @version 1.0.0
+ * @author CodeGaming Team
  */
+
 class Database {
     private static $instance = null;
     private $connection;
-    private $host = 'localhost';
-    private $port = '3327';
-    private $username = 'root';
-    private $password = '';
-    private $database = 'coding_game';
-
+    private $config;
+    private $host;
+    private $port;
+    private $username;
+    private $password;
+    private $database;
+    private $options;
     private function __construct() {
-        try {
-            $dsn = "mysql:host={$this->host};port={$this->port};dbname={$this->database};charset=utf8mb4";
-            $this->connection = new PDO($dsn, $this->username, $this->password, [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false
-            ]);
-        } catch (PDOException $e) {
-            $errorMessage = sprintf(
-                "Database connection failed: [%s] %s (DSN: %s, User: %s)",
-                $e->getCode(),
-                $e->getMessage(),
-                $dsn,
-                $this->username
-            );
-            error_log($errorMessage);
-            throw new Exception('Database connection failed: ' . $e->getMessage());
+        // Load database configuration
+        $this->config = require __DIR__ . '/../config/database.php';
+            
+            try {
+                // Include port in the DSN
+                $dsn = "mysql:host={$this->config['host']};port={$this->config['port']};dbname={$this->config['dbname']};charset=utf8mb4";
+                
+                // Use options from config
+                $options = $this->config['options'] ?? [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                ];
+                
+                $this->connection = new PDO(
+                    $dsn,
+                    $this->config['username'],
+                    $this->config['password'],
+                    $options
+                );
+                
+                // Test the connection
+                $this->connection->query("SELECT 1");
+                
+            } catch (PDOException $e) {
+                $error = "Database connection failed: " . $e->getMessage() . "\n";
+                $error .= "DSN: mysql:host={$this->config['host']};port={$this->config['port']};dbname={$this->config['dbname']}\n";
+                $error .= "Username: " . $this->config['username'] . "\n";
+                error_log($error);
+                throw new Exception("Database connection failed. Please check your database configuration and try again.");
+            }
         }
-    }
-
-    public static function getInstance() {
-        if (self::$instance === null) {
-            self::$instance = new self();
+    
+        public static function getInstance() {
+            if (self::$instance === null) {
+                self::$instance = new self();
+            }
+            return self::$instance;
         }
-        return self::$instance;
-    }
-
-    public function getConnection() {
-        return $this->connection;
-    }
+    
+        public function getConnection() {
+            return $this->connection;
+        }
+        
+        // Prevent cloning and serialization
+        private function __clone() {}
+        public function __wakeup() {
+            throw new Exception("Cannot unserialize a singleton.");
+        }
 
     // Helper functions
     public function sanitizeInput($data) {
