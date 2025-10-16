@@ -16,12 +16,18 @@
  */
 header('Content-Type: application/json');
 require_once '../includes/Database.php';
+require_once '../includes/CSRFProtection.php';
 
 try {
     $db = Database::getInstance();
     
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Handle POST request - submit final score
+        // Validate CSRF token for POST requests
+        $csrf = CSRFProtection::getInstance();
+        $csrfToken = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+        if (!$csrf->validateToken($csrfToken)) {
+            throw new Exception('Invalid CSRF token');
+        }
         handlePostRequest($db);
     } else {
         // Handle GET request - fetch leaderboard
@@ -42,21 +48,47 @@ function handlePostRequest($db) {
         throw new Exception('Invalid input data');
     }
     
-    $userId = $input['user_id'] ?? null;
-    $guestSessionId = $input['guest_session_id'] ?? null;
-    $nickname = $input['nickname'] ?? '';
-    $totalScore = $input['total_score'] ?? 0;
-    $totalTime = $input['total_time'] ?? 0;
-    $questionsAttempted = $input['questions_attempted'] ?? 0;
-    $questionsCorrect = $input['questions_correct'] ?? 0;
+    // Extract and validate data
+    $userId = isset($input['user_id']) && is_numeric($input['user_id']) ? (int)$input['user_id'] : null;
+    $guestSessionId = isset($input['guest_session_id']) && is_numeric($input['guest_session_id']) ? (int)$input['guest_session_id'] : null;
+    $nickname = isset($input['nickname']) ? trim($input['nickname']) : '';
+    $totalScore = isset($input['total_score']) && is_numeric($input['total_score']) ? (int)$input['total_score'] : 0;
+    $totalTime = isset($input['total_time']) && is_numeric($input['total_time']) ? (float)$input['total_time'] : 0;
+    $questionsAttempted = isset($input['questions_attempted']) && is_numeric($input['questions_attempted']) ? (int)$input['questions_attempted'] : 0;
+    $questionsCorrect = isset($input['questions_correct']) && is_numeric($input['questions_correct']) ? (int)$input['questions_correct'] : 0;
     
     // Validate required fields
     if (!$userId && !$guestSessionId) {
         throw new Exception('User ID or Guest Session ID is required');
     }
     
-    if (!$nickname) {
+    if (empty($nickname)) {
         throw new Exception('Nickname is required');
+    }
+    
+    // Validate nickname length and characters
+    if (strlen($nickname) < 2 || strlen($nickname) > 50) {
+        throw new Exception('Nickname must be between 2 and 50 characters');
+    }
+    
+    // Sanitize nickname
+    $nickname = htmlspecialchars($nickname, ENT_QUOTES, 'UTF-8');
+    
+    // Validate score and time ranges
+    if ($totalScore < 0 || $totalScore > 10000) {
+        throw new Exception('Invalid total score');
+    }
+    
+    if ($totalTime < 0 || $totalTime > 10000) {
+        throw new Exception('Invalid total time');
+    }
+    
+    if ($questionsAttempted < 0 || $questionsAttempted > 100) {
+        throw new Exception('Invalid questions attempted count');
+    }
+    
+    if ($questionsCorrect < 0 || $questionsCorrect > $questionsAttempted) {
+        throw new Exception('Invalid questions correct count');
     }
     
     // Insert or update leaderboard entry
