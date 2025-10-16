@@ -43,7 +43,7 @@ class Auth {
     }
 
     private function __construct() {
-        $this->db = Database::getInstance();
+        $this->db = Database::getInstance()->getConnection();
         $this->initSession();
     }
 
@@ -56,65 +56,54 @@ class Auth {
 
     private function initSession() {
         if (!$this->sessionStarted) {
-            // Set secure session parameters
-            $sessionParams = [
-                'lifetime' => 86400, // 24 hours
-                'path' => '/',
-                'secure' => isset($_SERVER['HTTPS']),
-                'httponly' => true,
-                'samesite' => 'Lax'
-            ];
-            
-            session_set_cookie_params($sessionParams);
-            
             if (session_status() === PHP_SESSION_NONE) {
+                // Set secure session parameters
+                $secure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
+                $httponly = true;
+                $samesite = 'lax';
+                
+                session_set_cookie_params([
+                    'lifetime' => 0,
+                    'path' => '/',
+                    'domain' => $_SERVER['HTTP_HOST'],
+                    'secure' => $secure,
+                    'httponly' => $httponly,
+                    'samesite' => $samesite
+                ]);
+                
                 session_start();
-            }
-            
-            $this->sessionStarted = true;
-            
-            // Regenerate session ID periodically
-            if (!isset($_SESSION['last_regeneration']) || 
-                time() - $_SESSION['last_regeneration'] > 1800) { // 30 minutes
-                session_regenerate_id(true);
-                $_SESSION['last_regeneration'] = time();
-            }
-            
-            // Update last_seen for logged-in users/admins
-            if (isset($_SESSION['user_id'])) {
-                $this->updateLastSeen($_SESSION['user_id'], $_SESSION['role'] ?? 'user');
+                $this->sessionStarted = true;
+                if (!isset($_SESSION['last_regeneration']) || 
+                    time() - $_SESSION['last_regeneration'] > 1800) { // 30 minutes
+                    session_regenerate_id(true);
+                    $_SESSION['last_regeneration'] = time();
+                }
             }
         }
     }
 
-    public function login($email, $password) {
+    public function getUserByEmail($email) {
         try {
-            // Try player login first
-            $user = $this->db->getUserByEmail($email);
-            if ($user && password_verify($password, $user['password_hash'])) {
-                if (!empty($user['is_banned']) && $user['is_banned']) {
-                    return ['success' => false, 'error' => 'Your account has been banned. Please contact support.'];
-                }
-                $this->setUserSession($user['id'], 'player', $user['username']);
-                return ['success' => true, 'role' => 'player'];
-            }
+            $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
+            $stmt->execute([$email]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error getting user by email: " . $e->getMessage());
+            return null;
+        }
+    }
 
             // Try admin login
-            $admin = $this->db->getAdminByEmail($email);
-            if ($admin && password_verify($password, $admin['password_hash'])) {
-                if (!empty($admin['is_banned']) && $admin['is_banned']) {
-                    return ['success' => false, 'error' => 'This admin account has been banned.'];
+            public function getAdminByEmail($email) {
+                try {
+                    $stmt = $this->db->prepare("SELECT * FROM admin_users WHERE email = ? LIMIT 1");
+                    $stmt->execute([$email]);
+                    return $stmt->fetch(PDO::FETCH_ASSOC);
+                } catch (PDOException $e) {
+                    error_log("Error getting admin by email: " . $e->getMessage());
+                    return null;
                 }
-                $this->setUserSession($admin['admin_id'], $admin['role'], $admin['username']);
-                return ['success' => true, 'role' => $admin['role']];
             }
-
-            return ['success' => false, 'error' => 'Invalid email or password'];
-        } catch (Exception $e) {
-            $this->db->logError("Login failed", ['email' => $email, 'error' => $e->getMessage()]);
-            return ['success' => false, 'error' => 'Login failed. Please try again later.'];
-        }
-    }
 
     public function register($username, $email, $password) {
         try {
@@ -130,26 +119,24 @@ class Auth {
             if (strlen($password) < 6) {
                 return ['success' => false, 'error' => 'Password must be at least 6 characters'];
             }
-
+            
             // Check for existing user
-            if ($this->db->getUserByEmail($email)) {
+            if ($this->getUserByEmail($email)) {
                 return ['success' => false, 'error' => 'Email already registered'];
             }
 
             // Create user
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-            $this->db->createUser($username, $email, $passwordHash);
+            $stmt = $this->db->prepare("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)");
+            $stmt->execute([$username, $email, $passwordHash]);
 
             return ['success' => true];
         } catch (Exception $e) {
-            $this->db->logError("Registration failed", [
-                'username' => $username,
-                'email' => $email,
-                'error' => $e->getMessage()
-            ]);
+            error_log("Registration failed: username=$username, email=$email, error=" . $e->getMessage());
             return ['success' => false, 'error' => 'Registration failed. Please try again later.'];
         }
     }
+    
 
     public function logout() {
         if (isset($_SESSION['user_id'])) {
@@ -174,7 +161,7 @@ class Auth {
         session_destroy();
     }
 
-    public function isLoggedIn() {
+     public function isLoggedIn() {
         return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
     }
 
@@ -191,14 +178,25 @@ class Auth {
         $userId = $_SESSION['user_id'];
         $role = $_SESSION['role'] ?? 'player';
         
-        // Handle admin users
-        if ($role === 'admin' || $role === 'super_admin') {
-            return $this->db->getAdminById($userId);
+        try {
+            $conn = $this->db;
+         // Handle admin users
+         if ($role === 'admin' || $role === 'super_admin') {
+            $stmt = $conn->prepare("SELECT * FROM admin_users WHERE admin_id = ?");
+            $stmt->execute([$userId]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
         
         // Handle regular users
-        return $this->db->getUserById($userId);
+        $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+        $stmt->execute([$userId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+        
+    } catch (PDOException $e) {
+        error_log("Error getting user data: " . $e->getMessage());
+        return null;
     }
+}
 
     public function getCurrentRole() {
         return $_SESSION['role'] ?? null;
