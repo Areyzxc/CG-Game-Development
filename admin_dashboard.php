@@ -76,11 +76,9 @@ $showLoginNotification = isset($_GET['login']) && $_GET['login'] === 'success';
             <span class="fw-bold">Logged in as: <?php echo htmlspecialchars($currentUser['username'] ?? 'Admin'); ?></span>
             <small class="d-block text-muted">Role: <?php echo ucfirst($currentRole); ?></small>
         </div>
-    </div>
     <button type="button" class="btn-close" id="closeLoginNotification" aria-label="Close"></button>
 </div>
 <?php endif; ?>
-
 <div class="admin-main-content p-4">
   <!-- Stats Cards Row -->
   <div class="row mb-4">
@@ -94,13 +92,18 @@ $showLoginNotification = isset($_GET['login']) && $_GET['login'] === 'success';
         </div>
       </div>
     </div>
+    
+    <!-- Visitor Stats Card -->
     <div class="col-md-3">
       <div class="card admin-card text-center small-stats-card">
         <div class="card-body">
-          <div class="mb-2"><i class="fas fa-user-check fa-lg text-success"></i></div>
-          <div class="fw-bold text-muted">Active Users</div>
-          <span class="display-7" id="activeUsersStat">87</span>
-          <div class="text-info small mt-1">Currently Online</div>
+          <div class="mb-2"><i class="fas fa-chart-line fa-lg text-info"></i></div>
+          <div class="fw-bold text-muted">Today's Visitors</div>
+          <span class="display-7" id="todayVisitors">0</span>
+          <div class="text-muted small mt-1"><span id="uniqueVisitors">0</span> unique</div>
+          <div class="mt-2">
+            <a href="admin_analytics.php" class="btn btn-sm btn-outline-info">View Analytics</a>
+          </div>
         </div>
       </div>
     </div>
@@ -320,12 +323,26 @@ $showLoginNotification = isset($_GET['login']) && $_GET['login'] === 'success';
       </div>
     </div>
   </div>
-</div>
 <!-- End Admin Dashboard Main Content -->
 <?php
 include 'includes/admin_footer.php';
 ?>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Custom JS -->
 <script src="assets/js/admin_global.js"></script>
 <script src="assets/js/admin_dashboard.js"></script>
+<script src="assets/js/visitor-stats.js"></script>
+
+<script>
+  // Initialize visitor stats when the page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the visitor stats
+    if (typeof visitorStats !== 'undefined') {
+      visitorStats.init();
+    }
+  });
+</script>
 </body>
-</html> 
+</html>
