@@ -1,0 +1,28 @@
+# Allow access to this directory
+Options +Indexes
+
+# Enable URL rewriting
+RewriteEngine On
+
+# If the request is for a file or directory that exists, serve it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Handle PHP files
+<IfModule mod_php7.c>
+    php_flag display_errors on
+    php_value error_reporting E_ALL
+</IfModule>
+
+<IfModule mod_php.c>
+    php_flag display_errors on
+    php_value error_reporting E_ALL
+</IfModule>
+
+# Set default character set
+AddDefaultCharset UTF-8
+
+# Set content type for JSON
+<IfModule mod_mime.c>
+    AddType application/json .json
+</IfModule>
