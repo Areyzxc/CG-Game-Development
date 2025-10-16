@@ -50,6 +50,8 @@ $currentRole = $auth->getCurrentRole();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/admin_dashboard.css">
     <link rel="stylesheet" href="assets/css/admin_users.css">
+    <script src="assets/js/admin_users_fixed.js" defer></script>
+    
 </head>
 <body class="admin-theme">
 
@@ -167,7 +169,7 @@ $currentRole = $auth->getCurrentRole();
         </div>
         <div class="retro-modal-content">
             <div class="profile-picture-container">
-                <img src="/images/default-avatar.png" alt="Profile Picture" id="modalProfilePic">
+                <img src="assets/images/PTC.png" alt="Profile Picture" id="modalProfilePic">
                 <!-- Profile picture upload, hidden unless in edit mode -->
                 <input type="file" accept="image/*" id="modalProfilePicInput" class="form-control d-none mt-2" style="max-width:180px;">
             </div>
@@ -202,8 +204,8 @@ $currentRole = $auth->getCurrentRole();
 
 
 <?php include 'includes/admin_footer.php'; ?>
-
 <script src="assets/js/admin_global.js"></script>
-<script src="assets/js/admin_users.js"></script>
+    <!-- Main admin users functionality is now in admin_users_fixed.js -->
+    <script src="assets/js/admin_users.js" defer></script>
 </body>
-</html> 
+</html>
