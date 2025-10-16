@@ -1,4 +1,7 @@
 <?php
+// Include visitor tracking
+require_once 'includes/track_visitor.php';
+
 /**
  * ==========================================================
  * File: terms.php
@@ -23,7 +26,6 @@
  * -- Code Gaming Team --
  * ==========================================================
  */
-
 // Include header
 include 'includes/header.php';
 ?>
