@@ -1,4 +1,7 @@
 <?php
+// Include visitor tracking
+require_once 'includes/track_visitor.php';
+
 /**
  * ==========================================================
  * File: home_page.php
@@ -34,17 +37,18 @@
 require_once 'includes/Database.php';
 require_once 'includes/Auth.php';
 require_once 'includes/ErrorHandler.php';
+require_once 'includes/CSRFProtection.php';
+require_once 'includes/XSSProtection.php';
 
 // Initialize core components
 $db = Database::getInstance();
 $auth = Auth::getInstance();
 $errorHandler = ErrorHandler::getInstance();
+$csrf = CSRFProtection::getInstance();
+$xss = XSSProtection::getInstance();
 
-// Redirect admin users to the admin dashboard immediately
-if ($auth->isAdmin()) {
-    header('Location: admin_dashboard.php');
-    exit;
-}
+// Note: Do NOT redirect admins immediately. We show a welcome modal first
+// and redirect to the dashboard after the modal is closed via JS.
 
 // Get database connection
 $conn = $db->getConnection();
@@ -52,44 +56,231 @@ $conn = $db->getConnection();
 // Get current user data if logged in
 $currentUser = $auth->isLoggedIn() ? $auth->getCurrentUser() : null;
 $currentRole = $auth->isLoggedIn() ? $auth->getCurrentRole() : null;
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Code Game - Learn coding through interactive gameplay and challenges" />
-    <title>Code Game • Home</title>
 
-    <!-- ===== External CSS Dependencies ===== -->
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
-    <!-- Custom CSS -->
-    <link href="assets/css/stylehome.css" rel="stylesheet" />
+// Track visitor for analytics (only for non-logged-in users)
+if (!$currentUser) {
+    try {
+        $visitorIP = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+        
+        // Insert visitor log
+        $stmt = $conn->prepare('
+            INSERT INTO visitor_logs (ip_address, user_agent, visit_time) 
+            VALUES (?, ?, NOW())
+        ');
+        $stmt->execute([$visitorIP, $userAgent]);
+    } catch (Exception $e) {
+        // Silently fail visitor tracking to not break the page
+        error_log('Visitor tracking failed: ' . $e->getMessage());
+    }
+}
 
-    <!-- Animation Libraries -->
+// Set additional styles for header.php
+$additionalStyles = '
+    <link rel="stylesheet" href="assets/css/stylehome.css">
+    <link rel="stylesheet" href="assets/css/home-profile.css">
     <script src="https://cdn.jsdelivr.net/npm/animejs@4.0.0/lib/anime.iife.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script src="https://cdn.jsdelivr.net/npm/rellax@1.12.1/rellax.min.js"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
-</head>
+';
 
-<body>
-    <!-- ===== Navigation Bar ===== -->
-    <?php include 'includes/header.php'; ?>
+// Include header which contains the full HTML structure
+include 'includes/header.php';
 
-    <?php
-    // Check for the login success flag to show a notification
-    $showLoginNotification = isset($_GET['login']) && $_GET['login'] === 'success';
-    if ($showLoginNotification && $currentUser):
-    ?>
-    <div class="login-notification-home" id="loginNotificationHome">
+// Check for the login success flag to show a notification
+$showLoginNotification = isset($_GET['login']) && $_GET['login'] === 'success';
+if ($showLoginNotification && $currentUser):
+?>
+     <div class="login-notification-home" id="loginNotificationHome">
         <span>Welcome back, <strong><?php echo htmlspecialchars($currentUser['username']); ?></strong>!</span>
         <button type="button" class="btn-close" id="closeLoginNotificationHome" aria-label="Close"></button>
-    </div>
     <?php endif; ?>
+    <!-- ===== Welcome Modal ===== -->
+    <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta name="csrf-token" content="<?php echo $csrf->getToken(); ?>">
+                <div class="modal-header welcome-modal-header">
+                    <div class="welcome-icon-container">
+                        <i class="bx bx-magic-wand welcome-icon"></i>
+                    </div>
+                    <div class="welcome-title-container">
+                        <h4 class="modal-title welcome-title" id="welcomeModalLabel">
+                            Welcome to Code Game, 
+                            <?php 
+                            if ($auth->isAdmin()) {
+                                echo htmlspecialchars($currentUser['username']) . '!';
+                            } elseif ($currentUser) {
+                                echo htmlspecialchars($currentUser['username']) . '!';
+                            } else {
+                                echo 'Guest!';
+                            }
+                            ?>
+                        </h4>
+                        <p class="welcome-subtitle">Let's explore your coding adventure!</p>
+                    </div>
+                    <button type="button" class="btn-close welcome-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body welcome-modal-body">
+                    <div class="wizard-container">
+                        <div class="wizard-character">
+                            <i class="bx bx-code-alt wizard-avatar"></i>
+                        </div>
+                        <div class="welcome-content">
+                            <?php if ($auth->isAdmin()): ?>
+                                <!-- Admin Welcome Content -->
+                                <p class="welcome-intro">Welcome to your admin dashboard! Here's what you can manage:</p>
+                                <div class="accordion welcome-accordion" id="adminWelcomeAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#adminDashboard" aria-expanded="true" data-section="dashboard">
+                                                <i class="bx bx-tachometer me-2"></i>Admin Dashboard
+                                            </button>
+                                        </h2>
+                                        <div id="adminDashboard" class="accordion-collapse collapse show" data-bs-parent="#adminWelcomeAccordion">
+                                            <div class="accordion-body">
+                                                Monitor user activity, view system statistics, and track overall platform performance with comprehensive analytics.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#userManagement" data-section="users">
+                                                <i class="bx bx-group me-2"></i>User Management
+                                            </button>
+                                        </h2>
+                                        <div id="userManagement" class="accordion-collapse collapse" data-bs-parent="#adminWelcomeAccordion">
+                                            <div class="accordion-body">
+                                                View user progress, manage accounts, and monitor user engagement across all game modes and tutorials.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#announcements" data-section="announcements">
+                                                <i class="bx bx-megaphone me-2"></i>Announcements
+                                            </button>
+                                        </h2>
+                                        <div id="announcements" class="accordion-collapse collapse" data-bs-parent="#adminWelcomeAccordion">
+                                            <div class="accordion-body">
+                                                Create, edit, and manage site-wide announcements to keep users informed about updates, events, and new features.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#systemTracking" data-section="tracking">
+                                                <i class="bx bx-line-chart me-2"></i>System Tracking
+                                            </button>
+                                        </h2>
+                                        <div id="systemTracking" class="accordion-collapse collapse" data-bs-parent="#adminWelcomeAccordion">
+                                            <div class="accordion-body">
+                                                Access detailed logs including login history, visitor statistics, and system performance metrics for comprehensive oversight.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <!-- User/Guest Welcome Content -->
+                                <p class="welcome-intro">Ready to level up your coding skills? Here's what awaits you:</p>
+                                <div class="accordion welcome-accordion" id="userWelcomeAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#homeDesc" aria-expanded="true" data-section="home">
+                                                <i class="bx bx-home me-2"></i>Home
+                                            </button>
+                                        </h2>
+                                        <div id="homeDesc" class="accordion-collapse collapse show" data-bs-parent="#userWelcomeAccordion">
+                                            <div class="accordion-body">
+                                                Your central hub for tracking progress with interactive pie charts, quick access to all game modes, and your personal achievement dashboard.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tutorialDesc" data-section="tutorials">
+                                                <i class="bx bx-book-open me-2"></i>Tutorial/Lessons
+                                            </button>
+                                        </h2>
+                                        <div id="tutorialDesc" class="accordion-collapse collapse" data-bs-parent="#userWelcomeAccordion">
+                                            <div class="accordion-body">
+                                                Step-by-step guides through programming languages like Python, JavaScript, and more. Track your completion progress in your profile.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#gameModesDesc" data-section="games">
+                                                <i class="bx bx-joystick me-2"></i>Game Modes
+                                            </button>
+                                        </h2>
+                                        <div id="gameModesDesc" class="accordion-collapse collapse" data-bs-parent="#userWelcomeAccordion">
+                                            <div class="accordion-body">
+                                                <strong>Mini-Game:</strong> Fun coding activities like speed typing and guess-the-output challenges.<br>
+                                                <strong>Quiz:</strong> Test your knowledge with multiple-choice questions and earn points.<br>
+                                                <strong>Challenge:</strong> Expert-level problems for serious coders seeking high scores and glory!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#announcementsDesc" data-section="announcements">
+                                                <i class="bx bx-megaphone me-2"></i>Announcements
+                                            </button>
+                                        </h2>
+                                        <div id="announcementsDesc" class="accordion-collapse collapse" data-bs-parent="#userWelcomeAccordion">
+                                            <div class="accordion-body">
+                                                Stay updated with the latest platform news, feature releases, and community events. Click on any announcement to read the full details.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#profileDesc" data-section="profile">
+                                                <i class="bx bx-user me-2"></i>Profile
+                                            </button>
+                                        </h2>
+                                        <div id="profileDesc" class="accordion-collapse collapse" data-bs-parent="#userWelcomeAccordion">
+                                            <div class="accordion-body">
+                                                <?php if ($currentUser): ?>
+                                                    Customize your username, upload a profile picture, write your bio, and view your achievements, scores, and detailed progress tables.
+                                                <?php else: ?>
+                                                    Sign up to save your progress, unlock achievements, compete on leaderboards, and customize your coding journey!
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer welcome-modal-footer">
+                    <div class="footer-left">
+                        <div class="wizard-tip">
+                            <i class="bx bx-bulb me-2"></i>
+                            <span>Tip: You can always access help from the navigation menu!</span>
+                        </div>
+                        <div class="dont-show-again-container">
+                            <label class="form-check-label dont-show-again-label">
+                                <input type="checkbox" class="form-check-input me-2" id="dontShowAgainCheck">
+                                <i class="bx bx-hide me-1"></i>Don't show this welcome tour again
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary welcome-btn" data-bs-dismiss="modal">
+                        <i class="bx bx-rocket me-2"></i>Let's Start Coding!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Slideshow -->
+    <div id="bgSlideshow" class="bg-slideshow">
+        <div class="slideshow-overlay"></div>
+    </div>
 
     <!-- ===== Main Content ===== -->
     <main class="pt-5 mt-4">
@@ -99,146 +290,244 @@ $currentRole = $auth->isLoggedIn() ? $auth->getCurrentRole() : null;
             <div class="particles-container"></div>
         </div>
 
-        <!-- Welcome Hero Section -->
-        <section class="hero-section position-relative overflow-hidden py-5 text-white">
-            <!-- Parallax Background -->
-            <div class="rellax-bg" data-rellax-speed="-2"></div>
-            <div class="container position-relative">
-                <div class="hero-content">
-                    <h1 class="display-4 fw-bold mb-3 glitch-text">
-                        <span id="welcomeTyped"></span>
-                    </h1>
-                    <p class="lead mb-4 animated-underline">
-                        Embark on your next coding adventure and level up your skills.
-                    </p>
+        <!-- Quote Spotlight Section -->
+        <section class="quote-spotlight-section position-relative py-5 text-white" role="banner" aria-labelledby="quote-spotlight">
+            <div class="container position-relative text-center">
+                <!-- Welcome Message with Typed.js Effect -->
+                <?php if ($auth->isLoggedIn() && isset($currentUser['username'])): ?>
+                    <div class="welcome-message mb-4">
+                        <h2 class="display-5 fw-bold mb-3">
+                            <span id="welcomeTyped" class="glitch-text"></span>
+                        </h2>
+                        <p class="lead">Continue your coding journey today!</p>
+                    </div>
+                <?php endif; ?>
+                
+                <div class="quote-content">
+                    <div id="quoteSpotlight" class="quote-spotlight mb-4">
+                        <blockquote class="quote-text">
+                            <i class="bx bx-code-alt quote-icon"></i>
+                            <span id="currentQuote">Loading inspirational quote...</span>
+                            <i class="bx bx-code-alt quote-icon"></i>
+                        </blockquote>
+                        <cite id="quoteAuthor" class="quote-author">— Loading...</cite>
+                    </div>
                     <div class="cta-container">
-                        <button id="startGameBtn" class="btn btn-primary btn-lg pulse-effect">
-                            <i class="fas fa-play me-2"></i>Jump into Game Mode
-                        </button>
-                        <div class="cta-decoration"></div>
+                        <div id="start-game-description">
+                            Start playing quizzes, challenges, or mini-games to test your coding skills
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ===== Announcements Section ===== -->
-        <section id="announcements" class="container py-5">
-            <h4 class="fw-bold mb-4 text-center">Latest Updates</h4>
-            <?php
-            // Fetch recent announcements
-            $stmt = $conn->prepare('
-                SELECT a.*, au.username as author 
-                FROM announcements a 
-                LEFT JOIN admin_users au ON a.created_by = au.admin_id 
-                WHERE a.is_active = 1 
-                ORDER BY a.created_at DESC 
-                LIMIT 3
-            ');
-            $stmt->execute();
-            $announcements = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            ?>
-
-            <?php if (empty($announcements)): ?>
-                <div class="alert alert-info">
-                    No announcements yet. 
-                    <a href="announcements.php" class="alert-link">Check back later</a>
+        <!-- User Progress Dashboard (Dynamic for logged-in users) -->
+        <?php if ($currentUser): ?>
+        <section class="progress-dashboard container py-5" role="region" aria-labelledby="progress-heading">
+            <!-- User Profile Header -->
+            <div class="user-journey-header mb-4">
+                <div class="user-banner" id="userBanner" style="background-image: url('assets/images/default-banner.jpg');">
                 </div>
-            <?php else: ?>
-                <div id="announcementCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-                    <!-- Carousel Indicators -->
-                    <div class="carousel-indicators">
-                        <?php foreach ($announcements as $i => $a): ?>
-                            <button type="button" 
-                                    data-bs-target="#announcementCarousel" 
-                                    data-bs-slide-to="<?php echo $i; ?>" 
-                                    <?php echo $i === 0 ? 'class="active"' : ''; ?>>
-                            </button>
-                        <?php endforeach; ?>
-                    </div>
-
-                    <!-- Carousel Items -->
-                    <div class="carousel-inner">
-                        <?php foreach ($announcements as $i => $a): ?>
-                            <div class="carousel-item<?php echo $i === 0 ? ' active' : ''; ?>">
-                                <div class="announcement-card">
-                                    <div class="announcement-icon">
-                                        <i class="fas <?php echo getAnnouncementIcon($a['type'] ?? null); ?>"></i>
-                                    </div>
-                                    <div class="announcement-content">
-                                        <h5><?php echo htmlspecialchars($a['title']); ?></h5>
-                                        <p><?php echo nl2br(htmlspecialchars($a['content'])); ?></p>
-                                        <small class="text-muted">
-                                            By <?php echo htmlspecialchars($a['author'] ?? 'Admin'); ?> • 
-                                            <?php echo date('F j, Y', strtotime($a['created_at'])); ?>
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-
-                    <!-- Carousel Controls -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#announcementCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#announcementCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+                <div class="user-info text-center mt-4">
+                    <h3 class="username" id="userDisplayName">Welcome Back!</h3>
+                    <p class="text-muted" id="userLevel">Coding Enthusiast</p>
                 </div>
-            <?php endif; ?>
+            </div>
+            
+            <h4 id="progress-heading" class="fw-bold mb-4 text-center">Your Coding Journey</h4>
+            <div class="row g-4" id="progressContainer">
+                <!-- Progress cards will be loaded via AJAX -->
+                <div class="col-12 text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading your progress...</span>
+                    </div>
+                </div>
+                
+                <!-- Fallback content in case JavaScript is disabled -->
+                <noscript>
+                    <div class="col-12">
+                        <div class="alert alert-warning">
+                            <i class="bx bx-error-circle me-2"></i>
+                            Please enable JavaScript to view your progress dashboard.
+                        </div>
+                    </div>
+                </noscript>
+            </div>
         </section>
+        <?php else: ?>
+        <!-- Guest Progress Placeholders -->
+        <section class="progress-dashboard container py-5" role="region" aria-labelledby="guest-progress-heading">
+            <h4 id="guest-progress-heading" class="fw-bold mb-4 text-center">Start Your Coding Journey</h4>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="progress-card" id="tutorial-progress-card">
+                        <div class="progress-icon">
+                            <i class="bx bx-book-open"></i>
+                        </div>
+                        <h5>Tutorials</h5>
+                        <p class="progress-text">Complete interactive coding lessons</p>
+                        <div class="mt-3">
+                            <a href="tutorial.php" class="btn btn-primary btn-sm">Start Learning</a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="progress-card" id="tutorial-progress-card">
+                        <div class="progress-icon">
+                            <i class="bx bx-user-circle"></i>
+                        </div>
+                        <h5>Profile</h5>
+                        <p class="progress-text">Customize your coding profile</p>
+                        <div class="profile-completeness">
+                            <span class="completeness-text">0% Complete</span>
+                        </div>
+                        <small class="text-muted">Sign up to create profile</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <?php endif; ?>
+
+        <!-- ===== Dynamic Announcements Section ===== -->
+        <section id="announcements" class="container py-5" role="region" aria-labelledby="announcements-heading">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 id="announcements-heading" class="fw-bold mb-0">Latest Updates</h4>
+                <a href="announcements.php" class="btn btn-outline-primary btn-sm">
+                    <i class="bx bx-list-ul me-2"></i>View All
+                </a>
+            </div>
+            <div id="announcementsContainer">
+                <!-- Announcements will be loaded via AJAX for real-time updates -->
+                <div class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading announcements...</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
         <!-- ===== Quick Access Cards ===== -->
         <section class="quick-cards container py-5" aria-label="Quick Access Navigation">
             <div class="row g-4 justify-content-center">
                 <?php
+                // Get user progress data for quick cards
+                $userProgress = [
+                    'tutorial' => ['total_topics' => 0, 'completed_topics' => 0],
+                    'quiz' => ['total_attempts' => 0, 'correct_answers' => 0],
+                    'challenge' => ['total_attempts' => 0, 'correct_answers' => 0],
+                    'minigame' => ['total_games' => 0, 'best_score' => 0]
+                ];
+                
+                if ($currentUser) {
+                    try {
+                        // Get tutorial progress
+                        $stmt = $conn->prepare("
+                            SELECT COUNT(*) as total_topics, 
+                                   SUM(CASE WHEN status = 'done_reading' THEN 1 ELSE 0 END) as completed_topics
+                            FROM user_progress 
+                            WHERE user_id = ?
+                        ");
+                        $stmt->execute([$currentUser['id']]);
+                        $tutorialProgress = $stmt->fetch(PDO::FETCH_ASSOC);
+                        
+                        // Get quiz stats
+                        $stmt = $conn->prepare("
+                            SELECT COUNT(*) as total_attempts,
+                                   SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) as correct_answers
+                            FROM user_quiz_attempts 
+                            WHERE user_id = ?
+                        ");
+                        $stmt->execute([$currentUser['id']]);
+                        $quizProgress = $stmt->fetch(PDO::FETCH_ASSOC);
+                        
+                        // Get challenge stats
+                        $stmt = $conn->prepare("
+                            SELECT COUNT(*) as total_attempts,
+                                   SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) as correct_answers
+                            FROM user_challenge_attempts 
+                            WHERE user_id = ?
+                        ");
+                        $stmt->execute([$currentUser['id']]);
+                        $challengeProgress = $stmt->fetch(PDO::FETCH_ASSOC);
+                        
+                        // Get mini-game stats
+                        $stmt = $conn->prepare("
+                            SELECT COUNT(*) as total_games,
+                                   MAX(score) as best_score
+                            FROM mini_game_results 
+                            WHERE user_id = ?
+                        ");
+                        $stmt->execute([$currentUser['id']]);
+                        $minigameProgress = $stmt->fetch(PDO::FETCH_ASSOC);
+                        
+                        $userProgress = [
+                            'tutorial' => $tutorialProgress ?: ['total_topics' => 0, 'completed_topics' => 0],
+                            'quiz' => $quizProgress ?: ['total_attempts' => 0, 'correct_answers' => 0],
+                            'challenge' => $challengeProgress ?: ['total_attempts' => 0, 'correct_answers' => 0],
+                            'minigame' => $minigameProgress ?: ['total_games' => 0, 'best_score' => 0]
+                        ];
+                    } catch (Exception $e) {
+                        // Fallback to default progress
+                        $userProgress = [
+                            'tutorial' => ['total_topics' => 0, 'completed_topics' => 0],
+                            'quiz' => ['total_attempts' => 0, 'correct_answers' => 0],
+                            'challenge' => ['total_attempts' => 0, 'correct_answers' => 0],
+                            'minigame' => ['total_games' => 0, 'best_score' => 0]
+                        ];
+                    }
+                }
+                
                 $quickCards = [
                     [
                         'title' => 'Profile',
                         'icon' => 'fa-user',
-                        'image' => 'images/background-1.jpg',
-                        'progress' => '25%',
-                        'text' => 'Complete your profile',
-                        'link' => 'profile.php'
+                        'image' => 'assets/images/Profile.png',
+                        'progress' => $currentUser ? 'Level ' . min(floor((($userProgress['challenge']['correct_answers'] ?? 0) * 30) / 100) + 1, 50) : 'Guest',
+                        'text' => $currentUser ? 'Manage your account' : 'Sign up to save progress',
+                        'link' => $currentUser ? 'profile.php' : 'sign_in.php'
                     ],
                     [
                         'title' => 'Tutorials',
                         'icon' => 'fa-book',
-                        'image' => 'images/icon-tutorial.png',
-                        'progress' => '3 of 10',
-                        'text' => 'Next: Variables 101',
+                        'image' => 'assets/images/Tutorial.png',
+                        'progress' => ($userProgress['tutorial']['completed_topics'] ?? 0) . ' of ' . max($userProgress['tutorial']['total_topics'] ?? 1, 1),
+                        'text' => ($userProgress['tutorial']['completed_topics'] ?? 0) > 0 ? 
+                            'Keep learning!' : 'Start your journey',
                         'link' => 'tutorial.php'
                     ],
                     [
                         'title' => 'Mini-Game',
                         'icon' => 'fa-gamepad',
-                        'image' => 'images/icon-mini-game.png',
-                        'progress' => '5 of 20',
-                        'text' => 'Rank: Beginner',
+                        'image' => 'assets/images/icon-mini-game.png',
+                        'progress' => ($userProgress['minigame']['total_games'] ?? 0) . ' games played',
+                        'text' => ($userProgress['minigame']['best_score'] ?? 0) > 0 ? 
+                            'Best: ' . ($userProgress['minigame']['best_score'] ?? 0) : 'New high score awaits',
                         'link' => 'mini-game.php'
                     ],
                     [
                         'title' => 'Quiz',
                         'icon' => 'fa-question-circle',
-                        'image' => 'images/icon-quiz.png',
-                        'progress' => '12/15 Correct',
-                        'text' => 'Rank: Advanced',
+                        'image' => 'assets/images/icon-quiz.png',
+                        'progress' => ($userProgress['quiz']['correct_answers'] ?? 0) . '/40 correct',
+                        'text' => ($userProgress['quiz']['correct_answers'] ?? 0) > 0 ? 
+                            'Improve your score!' : 'Test your knowledge',
                         'link' => 'quiz.php'
                     ],
                     [
                         'title' => 'Challenge',
                         'icon' => 'fa-trophy',
-                        'image' => 'images/icon-challenge.png',
-                        'progress' => '2 of 5',
-                        'text' => 'Current: Algorithm Master',
+                        'image' => 'assets/images/icon-challenge.png',
+                        'progress' => ($userProgress['challenge']['correct_answers'] ?? 0) . ' solved',
+                        'text' => ($userProgress['challenge']['correct_answers'] ?? 0) > 0 ? 
+                            'Expert level unlocked!' : 'Master the challenges',
                         'link' => 'challenges.php'
                     ],
                     [
                         'title' => 'About',
                         'icon' => 'fa-info-circle',
-                        'image' => 'images/icon-about.png',
+                        'image' => 'assets/images/about-us.png',
                         'text' => 'Learn about Code Game',
                         'link' => 'about.php'
                     ]
@@ -284,55 +573,58 @@ $currentRole = $auth->isLoggedIn() ? $auth->getCurrentRole() : null;
         </section>
 
         <!-- ===== Quiz Analytics & Leaderboard Section ===== -->
-        <section class="container py-5" id="home-quiz-analytics">
+        <section class="container py-5" id="home-quiz-analytics" role="region" aria-labelledby="quiz-analytics-heading">
           <div class="retro-analytics-window-bg">
             <!-- Overlapping Stat Cards -->
-            <div class="stat-card stat-card-best">
-              <div class="stat-card-title">Best Score <span class="stat-x">&#10005;</span></div>
-              <div class="stat-card-value">38/40</div>
+            <div class="stat-card stat-card-best" role="img" aria-label="Best quiz score">
+              <div class="stat-card-title">Best Score <span class="stat-x" aria-hidden="true">&#10005;</span></div>
+              <div class="stat-card-value" id="quiz-best-score" aria-live="polite">--</div>
               <div class="stat-card-desc">Your all-time best</div>
             </div>
-            <div class="stat-card stat-card-recent">
-              <div class="stat-card-title">Recent Game <span class="stat-x">&#10005;</span></div>
-              <div class="stat-card-value">32/40</div>
-              <div class="stat-card-desc">Played 2 days ago</div>
+            <div class="stat-card stat-card-recent" role="img" aria-label="Recent quiz game">
+              <div class="stat-card-title">Recent Game <span class="stat-x" aria-hidden="true">&#10005;</span></div>
+              <div class="stat-card-value" id="quiz-recent-score" aria-live="polite">--</div>
+              <div class="stat-card-desc" id="quiz-recent-time">No recent game</div>
             </div>
-            <div class="stat-card stat-card-top">
-              <div class="stat-card-title">Top Player <span class="stat-x">&#10005;</span></div>
-              <div class="stat-card-value">Areyzxc</div>
-              <div class="stat-card-desc">#1 this month</div>
+            <div class="stat-card stat-card-top" role="img" aria-label="Top quiz player">
+              <div class="stat-card-title">Top Player <span class="stat-x" aria-hidden="true">&#10005;</span></div>
+              <div class="stat-card-value" id="quiz-top-player" aria-live="polite">--</div>
+              <div class="stat-card-desc" id="quiz-top-player-desc">No top player</div>
             </div>
             <!-- Main Window -->
             <div class="retro-analytics-window">
               <div class="window-title-bar">
-                <div class="window-controls">
+                <div class="window-controls" aria-hidden="true">
                   <span class="window-dot red"></span>
                   <span class="window-dot yellow"></span>
                   <span class="window-dot green"></span>
                 </div>
                 <span class="window-title">// QUIZ ANALYTICS & LEADERBOARD</span>
-                <span class="window-x">&#10005;</span>
+                <span class="window-x" aria-hidden="true">&#10005;</span>
               </div>
               <div class="window-content">
                 <div class="analytics-header">
-                  <div class="analytics-tabs">
-                    <button class="analytics-tab active" data-scope="alltime">All-Time</button>
-                    <button class="analytics-tab" data-scope="weekly">Weekly</button>
-                    <button class="analytics-tab" data-scope="monthly">Monthly</button>
+                  <div class="analytics-tabs" role="tablist" aria-label="Quiz analytics time period">
+                    <button class="analytics-tab active" data-scope="alltime" role="tab" aria-selected="true" aria-controls="quiz-content">All-Time</button>
+                    <button class="analytics-tab" data-scope="weekly" role="tab" aria-selected="false" aria-controls="quiz-content">Weekly</button>
+                    <button class="analytics-tab" data-scope="monthly" role="tab" aria-selected="false" aria-controls="quiz-content">Monthly</button>
                   </div>
                 </div>
-                <div class="analytics-body">
-                  <div class="difficulty-tabs">
-                    <button class="difficulty-tab active" data-difficulty="beginner">Beginner</button>
-                    <button class="difficulty-tab" data-difficulty="intermediate">Intermediate</button>
-                    <button class="difficulty-tab" data-difficulty="expert">Expert</button>
+                <div class="analytics-body" id="quiz-content" role="tabpanel">
+                  <div class="difficulty-tabs" role="tablist" aria-label="Quiz difficulty level">
+                    <button class="difficulty-tab active" data-difficulty="beginner" role="tab" aria-selected="true" aria-controls="quiz-difficulty-content">Beginner</button>
+                    <button class="difficulty-tab" data-difficulty="intermediate" role="tab" aria-selected="false" aria-controls="quiz-difficulty-content">Intermediate</button>
+                    <button class="difficulty-tab" data-difficulty="expert" role="tab" aria-selected="false" aria-controls="quiz-difficulty-content">Expert</button>
                   </div>
-                  <div class="user-quiz-stats"></div>
-                  <div class="quiz-leaderboard-list"></div>
+                  <div class="user-quiz-stats" aria-live="polite"></div>
+                  <div class="quiz-leaderboard-list" aria-live="polite"></div>
                   <div class="play-now-section">
-                    <button class="btn-play-now" onclick="window.location.href='quiz.php'">
+                    <button class="btn-play-now" onclick="window.location.href='quiz.php'" aria-describedby="quiz-play-description">
                       <span class="btn-text">🎯 PLAY QUIZ NOW</span>
                     </button>
+                    <div id="quiz-play-description" class="visually-hidden">
+                      Start a new quiz to test your coding knowledge and compete on the leaderboard
+                    </div>
                   </div>
                 </div>
               </div>
@@ -347,18 +639,18 @@ $currentRole = $auth->isLoggedIn() ? $auth->getCurrentRole() : null;
             <!-- Overlapping Stat Cards -->
             <div class="stat-card stat-card-best minigame-theme">
               <div class="stat-card-title">Best Score <span class="stat-x">&#10005;</span></div>
-              <div class="stat-card-value">1200</div>
+              <div class="stat-card-value" id="minigame-best-score">--</div>
               <div class="stat-card-desc">Your all-time best</div>
             </div>
             <div class="stat-card stat-card-recent minigame-theme">
               <div class="stat-card-title">Recent Game <span class="stat-x">&#10005;</span></div>
-              <div class="stat-card-value">950</div>
-              <div class="stat-card-desc">Played 1 day ago</div>
+              <div class="stat-card-value" id="minigame-recent-score">--</div>
+              <div class="stat-card-desc" id="minigame-recent-time">No recent game</div>
             </div>
             <div class="stat-card stat-card-top minigame-theme">
               <div class="stat-card-title">Top Player <span class="stat-x">&#10005;</span></div>
-              <div class="stat-card-value">BlueAce</div>
-              <div class="stat-card-desc">#1 this week</div>
+              <div class="stat-card-value" id="minigame-top-player">--</div>
+              <div class="stat-card-desc" id="minigame-top-player-desc">No top player</div>
             </div>
             <div class="retro-analytics-window minigame-theme">
               <div class="window-title-bar minigame-theme">
@@ -397,18 +689,18 @@ $currentRole = $auth->isLoggedIn() ? $auth->getCurrentRole() : null;
             <!-- Overlapping Stat Cards -->
             <div class="stat-card stat-card-best challenge-theme">
               <div class="stat-card-title">Best Score <span class="stat-x">&#10005;</span></div>
-              <div class="stat-card-value">800</div>
+              <div class="stat-card-value" id="challenge-best-score">--</div>
               <div class="stat-card-desc">Your all-time best</div>
             </div>
             <div class="stat-card stat-card-recent challenge-theme">
               <div class="stat-card-title">Recent Game <span class="stat-x">&#10005;</span></div>
-              <div class="stat-card-value">700</div>
-              <div class="stat-card-desc">Played 3 days ago</div>
+              <div class="stat-card-value" id="challenge-recent-score">--</div>
+              <div class="stat-card-desc" id="challenge-recent-time">No recent game</div>
             </div>
             <div class="stat-card stat-card-top challenge-theme">
               <div class="stat-card-title">Top Player <span class="stat-x">&#10005;</span></div>
-              <div class="stat-card-value">GoldStar</div>
-              <div class="stat-card-desc">#1 this month</div>
+              <div class="stat-card-value" id="challenge-top-player">--</div>
+              <div class="stat-card-desc" id="challenge-top-player-desc">No top player</div>
             </div>
             <div class="retro-analytics-window challenge-theme">
               <div class="window-title-bar challenge-theme">
@@ -439,38 +731,6 @@ $currentRole = $auth->isLoggedIn() ? $auth->getCurrentRole() : null;
           </div>
         </section>
         </div>
-
-        <!-- ===== Progress Dashboard ===== -->
-        <section class="dashboard-widget container py-5">
-            <div class="row g-4 align-items-center">
-                <!-- Progress Chart -->
-                <div class="col-lg-6 text-center">
-                    <h4 class="fw-bold mb-3">Overall Progress</h4>
-                    <canvas id="completionChart" width="200" height="200"></canvas>
-                    <p class="mt-2">75% of all challenges completed</p>
-                </div>
-
-                <!-- Achievements Feed -->
-                <div class="col-lg-6">
-                    <h4 class="fw-bold mb-3">Recent Achievements</h4>
-                    <div class="achievements-list p-3 bg-dark rounded">
-                        <?php
-                        $achievements = [
-                            ['icon' => 'medal', 'color' => 'warning', 'text' => 'First Tutorial Completed'],
-                            ['icon' => 'trophy', 'color' => 'info', 'text' => 'Quiz Mode — 90%'],
-                            ['icon' => 'bolt', 'color' => 'danger', 'text' => 'Challenge Conquered: Beginner Blitz']
-                        ];
-
-                        foreach ($achievements as $achievement): ?>
-                            <div class="achievement-item mb-3">
-                                <i class="fas fa-<?php echo $achievement['icon']; ?> text-<?php echo $achievement['color']; ?> me-2"></i>
-                                <strong><?php echo $achievement['text']; ?></strong>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <!-- ===== Footer ===== -->
@@ -478,9 +738,205 @@ $currentRole = $auth->isLoggedIn() ? $auth->getCurrentRole() : null;
 
     <!-- ===== Custom Scripts ===== -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <!-- Home Page Specific Scripts -->
+    <script>
+        // Global variables for JavaScript
+        window.CG_USER_ID = <?php echo $currentUser ? $currentUser['id'] : 'null'; ?>;
+        window.CG_USERNAME = <?php echo $currentUser ? json_encode($currentUser['username']) : 'null'; ?>;
+        window.CG_NICKNAME = <?php echo isset($_SESSION['guest_nickname']) ? json_encode($_SESSION['guest_nickname']) : 'null'; ?>;
+        window.CG_USER_ROLE = <?php echo $currentRole ? json_encode($currentRole) : 'null'; ?>;
+        window.CG_IS_ADMIN = <?php echo $auth->isAdmin() ? 'true' : 'false'; ?>;
+        window.CSRF_TOKEN = <?php echo json_encode($csrf->getToken()); ?>;
+    </script>
+    <!-- Home Page JavaScript Files -->
+    <script>
+        // Make sure APIHelper is only loaded once
+        if (typeof window.APIHelper === 'undefined') {
+            document.write('<script src="assets/js/api-helper.js"><\/script>');
+        }
+    </script>
     <script src="assets/js/functionhome.js"></script>
     <script src="assets/js/chart.js"></script>
+    <script src="assets/js/welcome-modal.js"></script>
+    <script src="assets/js/home-enhancements.js"></script>
+    <script>
+        
+        // Function to update quick cards with progress
+        function updateQuickCardsProgress(progress) {
+            const tutorialCard = document.querySelector('.quick-card[data-card-type="tutorial"]');
+            if (tutorialCard) {
+                const progressEl = tutorialCard.querySelector('.card-progress');
+                if (progressEl) {
+                    progressEl.textContent = `${progress.completed_topics} of ${progress.total_topics}`;
+                }
+                const textEl = tutorialCard.querySelector('.card-text');
+                if (textEl) {
+                    textEl.textContent = progress.completed_topics > 0 ? 'Keep learning!' : 'Start your journey';
+                }
+            }
+        }
+        
+        // Global error display function
+        window.showGlobalError = function(message) {
+            console.error('Global error:', message);
+            
+            // Try to find an existing error container or create one
+            let errorContainer = document.getElementById('globalErrorContainer');
+            
+            if (!errorContainer) {
+                errorContainer = document.createElement('div');
+                errorContainer.id = 'globalErrorContainer';
+                errorContainer.className = 'container mt-3';
+                
+                // Insert at the beginning of the main content
+                const mainContent = document.querySelector('main') || document.body;
+                if (mainContent.firstChild) {
+                    mainContent.insertBefore(errorContainer, mainContent.firstChild);
+                } else {
+                    mainContent.appendChild(errorContainer);
+                }
+            }
+            
+            // Set the error message
+            errorContainer.innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bx bx-error-circle me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>`;
+        };
 
+        // Set up global variables for the page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM fully loaded');
+            
+            // Set user data
+            window.CG_USER_ID = '<?php echo $currentUser ? $currentUser['id'] : ''; ?>';
+            
+            window.CG_IS_LOGGED_IN = <?php echo $auth->isLoggedIn() ? 'true' : 'false'; ?>;
+            
+            console.log('User ID:', window.CG_USER_ID, 'Is Logged In:', window.CG_IS_LOGGED_IN);
+            
+            // Initialize components
+            try {
+                // Initialize all components if the function exists
+                if (window.initializeAll && typeof window.initializeAll === 'function') {
+                    console.log('Initializing all components...');
+                    window.initializeAll();
+                } else {
+                    console.warn('initializeAll function not found');
+                    showGlobalError('Some page features may not work correctly. Please refresh the page.');
+                }
+                
+                // Load user progress if function exists and user is logged in
+                if (window.CG_IS_LOGGED_IN) {
+                    if (window.loadUserProgress && typeof window.loadUserProgress === 'function') {
+                        console.log('Loading user progress...');
+                        window.loadUserProgress().catch(error => {
+                            console.error('Error in loadUserProgress:', error);
+                            showGlobalError('Failed to load progress data. ' + (error.message || ''));
+                        });
+                    } else {
+                        console.warn('loadUserProgress function not found');
+                        const progressContainer = document.getElementById('progressContainer');
+                        if (progressContainer) {
+                            progressContainer.innerHTML = `
+                                <div class="col-12">
+                                    <div class="alert alert-warning">
+                                        <i class="bx bx-error-circle me-2"></i>
+                                        Unable to load progress. Please refresh the page.
+                                    </div>
+                                </div>`;
+                        }
+                    }
+                } else {
+                    console.log('User not logged in, showing guest message');
+                    const progressContainer = document.getElementById('progressContainer');
+                    if (progressContainer) {
+                        progressContainer.innerHTML = `
+                            <div class="col-12">
+                                <div class="alert alert-info">
+                                    <i class="bx bx-log-in-circle me-2"></i>
+                                    Please <a href="login.php" class="alert-link">log in</a> to track your coding journey
+                                </div>
+                            </div>`;
+                    }
+                }
+                
+                // Load announcements if function exists
+                if (window.loadAnnouncements && typeof window.loadAnnouncements === 'function') {
+                    console.log('Loading announcements...');
+                    window.loadAnnouncements().catch(error => {
+                        console.error('Error in loadAnnouncements:', error);
+                        const announcementsContainer = document.getElementById('announcementsContainer');
+                        if (announcementsContainer) {
+                            announcementsContainer.innerHTML = `
+                                <div class="alert alert-warning">
+                                    <i class="bx bx-error-circle me-2"></i>
+                                    Failed to load announcements. Please refresh the page.
+                                </div>`;
+                        }
+                    });
+                } else {
+                    console.warn('loadAnnouncements function not found');
+                    const announcementsContainer = document.getElementById('announcementsContainer');
+                    if (announcementsContainer) {
+                        announcementsContainer.innerHTML = `
+                            <div class="alert alert-warning">
+                                <i class="bx bx-error-circle me-2"></i>
+                                Unable to load announcements. Please refresh the page.
+                            </div>`;
+                    }
+                }
+                
+                // Close login notification if exists
+                const closeNotificationBtn = document.getElementById('closeLoginNotificationHome');
+                if (closeNotificationBtn) {
+                    closeNotificationBtn.addEventListener('click', function() {
+                        const notification = document.getElementById('loginNotificationHome');
+                        if (notification) {
+                            notification.style.display = 'none';
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error during initialization:', error);
+                showGlobalError('An error occurred while initializing the page. ' + (error.message || ''));
+            }
+        });
+    </script>
+    <script>
+        // Global error display function
+        function showGlobalError(message) {
+            console.error('Global error:', message);
+            
+            // Try to find an existing error container or create one
+            let errorContainer = document.getElementById('globalErrorContainer');
+            
+            if (!errorContainer) {
+                errorContainer = document.createElement('div');
+                errorContainer.id = 'globalErrorContainer';
+                errorContainer.className = 'container mt-3';
+                
+                // Insert at the beginning of the main content
+                const mainContent = document.querySelector('main') || document.body;
+                if (mainContent.firstChild) {
+                    mainContent.insertBefore(errorContainer, mainContent.firstChild);
+                } else {
+                    mainContent.appendChild(errorContainer);
+                }
+            }
+            
+            // Set the error message
+            errorContainer.innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bx bx-error-circle me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>`;
+        }
+    </script>
     <?php
     // Helper function for announcement icons
     function getAnnouncementIcon($type) {
@@ -493,5 +949,3 @@ $currentRole = $auth->isLoggedIn() ? $auth->getCurrentRole() : null;
         return $icons[$type] ?? $icons['default'];
     }
     ?>
-</body>
-</html>
