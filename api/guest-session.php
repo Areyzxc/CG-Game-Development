@@ -17,20 +17,42 @@
 
 // api/guest-session.php
 require_once '../includes/Database.php';
+require_once '../includes/CSRFProtection.php';
 header('Content-Type: application/json');
 
 $data = json_decode(file_get_contents('php://input'), true);
 if (!$data) $data = $_POST;
+
+// Validate CSRF token
+$csrf = CSRFProtection::getInstance();
+$csrfToken = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+if (!$csrf->validateToken($csrfToken)) {
+    echo json_encode(['success'=>false, 'error'=>'Invalid CSRF token']);
+    exit;
+}
 
 $nickname = isset($data['nickname']) ? trim($data['nickname']) : '';
 $session_id = isset($data['session_id']) ? trim($data['session_id']) : '';
 $ip_address = isset($data['ip_address']) ? trim($data['ip_address']) : '';
 $user_agent = isset($data['user_agent']) ? trim($data['user_agent']) : '';
 
-if (!$nickname || !$session_id || !$ip_address) {
-    echo json_encode(['success'=>false, 'error'=>'Missing data']);
+// Validate and sanitize input data
+if (empty($nickname) || empty($session_id) || empty($ip_address)) {
+    echo json_encode(['success'=>false, 'error'=>'Missing required data']);
     exit;
 }
+
+// Validate nickname length and characters
+if (strlen($nickname) < 2 || strlen($nickname) > 50) {
+    echo json_encode(['success'=>false, 'error'=>'Nickname must be between 2 and 50 characters']);
+    exit;
+}
+
+// Sanitize inputs
+$nickname = htmlspecialchars($nickname, ENT_QUOTES, 'UTF-8');
+$session_id = htmlspecialchars($session_id, ENT_QUOTES, 'UTF-8');
+$ip_address = filter_var($ip_address, FILTER_VALIDATE_IP) ? $ip_address : '0.0.0.0';
+$user_agent = htmlspecialchars($user_agent, ENT_QUOTES, 'UTF-8');
 
 try {
     $db = Database::getInstance()->getConnection();
