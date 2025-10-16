@@ -75,5 +75,3 @@ try {
     echo json_encode(['success' => false, 'error' => 'Failed to load stats']);
 }
 ?>
-
-
