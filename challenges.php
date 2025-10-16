@@ -32,6 +32,8 @@
 // session_start(); // Removed to let Auth handle session
 require_once 'includes/Database.php';
 require_once 'includes/Auth.php';
+require_once 'includes/CSRFProtection.php';
+require_once 'includes/XSSProtection.php';
 
 // Check if user is logged in or guest
 $isLoggedIn = isset($_SESSION['user_id']);
@@ -41,6 +43,10 @@ $username = $isLoggedIn ? $_SESSION['username'] : null;
 // Ensure $auth is available for the header
 $auth = Auth::getInstance();
 $currentUser = $auth->getCurrentUser();
+
+// Initialize security utilities
+$csrf = CSRFProtection::getInstance();
+$xss = XSSProtection::getInstance();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -83,10 +89,10 @@ $currentUser = $auth->getCurrentUser();
         <!-- Main Content Area -->
         <div class="window-content">
             <!-- Welcome Screen -->
-            <div id="challenge-welcome" class="challenge-screen active">
+            <div id="challenge-welcome" class="challenge-screen active" role="main" aria-labelledby="challenge-title">
                 <div class="welcome-content">
-                    <div class="welcome-icon">🚀</div>
-                    <h1 class="welcome-title">EXPERT CHALLENGE</h1>
+                    <div class="welcome-icon" aria-hidden="true">🚀</div>
+                    <h1 id="challenge-title" class="welcome-title">EXPERT CHALLENGE</h1>
                     <p class="welcome-subtitle">The Ultimate Programming Test</p>
                     <div class="welcome-stats">
                         <div class="stat-item">
@@ -109,80 +115,90 @@ $currentUser = $auth->getCurrentUser();
                     <?php if (!$isLoggedIn): ?>
                     <div class="guest-input-section">
                         <label for="guest-nickname" class="input-label">Enter Your Nickname:</label>
-                        <input type="text" id="guest-nickname" class="retro-input" placeholder="Your nickname here..." maxlength="20">
-                        <span id="nickname-status" class="nickname-status"></span>
+                        <input type="text" id="guest-nickname" class="retro-input" placeholder="Your nickname here..." maxlength="20" aria-describedby="nickname-status">
+                        <span id="nickname-status" class="nickname-status" role="status" aria-live="polite"></span>
                     </div>
                     <?php endif; ?>
                     <div class="welcome-buttons">
-                        <button class="btn-retro btn-start">
+                        <button class="btn-retro btn-start" aria-describedby="start-description">
                             <span class="btn-text">START CHALLENGE</span>
                         </button>
-                        <button class="btn-retro btn-instructions">
+                        <button class="btn-retro btn-instructions" aria-describedby="instructions-description">
                             <span class="btn-text">📖 INSTRUCTIONS</span>
                         </button>
-                        <button class="btn-retro btn-leaderboard">
+                        <button class="btn-retro btn-leaderboard" aria-describedby="leaderboard-description">
                             <span class="btn-text">🏆 LEADERBOARD</span>
                         </button>
+                    </div>
+                    <div class="visually-hidden">
+                        <div id="start-description">Begin the expert challenge with 20 questions and 2:30 time limit</div>
+                        <div id="instructions-description">View detailed instructions about challenge rules and question types</div>
+                        <div id="leaderboard-description">View top scores and rankings for the challenge</div>
                     </div>
                 </div>
             </div>
             <!-- Challenge In Progress Screen -->
-            <div id="challenge-progress" class="challenge-screen">
+            <div id="challenge-progress" class="challenge-screen" role="main" aria-labelledby="question-title">
                 <!-- Header Stats -->
-                <div class="challenge-header">
+                <div class="challenge-header" role="region" aria-label="Challenge Progress">
                     <div class="header-left">
                         <div class="progress-info">
-                            <span class="progress-text">Question <span id="current-question">1</span> of 20</span>
+                            <span class="progress-text">Question <span id="current-question" aria-live="polite">1</span> of 20</span>
                         </div>
                         <div class="score-info">
-                            <span class="score-text">Score: <span id="current-score">0</span></span>
+                            <span class="score-text">Score: <span id="current-score" aria-live="polite">0</span></span>
                         </div>
                     </div>
                     <div class="header-center">
                         <div class="timer-container">
                             <span class="timer-label">TIME:</span>
-                            <span id="challenge-timer" class="timer-display">02:30</span>
+                            <span id="challenge-timer" class="timer-display" aria-live="polite" aria-label="Time remaining">02:30</span>
                         </div>
                     </div>
                     <div class="header-right">
                         <div class="hearts-container">
                             <span class="hearts-label">LIVES:</span>
-                            <span id="challenge-hearts" class="hearts-display">♥♥♥</span>
+                            <span id="challenge-hearts" class="hearts-display" aria-live="polite" aria-label="Lives remaining">♥♥♥</span>
                         </div>
                     </div>
                 </div>
                 <!-- Question Content -->
                 <div class="question-container">
                     <div class="question-header">
-                        <span id="question-type" class="question-type">FILL IN THE BLANK</span>
-                        <span id="question-points" class="question-points">30 pts</span>
+                        <span id="question-type" class="question-type" aria-label="Question type">FILL IN THE BLANK</span>
+                        <span id="question-points" class="question-points" aria-label="Points for this question">30 pts + bonus</span>
                     </div>
                     <div class="question-content">
                         <h3 id="question-title" class="question-title">Question Title</h3>
                         <p id="question-description" class="question-description">Question description goes here...</p>
                         <!-- Code Editor (for code questions) -->
-                        <div id="code-editor-container" class="code-editor-container" style="display: none;">
+                        <div id="code-editor-container" class="code-editor-container" style="display: none;" role="region" aria-label="Code editor">
                             <div class="editor-header">
                                 <span class="editor-title">Code Editor</span>
-                                <button class="btn-retro btn-run" onclick="runCode()">▶ RUN</button>
+                                <button class="btn-retro btn-run" onclick="runCode()" aria-label="Run code">▶ RUN</button>
                             </div>
-                            <textarea id="code-editor" class="code-editor" placeholder="Write your code here..."></textarea>
-                            <div id="code-output" class="code-output"></div>
+                            <textarea id="code-editor" class="code-editor" placeholder="Write your code here..." aria-label="Code input area"></textarea>
+                            <div id="code-output" class="code-output" role="region" aria-label="Code output"></div>
                         </div>
                         <!-- Text Input (for fill-in-blank, output, case study) -->
                         <div id="text-input-container" class="text-input-container">
                             <label for="answer-input" class="input-label">Your Answer:</label>
-                            <input type="text" id="answer-input" class="retro-input" placeholder="Type your answer...">
+                            <input type="text" id="answer-input" class="retro-input" placeholder="Type your answer..." aria-describedby="answer-help">
+                            <div id="answer-help" class="visually-hidden">Enter your answer for this question</div>
                         </div>
                     </div>
                     <!-- Action Buttons -->
                     <div class="question-actions">
-                        <button class="btn-retro btn-submit">
+                        <button class="btn-retro btn-submit" aria-describedby="submit-help">
                             <span class="btn-text">SUBMIT ANSWER</span>
                         </button>
-                        <button class="btn-retro btn-skip">
+                        <button class="btn-retro btn-skip" aria-describedby="skip-help">
                             <span class="btn-text">SKIP</span>
                         </button>
+                    </div>
+                    <div class="visually-hidden">
+                        <div id="submit-help">Submit your answer and move to the next question</div>
+                        <div id="skip-help">Skip this question without penalty</div>
                     </div>
                 </div>
             </div>
@@ -325,6 +341,7 @@ $currentUser = $auth->getCurrentUser();
     window.CG_USER_ID = <?php echo $currentUser && isset($currentUser['id']) ? (int)$currentUser['id'] : 'null'; ?>;
     window.CG_USERNAME = <?php echo $currentUser && isset($currentUser['username']) ? json_encode($currentUser['username']) : 'null'; ?>;
     window.CG_IS_LOGGED_IN = <?php echo $auth->isLoggedIn() ? 'true' : 'false'; ?>;
+    window.CSRF_TOKEN = <?php echo json_encode($csrf->getToken()); ?>;
 </script>
 <script src="assets/js/challenge.js"></script>
 </body>
