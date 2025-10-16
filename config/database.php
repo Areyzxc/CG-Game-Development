@@ -16,7 +16,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 return [
     'host' => 'localhost',     // Database host
-    'port' => 1456,            // Default MySQL port (change to 3327 if that's what you're using)
+    'port' => 1456,            // Default MySQL port (change to 3327 if that's what you're using or default 3306)
     'dbname' => 'coding_game',  // Database name
     'username' => 'root',      // Database username
     'password' => '',          // Empty password (common XAMPP default)
