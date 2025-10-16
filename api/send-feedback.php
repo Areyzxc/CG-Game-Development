@@ -30,17 +30,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $proponent = isset($_POST['proponent']) ? sanitize($_POST['proponent']) : '';
     $message = isset($_POST['message']) ? sanitize($_POST['message']) : '';
 
-    if (!$name || !$email || !$proponent || !$message) {
-        echo json_encode(['success' => false, 'error' => 'All fields are required.']);
+    // For About page, proponent might not be required
+    if (!$name || !$email || !$message) {
+        echo json_encode(['success' => false, 'error' => 'Name, email, and message are required.']);
         exit;
     }
 
     // Insert feedback into database
     try {
         $conn = Database::getInstance()->getConnection();
-        $stmt = $conn->prepare('INSERT INTO feedback_messages (sender_name, sender_email, proponent_email, message) VALUES (?, ?, ?, ?)');
-        $stmt->execute([$name, $email, $proponent, $message]);
-        echo json_encode(['success' => true, 'message' => 'Feedback sent and saved!']);
+        
+        // Check if proponent field exists in the table, if not, use default or null
+        $proponentValue = $proponent ?: 'about-page-feedback';
+        
+        $stmt = $conn->prepare('INSERT INTO feedback_messages (sender_name, sender_email, proponent_email, message, likes) VALUES (?, ?, ?, ?, 0)');
+        $stmt->execute([$name, $email, $proponentValue, $message]);
+        
+        $feedbackId = $conn->lastInsertId();
+        
+        echo json_encode([
+            'success' => true, 
+            'message' => 'Feedback sent and saved!',
+            'feedback_id' => $feedbackId
+        ]);
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
     }
