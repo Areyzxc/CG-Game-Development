@@ -82,6 +82,9 @@ if (!$currentUser) {
 }
 $userId = $currentUser['id'];
 
+// Initialize message variable
+$message = '';
+
 $pageTitle = "My Profile";
 $additionalStyles = '
     <link rel="stylesheet" href="assets/css/profile-new.css">
@@ -271,9 +274,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) 
             // Update database
             $stmt = $db->prepare('UPDATE users SET profile_picture = ? WHERE id = ?');
             if ($stmt->execute([$targetFile, $currentUser['id']])) {
-                // Update session
+                // Update session data directly
+                $_SESSION['user']['profile_picture'] = $targetFile;
                 $currentUser['profile_picture'] = $targetFile;
-                $auth->updateCurrentUser($currentUser);
                 
                 echo json_encode([
                     'success' => true,
@@ -312,10 +315,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_FILES['profile_picture']) 
             'id' => $userId
         ])) {
             $message = "Profile updated successfully!";
-            // Refresh user data in session
-            if (method_exists($auth, 'refreshUserSession')) {
-                $auth->refreshUserSession();
-            }
+            // Update session with new user data
+            $_SESSION['user'] = [
+                'id' => $userId,
+                'username' => $username,
+                'email' => $email,
+                'profile_picture' => $profilePicPath,
+                'bio' => $bio,
+                'location' => $location,
+                'role' => $_SESSION['user']['role'] // Preserve the user's role
+            ];
             $currentUser = $auth->getCurrentUser();
             $csrf->regenerateToken();
         } else {
@@ -538,6 +547,33 @@ $stats['last_month_progress'] = min(100, $stats['overall_progress'] * 0.9); // E
                                     <div class="stat-value"><?php echo $stats['last_month_progress']; ?>%</div>
                                     <div class="stat-label">Last Month</div>
                                 </div>
+                                <div class="stat-item">
+                                    <div class="stat-value"><?php echo $stats['points']; ?></div>
+                                    <div class="stat-label">Points</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">#<?php echo $stats['rank']; ?></div>
+                                    <div class="stat-label">Global Rank</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value"><?php echo $stats['challenges_completed']; ?></div>
+                                    <div class="stat-label">Challenges</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value"><?php echo $stats['quizzes_passed']; ?></div>
+                                    <div class="stat-label">Quizzes</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value"><?php echo $stats['mini_games_completed']; ?>/2</div>
+                                    <div class="stat-label">Mini-Games</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value"><?php echo $stats['tutorials_completed']; ?>/<?php echo $stats['total_topics']; ?></div>
+                                    <div class="stat-label">Tutorials</div>
+                                    <div class="stats-overview-progress">
+                                        <div class="stats-overview-progress-bar" style="width: <?php echo $stats['tutorial_progress_percentage']; ?>%"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -573,10 +609,10 @@ $stats['last_month_progress'] = min(100, $stats['overall_progress'] * 0.9); // E
                             </div>
                             <div class="progress" style="height: 6px;">
                                 <div class="progress-bar bg-primary" role="progressbar" 
-                                     style="width: <?php echo $completeness; ?>%;" 
-                                     aria-valuenow="<?php echo $completeness; ?>" 
-                                     aria-valuemin="0" 
-                                     aria-valuemax="100">
+                                    style="width: <?php echo $completeness; ?>%;" 
+                                    aria-valuenow="<?php echo $completeness; ?>" 
+                                    aria-valuemin="0" 
+                                    aria-valuemax="100">
                                 </div>
                             </div>
                             <div class="form-text mt-2">
@@ -625,61 +661,6 @@ $stats['last_month_progress'] = min(100, $stats['overall_progress'] * 0.9); // E
             
             <!-- Sidebar -->
             <div class="col-lg-4">
-                <!-- Stats Summary -->
-                <!-- In your stats section -->
-<div class="row">
-    <div class="col-md-3 col-6 mb-4">
-        <div class="stat-card">
-            <div class="stat-value"><?php echo $stats['points']; ?></div>
-            <div class="stat-label">Points</div>
-        </div>
-    </div>
-    <div class="col-md-3 col-6 mb-4">
-        <div class="stat-card">
-            <div class="stat-value">#<?php echo $stats['rank']; ?></div>
-            <div class="stat-label">Global Rank</div>
-        </div>
-    </div>
-    <div class="col-md-3 col-6 mb-4">
-        <div class="stat-card">
-            <div class="stat-value"><?php echo $stats['challenges_completed']; ?></div>
-            <div class="stat-label">Challenges</div>
-        </div>
-    </div>
-    <div class="col-md-3 col-6 mb-4">
-        <div class="stat-card">
-            <div class="stat-value"><?php echo $stats['quizzes_passed']; ?></div>
-            <div class="stat-label">Quizzes Passed</div>
-        </div>
-    </div>
-    <div class="col-md-3 col-6 mb-4">
-        <div class="stat-card">
-            <div class="stat-value"><?php echo $stats['mini_games_completed']; ?>/2</div>
-            <div class="stat-label">Mini-Games</div>
-        </div>
-    </div>
-    <div class="col-md-3 col-6 mb-4">
-    <div class="stat-card">
-        <div class="stat-value">
-            <?php echo $stats['tutorials_completed']; ?> / <?php echo $stats['total_topics']; ?>
-        </div>
-        <div class="stat-label">Tutorials</div>
-        <div class="progress mt-2" style="height: 5px;">
-            <div class="progress-bar bg-success" 
-                 role="progressbar" 
-                 style="width: <?php echo $stats['tutorial_progress_percentage']; ?>%" 
-                 aria-valuenow="<?php echo $stats['tutorial_progress_percentage']; ?>" 
-                 aria-valuemin="0" 
-                 aria-valuemax="100">
-            </div>
-        </div>
-        <small class="text-muted"><?php echo $stats['tutorial_progress_percentage']; ?>% Complete</small>
-    </div>
-          </div>
-                </div>
-                      </div>
-                            </div>
-                
                 <!-- Connect With Me -->
 <div class="card mb-4">
     <div class="card-header d-flex justify-content-between align-items-center">
@@ -696,31 +677,42 @@ $stats['last_month_progress'] = min(100, $stats['overall_progress'] * 0.9); // E
     </div>
     <div class="card-body">
         <div class="social-links">
-            <a href="<?php echo !empty($currentUser['social_instagram']) ? 'https://instagram.com/' . htmlspecialchars($currentUser['social_instagram']) : '#'; ?>" 
-               class="social-link <?php echo empty($currentUser['social_instagram']) ? 'text-muted' : ''; ?>" 
-               target="_blank">
-                <i class="fab fa-instagram me-2"></i> 
-                <?php echo !empty($currentUser['social_instagram']) ? htmlspecialchars($currentUser['social_instagram']) : 'Not set'; ?>
-            </a>
-            <!-- Repeat for other social media links -->
-            <a href="<?php echo !empty($currentUser['social_facebook']) ? 'https://facebook.com/' . htmlspecialchars($currentUser['social_facebook']) : '#'; ?>" 
-               class="social-link <?php echo empty($currentUser['social_facebook']) ? 'text-muted' : ''; ?>" 
-               target="_blank">
-                <i class="fab fa-facebook me-2"></i> 
-                <?php echo !empty($currentUser['social_facebook']) ? htmlspecialchars($currentUser['social_facebook']) : 'Not set'; ?>
-            </a>
-            <a href="<?php echo !empty($currentUser['social_twitter']) ? 'https://twitter.com/' . htmlspecialchars($currentUser['social_twitter']) : '#'; ?>" 
-               class="social-link <?php echo empty($currentUser['social_twitter']) ? 'text-muted' : ''; ?>" 
-               target="_blank">
-                <i class="fab fa-twitter me-2"></i> 
-                <?php echo !empty($currentUser['social_twitter']) ? htmlspecialchars($currentUser['social_twitter']) : 'Not set'; ?>
-            </a>
-            <a href="<?php echo !empty($currentUser['social_pinterest']) ? 'https://pinterest.com/' . htmlspecialchars($currentUser['social_pinterest']) : '#'; ?>" 
-               class="social-link <?php echo empty($currentUser['social_pinterest']) ? 'text-muted' : ''; ?>" 
-               target="_blank">
-                <i class="fab fa-pinterest me-2"></i> 
-                <?php echo !empty($currentUser['social_pinterest']) ? htmlspecialchars($currentUser['social_pinterest']) : 'Not set'; ?>
-            </a>
+                <a href="<?php echo !empty($currentUser['social_instagram']) ? 'https://instagram.com/' . htmlspecialchars($currentUser['social_instagram']) : '#'; ?>" 
+                    class="social-link" target="_blank">
+                    <i class="fab fa-instagram me-2"></i> 
+                    <?php if (!empty($currentUser['social_instagram'])): ?>
+                        <?php echo htmlspecialchars($currentUser['social_instagram']); ?>
+                    <?php else: ?>
+                        <span class="text-muted">Not set</span>
+                    <?php endif; ?>
+                </a>
+                <a href="<?php echo !empty($currentUser['social_facebook']) ? 'https://facebook.com/' . htmlspecialchars($currentUser['social_facebook']) : '#'; ?>" 
+                    class="social-link" target="_blank">
+                    <i class="fab fa-facebook me-2"></i> 
+                    <?php if (!empty($currentUser['social_facebook'])): ?>
+                        <?php echo htmlspecialchars($currentUser['social_facebook']); ?>
+                    <?php else: ?>
+                        <span class="text-muted">Not set</span>
+                    <?php endif; ?>
+                </a>
+                <a href="<?php echo !empty($currentUser['social_twitter']) ? 'https://twitter.com/' . htmlspecialchars($currentUser['social_twitter']) : '#'; ?>" 
+                    class="social-link" target="_blank">
+                    <i class="fab fa-twitter me-2"></i> 
+                    <?php if (!empty($currentUser['social_twitter'])): ?>
+                        <?php echo htmlspecialchars($currentUser['social_twitter']); ?>
+                    <?php else: ?>
+                        <span class="text-muted">Not set</span>
+                    <?php endif; ?>
+                </a>
+                <a href="<?php echo !empty($currentUser['social_pinterest']) ? 'https://pinterest.com/' . htmlspecialchars($currentUser['social_pinterest']) : '#'; ?>" 
+                    class="social-link" target="_blank">
+                    <i class="fab fa-pinterest me-2"></i> 
+                    <?php if (!empty($currentUser['social_pinterest'])): ?>
+                        <?php echo htmlspecialchars($currentUser['social_pinterest']); ?>
+                    <?php else: ?>
+                        <span class="text-muted">Not set</span>
+                    <?php endif; ?>
+                </a>
         </div>
     </div>
 </div>
@@ -784,7 +776,7 @@ $stats['last_month_progress'] = min(100, $stats['overall_progress'] * 0.9); // E
         <div class="modal-content">
             <form id="profileForm" method="POST" enctype="multipart/form-data">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                    <h5 class="modal-title text-black" id="editProfileModalLabel">Edit Profile</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -793,10 +785,10 @@ $stats['last_month_progress'] = min(100, $stats['overall_progress'] * 0.9); // E
                     <div class="mb-3 text-center">
                         <div class="position-relative d-inline-block mb-3">
                             <img src="<?php echo !empty($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : 'assets/images/default-avatar.png'; ?>" 
-                                 alt="Profile Picture" 
-                                 class="rounded-circle mb-2" 
-                                 id="profileImagePreview"
-                                 style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                                alt="Profile Picture" 
+                                class="rounded-circle mb-2" 
+                                id="profileImagePreview"
+                                style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                             <label for="profile_picture" class="btn btn-sm btn-primary position-absolute bottom-0 end-0 rounded-circle" style="width: 36px; height: 36px; line-height: 24px; cursor: pointer;">
                                 <i class="fas fa-camera"></i>
                                 <input type="file" class="d-none" id="profile_picture" name="profile_picture" accept="image/*">
@@ -867,7 +859,7 @@ $stats['last_month_progress'] = min(100, $stats['overall_progress'] * 0.9); // E
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="socialMediaModalLabel">Update Social Media Links</h5>
+                <h5 class="modal-title text-black" id="socialMediaModalLabel">Update Social Media Links</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="socialMediaForm" method="POST" onsubmit="return false;">
