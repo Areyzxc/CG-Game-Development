@@ -424,76 +424,7 @@ class ThreeBackground {
             }
         });
 
-        // Animate floating lines
-        this.floatingElements.lines.forEach(line => {
-            const { speed, waveSpeed, rotationSpeed } = line.userData;
-            
-            // Wave motion
-            line.position.y += Math.sin(time * waveSpeed) * 0.1;
-            line.position.x += speed;
-            line.rotation.z += rotationSpeed;
-
-            // Reset position if too far
-            if (line.position.x > 50) {
-                line.position.x = -50;
-                line.position.y = (Math.random() - 0.5) * 100;
-            }
-        });
-
-        // Animate floating bulbs
-        this.floatingElements.bulbs.forEach(bulb => {
-            const { speed, waveSpeed, pulseSpeed, pulseMin, pulseMax } = bulb.userData;
-            
-            // Wave motion
-            bulb.position.y += Math.sin(time * waveSpeed) * 0.15;
-            bulb.position.x += speed;
-            
-            // Pulsing effect
-            const pulse = pulseMin + (Math.sin(time * pulseSpeed) + 1) * 0.5 * (pulseMax - pulseMin);
-            bulb.scale.set(pulse, pulse, pulse);
-
-            // Reset position if too far
-            if (bulb.position.x > 40) {
-                bulb.position.x = -40;
-                bulb.position.y = (Math.random() - 0.5) * 80;
-            }
-        });
-
-        // Animate floating badges
-        this.floatingElements.badges.forEach(badge => {
-            const { speed, waveSpeed, rotationSpeed } = badge.userData;
-            
-            // Wave motion
-            badge.position.y += Math.sin(time * waveSpeed) * 0.12;
-            badge.position.x += speed;
-            badge.rotation.z += rotationSpeed;
-
-            // Reset position if too far
-            if (badge.position.x > 45) {
-                badge.position.x = -45;
-                badge.position.y = (Math.random() - 0.5) * 90;
-            }
-        });
-
-        // Animate floating rewards
-        this.floatingElements.rewards.forEach(reward => {
-            const { speed, waveSpeed, rotationSpeed } = reward.userData;
-            
-            // Wave motion
-            reward.position.y += Math.sin(time * waveSpeed) * 0.13;
-            reward.position.x += speed;
-            
-            // Rotation
-            reward.rotation.x += rotationSpeed.x;
-            reward.rotation.y += rotationSpeed.y;
-            reward.rotation.z += rotationSpeed.z;
-
-            // Reset position if too far
-            if (reward.position.x > 42) {
-                reward.position.x = -42;
-                reward.position.y = (Math.random() - 0.5) * 85;
-            }
-        });
+        // (Removed floating lines, bulbs, badges, rewards animation for performance)
 
         // Smoother scene rotation
         this.targetX = (this.mouseX - this.windowHalfX) * 0.0003;
