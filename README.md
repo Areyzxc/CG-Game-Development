@@ -13,10 +13,12 @@ The system was evaluated using the ISO/IEC 25010 quality model, with an emphasis
 ## Purpose and Objectives
 
 This repository serves as the codebase for our Capstone Project (Academic Year 2025-2026). The primary goals are:
-- To create an efficient web-based platform for completing coding challenges with thought-provoking items.
-- To assess user proficiency through progressively challenging questions and inspiring rewards (e.g., points).
-- To provide a user-friendly admin dashboard for monitoring progress, user management, post announcements, and system management.
-- To promote code gaming education at Pateros Technological College by integrating gamification principles, ultimately improving student engagement and skill retention.
+- To enable players to efficiently complete coding challenges within a set time limit, ensuring high performance and productivity;
+- To present players with intricate and thought-provoking coding tasks that encourage problem-solving and critical thinking.
+- To assess players' proficiency in programming languages and/or non-programming languages, data structures, and algorithms through immersive and interactive gameplay;
+- To introduce progressively challenging levels, engaging themes, and advanced coding problems to sustain players' interest and promote continuous skill development;
+- To inspire players to climb the leaderboard by excelling in challenges and earning exclusive rewards and/or badges, encouraging sustained participation and;
+- To evaluate the web-based gaming platform in terms of its functional suitability, performance efficiency, compatibility, maintainability, reliability, usability, portability, and security.
 
 ## Key Features
 
