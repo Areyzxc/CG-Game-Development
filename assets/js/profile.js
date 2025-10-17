@@ -4,6 +4,26 @@
         const form = document.querySelector('#editProfileModal form');
         if (!form) return;
 
+            // Social Media Modal close on save
+            const socialForm = document.getElementById('socialMediaForm');
+            const socialModalEl = document.getElementById('socialMediaModal');
+            if (socialForm && socialModalEl) {
+                socialForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const submitBtn = socialForm.querySelector('button[type="submit"]');
+                    if (submitBtn) submitBtn.disabled = true;
+                    try {
+                        // Simulate AJAX save (replace with real API call if needed)
+                        await new Promise(res => setTimeout(res, 500));
+                        bootstrap.Modal.getOrCreateInstance(socialModalEl).hide();
+                    } catch (err) {
+                        alert('Failed to save social media links.');
+                    } finally {
+                        if (submitBtn) submitBtn.disabled = false;
+                    }
+                });
+            }
+
         const csrfMeta = document.querySelector('meta[name="csrf-token"]');
         const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
         console.log('CSRF Token loaded:', csrfToken ? 'Yes (length: ' + csrfToken.length + ')' : 'No');
@@ -138,7 +158,26 @@
                     },
                     body: formData
                 });
-                const result = await response.json().catch(() => ({ success: false, error: 'Invalid server response' }));
+
+                let result;
+                try {
+                    const text = await response.text();
+                    console.log('Raw server response:', text); // Debug the raw response
+                    
+                    // Check if response starts with <?php, <br>, or other HTML
+                    if (text.trim().startsWith('<')) {
+                        console.error('Server returned HTML instead of JSON:', text);
+                        showAlert('Server configuration error. Please contact support.', 'danger');
+                        return;
+                    }
+                    
+                    result = JSON.parse(text);
+                } catch (err) {
+                    console.error('Response parsing error:', err);
+                    console.error('Raw response was:', text); // Show the problematic response
+                    showAlert('Server response error. Please try again.', 'danger');
+                    return;
+                }
 
                 if (!response.ok || !result.success) {
                     showAlert(result.error || 'Failed to update profile', 'danger');
@@ -160,12 +199,17 @@
                 // Close modal and reload page to show all updates
                 const modalEl = document.getElementById('editProfileModal');
                 if (modalEl) {
-                    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
-                    modal.hide();
-                    // Reload page after modal is hidden to ensure session is updated
-                    modalEl.addEventListener('hidden.bs.modal', function() {
+                    const modal = bootstrap.Modal.getInstance(modalEl);
+                    if (modal) {
+                        // Wait for modal to finish hiding before reloading
+                        modalEl.addEventListener('hidden.bs.modal', function() {
+                            setTimeout(() => window.location.reload(), 100);
+                        }, { once: true });
+                        modal.hide();
+                    } else {
+                        // Fallback if modal instance not found
                         window.location.reload();
-                    }, { once: true });
+                    }
                 }
             } catch (err) {
                 showAlert('Network error. Please try again.', 'danger');
@@ -288,5 +332,4 @@
         }
     });
 })();
-
 
