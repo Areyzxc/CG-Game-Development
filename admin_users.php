@@ -48,6 +48,79 @@ $currentRole = $auth->getCurrentRole();
     <title>User Management - Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" />
+    <style>
+        .progress-ring-wrapper {
+            padding: 2rem;
+            text-align: center;
+        }
+        .progress-ring {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto;
+        }
+        .progress-ring__circle {
+            transform: rotate(-90deg);
+        }
+        .progress-ring__circle-bg {
+            fill: none;
+            stroke: #e9ecef;
+            stroke-width: 6;
+        }
+        .progress-ring__circle-fill {
+            fill: none;
+            stroke: #4e54c8;
+            stroke-width: 6;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s;
+        }
+        .progress-ring__content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 80%;
+        }
+        .progress-ring__percent {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+        .progress-ring__label {
+            font-size: 1rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .stat-card {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4e54c8;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+    </style>
     <link rel="stylesheet" href="assets/css/admin_dashboard.css">
     <link rel="stylesheet" href="assets/css/admin_users.css">
     <script src="assets/js/admin_users_fixed.js" defer></script>
@@ -194,6 +267,39 @@ $currentRole = $auth->getCurrentRole();
                 </div>
             </div>
         </div>
+        <!-- Progress Content -->
+        <div class="progress-content" id="progressContent" style="display: none;">
+            <div class="progress-ring-wrapper">
+                <div class="progress-ring">
+                    <svg class="progress-ring__circle" width="160" height="160">
+                        <circle class="progress-ring__circle-bg" r="70" cx="80" cy="80"/>
+                        <circle class="progress-ring__circle-fill" r="70" cx="80" cy="80"/>
+                    </svg>
+                    <div class="progress-ring__content">
+                        <div class="progress-ring__percent">0%</div>
+                        <div class="progress-ring__label">Total Progress</div>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="completedTutorials">0</div>
+                        <div class="stat-label">Tutorials</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="completedQuizzes">0</div>
+                        <div class="stat-label">Quizzes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="completedChallenges">0</div>
+                        <div class="stat-label">Challenges</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalXP">0</div>
+                        <div class="stat-label">Total XP</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="retro-modal-status-bar">
             <button class="back-button" id="modalBackButton">< Back</button>
             <div class="time-display" id="modalTime">Time: 01:12 PM</div>
@@ -204,8 +310,64 @@ $currentRole = $auth->getCurrentRole();
 
 
 <?php include 'includes/admin_footer.php'; ?>
-<script src="assets/js/admin_global.js"></script>
+    <script src="assets/js/admin_global.js"></script>
+    <script src="assets/js/retro-modal.js"></script>
     <!-- Main admin users functionality is now in admin_users_fixed.js -->
     <script src="assets/js/admin_users.js" defer></script>
+    <script>
+        // Progress ring initialization
+        function initProgressRing(percent) {
+            const circle = document.querySelector('.progress-ring__circle-fill');
+            const radius = circle.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+            circle.style.strokeDasharray = `${circumference} ${circumference}`;
+            circle.style.strokeDashoffset = `${circumference}`;
+            const offset = circumference - (percent / 100) * circumference;
+            circle.style.strokeDashoffset = offset;
+        }
+        
+        // Load user progress
+        function loadUserProgress(userId) {
+            fetch(`api/admin_get_user_progress.php?id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const progress = data.data;
+                        // Calculate total progress percentage
+                        const totalCompleted = progress.completed_tutorials + 
+                                             progress.completed_quizzes + 
+                                             progress.completed_challenges;
+                        const totalPossible = 30; // Example: assuming 10 each
+                        const percentage = Math.round((totalCompleted / totalPossible) * 100);
+                        
+                        // Update progress ring
+                        document.querySelector('.progress-ring__percent').textContent = `${percentage}%`;
+                        initProgressRing(percentage);
+                        
+                        // Update stats
+                        document.getElementById('completedTutorials').textContent = progress.completed_tutorials;
+                        document.getElementById('completedQuizzes').textContent = progress.completed_quizzes;
+                        document.getElementById('completedChallenges').textContent = progress.completed_challenges;
+                        document.getElementById('totalXP').textContent = progress.total_xp;
+                    }
+                })
+                .catch(error => console.error('Error loading user progress:', error));
+        }
+
+        // Progress tab click handler
+        document.getElementById('modalProgressButton').addEventListener('click', () => {
+            // Hide other content sections
+            document.querySelectorAll('.retro-modal-content > div').forEach(div => {
+                div.style.display = 'none';
+            });
+            
+            // Show progress content
+            document.getElementById('progressContent').style.display = 'block';
+            
+            // Load progress data for current user
+            const userId = document.getElementById('modalUsername').getAttribute('data-user-id');
+            loadUserProgress(userId);
+        });
+    </script>
 </body>
 </html>
