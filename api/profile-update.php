@@ -1,4 +1,13 @@
 <?php
+// Ensure no errors are output
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/../php_errors.log');
+
+// Buffer output to prevent any unwanted output before headers
+ob_start();
+
 require_once __DIR__ . '/../includes/Database.php';
 require_once __DIR__ . '/../includes/Auth.php';
 require_once __DIR__ . '/../includes/CSRFProtection.php';
@@ -151,14 +160,12 @@ if ($stmt->execute(['u' => $username, 'e' => $email, 'p' => $profilePicPath, 'l'
     $_SESSION['user']['location'] = $location;
     $_SESSION['user']['bio'] = $bio;
     
-    // Also update the Auth instance's current user
-    $updatedUser = $user;
-    $updatedUser['username'] = $username;
-    $updatedUser['email'] = $email;
-    $updatedUser['profile_picture'] = $profilePicPath;
-    $updatedUser['location'] = $location;
-    $updatedUser['bio'] = $bio;
-    $auth->updateCurrentUser($updatedUser);
+    // Update session data only, no need to update Auth instance
+    $_SESSION['user']['username'] = $username;
+    $_SESSION['user']['email'] = $email;
+    $_SESSION['user']['profile_picture'] = $profilePicPath;
+    $_SESSION['user']['location'] = $location;
+    $_SESSION['user']['bio'] = $bio;
     
     echo json_encode(['success' => true, 'message' => 'Profile updated', 'profile_picture' => $profilePicPath]);
 } else {
@@ -166,5 +173,3 @@ if ($stmt->execute(['u' => $username, 'e' => $email, 'p' => $profilePicPath, 'l'
 }
 
 ?>
-
-
