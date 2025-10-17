@@ -128,60 +128,7 @@ if ($showLoginNotification && $currentUser):
                             <i class="bx bx-code-alt wizard-avatar"></i>
                         </div>
                         <div class="welcome-content">
-                            <?php if ($auth->isAdmin()): ?>
-                                <!-- Admin Welcome Content -->
-                                <p class="welcome-intro">Welcome to your admin dashboard! Here's what you can manage:</p>
-                                <div class="accordion welcome-accordion" id="adminWelcomeAccordion">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#adminDashboard" aria-expanded="true" data-section="dashboard">
-                                                <i class="bx bx-tachometer me-2"></i>Admin Dashboard
-                                            </button>
-                                        </h2>
-                                        <div id="adminDashboard" class="accordion-collapse collapse show" data-bs-parent="#adminWelcomeAccordion">
-                                            <div class="accordion-body">
-                                                Monitor user activity, view system statistics, and track overall platform performance with comprehensive analytics.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#userManagement" data-section="users">
-                                                <i class="bx bx-group me-2"></i>User Management
-                                            </button>
-                                        </h2>
-                                        <div id="userManagement" class="accordion-collapse collapse" data-bs-parent="#adminWelcomeAccordion">
-                                            <div class="accordion-body">
-                                                View user progress, manage accounts, and monitor user engagement across all game modes and tutorials.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#announcements" data-section="announcements">
-                                                <i class="bx bx-megaphone me-2"></i>Announcements
-                                            </button>
-                                        </h2>
-                                        <div id="announcements" class="accordion-collapse collapse" data-bs-parent="#adminWelcomeAccordion">
-                                            <div class="accordion-body">
-                                                Create, edit, and manage site-wide announcements to keep users informed about updates, events, and new features.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#systemTracking" data-section="tracking">
-                                                <i class="bx bx-line-chart me-2"></i>System Tracking
-                                            </button>
-                                        </h2>
-                                        <div id="systemTracking" class="accordion-collapse collapse" data-bs-parent="#adminWelcomeAccordion">
-                                            <div class="accordion-body">
-                                                Access detailed logs including login history, visitor statistics, and system performance metrics for comprehensive oversight.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php else: ?>
+                            <?php if (!$auth->isAdmin()): ?>
                                 <!-- User/Guest Welcome Content -->
                                 <p class="welcome-intro">Ready to level up your coding skills? Here's what awaits you:</p>
                                 <div class="accordion welcome-accordion" id="userWelcomeAccordion">
@@ -425,7 +372,7 @@ if ($showLoginNotification && $currentUser):
                         // Get tutorial progress
                         $stmt = $conn->prepare("
                             SELECT COUNT(*) as total_topics, 
-                                   SUM(CASE WHEN status = 'done_reading' THEN 1 ELSE 0 END) as completed_topics
+                                SUM(CASE WHEN status = 'done_reading' THEN 1 ELSE 0 END) as completed_topics
                             FROM user_progress 
                             WHERE user_id = ?
                         ");
@@ -435,7 +382,7 @@ if ($showLoginNotification && $currentUser):
                         // Get quiz stats
                         $stmt = $conn->prepare("
                             SELECT COUNT(*) as total_attempts,
-                                   SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) as correct_answers
+                                SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) as correct_answers
                             FROM user_quiz_attempts 
                             WHERE user_id = ?
                         ");
@@ -445,7 +392,7 @@ if ($showLoginNotification && $currentUser):
                         // Get challenge stats
                         $stmt = $conn->prepare("
                             SELECT COUNT(*) as total_attempts,
-                                   SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) as correct_answers
+                                SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) as correct_answers
                             FROM user_challenge_attempts 
                             WHERE user_id = ?
                         ");
@@ -455,7 +402,7 @@ if ($showLoginNotification && $currentUser):
                         // Get mini-game stats
                         $stmt = $conn->prepare("
                             SELECT COUNT(*) as total_games,
-                                   MAX(score) as best_score
+                                MAX(score) as best_score
                             FROM mini_game_results 
                             WHERE user_id = ?
                         ");
@@ -544,9 +491,9 @@ if ($showLoginNotification && $currentUser):
                     <div class="col-12 col-sm-6 col-md-4 col-lg-2">
                         <div class="card quick-card drift" role="article">
                             <img src="<?php echo $image; ?>" 
-                                 class="card-img-top" 
-                                 alt="<?php echo $title; ?>"
-                                 onerror="this.src='images/default-card.png'">
+                                class="card-img-top" 
+                                alt="<?php echo $title; ?>"
+                                onerror="this.src='images/default-card.png'">
                             <div class="card-body text-center">
                                 <h6 class="card-title">
                                     <i class="fas <?php echo $icon; ?> me-2" aria-hidden="true"></i>
@@ -561,8 +508,8 @@ if ($showLoginNotification && $currentUser):
                                     <p class="small text-light"><?php echo $text; ?></p>
                                 <?php endif; ?>
                                 <a href="<?php echo $link; ?>" 
-                                   class="btn btn-outline-light btn-sm"
-                                   aria-label="Navigate to <?php echo $title; ?>">
+                                class="btn btn-outline-light btn-sm"
+                                aria-label="Navigate to <?php echo $title; ?>">
                                     Go to <?php echo $title; ?>
                                 </a>
                             </div>
@@ -574,7 +521,7 @@ if ($showLoginNotification && $currentUser):
 
         <!-- ===== Quiz Analytics & Leaderboard Section ===== -->
         <section class="container py-5" id="home-quiz-analytics" role="region" aria-labelledby="quiz-analytics-heading">
-          <div class="retro-analytics-window-bg">
+            <div class="retro-analytics-window-bg">
             <!-- Overlapping Stat Cards -->
             <div class="stat-card stat-card-best" role="img" aria-label="Best quiz score">
               <div class="stat-card-title">Best Score <span class="stat-x" aria-hidden="true">&#10005;</span></div>
