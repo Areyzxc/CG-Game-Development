@@ -139,14 +139,9 @@ class Auth {
     
 
     public function logout() {
+        // Logging handled in logout.php; no logLogin() call here
         if (isset($_SESSION['user_id'])) {
-            // Log the logout
-            $this->db->logLogin(
-                $_SESSION['user_id'],
-                $_SESSION['role'] ?? 'unknown',
-                $_SERVER['REMOTE_ADDR'],
-                session_id()
-            );
+            // No-op
         }
 
         // Clear session data
@@ -209,13 +204,7 @@ class Auth {
         $_SESSION['last_activity'] = time();
         $_SESSION['last_regeneration'] = time();
 
-        // Log the login
-        $this->db->logLogin(
-            $userId,
-            $role,
-            $_SERVER['REMOTE_ADDR'],
-            session_id()
-        );
+        // Logging handled in login logic; no logLogin() call here
     }
 
     public function requireLogin() {
