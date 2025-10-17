@@ -1,34 +1,32 @@
 <?php
-/**
- * ==========================================================
- * File: admin_dashboard.php
- * 
- * Description:
- *   - Admin Dashboard for Code Gaming platform
- *   - Features:
- *       • Stats cards for users, content, announcements, and system status
- *       • Analytics charts for user activity and content distribution
- *       • Recent announcements and quick actions panel
- *       • Recent activity table and system notifications
- *       • Modals for new/edit announcements, system settings, pin/unpin actions
- *       • Responsive, modern UI with Bootstrap and custom styles
- * 
- * Usage:
- *   - Accessible only to logged-in admins
- *   - Central hub for managing users, content, announcements, and system status
- * 
- * Files Included:
- *   - assets/css/admin_dashboard.css
- *   - assets/js/admin_global.js
- *   - assets/js/admin_dashboard.js
- *   - includes/admin_header.php, includes/admin_footer.php
- *   - External: Bootstrap, Font Awesome
- * 
- * Author: [Santiago]
- * Last Updated: [July 22, 2025]
- * -- Code Gaming Team --
- * ==========================================================
- */
+// ===========================================================
+// File: admin_dashboard.php
+//
+// Description:
+//   - Admin Dashboard for Code Gaming platform
+//   - Features:
+//       • Stats cards for users, content, announcements, and system status
+//       • Analytics charts for user activity and content distribution
+//       • Recent announcements and quick actions panel
+//       • Recent activity table and system notifications
+//       • Modals for new/edit announcements, system settings, pin/unpin actions
+//       • Responsive, modern UI with Bootstrap and custom styles
+//
+// Usage:
+//   - Accessible only to logged-in admins
+//   - Central hub for managing users, content, announcements, and system status
+//
+// Files Included:
+//   - assets/css/admin_dashboard.css
+//   - assets/js/admin_global.js
+//   - assets/js/admin_dashboard.js
+//   - includes/admin_header.php, includes/admin_footer.php
+//   - External: Bootstrap, Font Awesome
+//
+// Author: [Santiago]
+// Last Updated: [July 22, 2025]
+// -- Code Gaming Team --
+// ===========================================================
 require_once 'includes/Auth.php';
 
 $auth = Auth::getInstance();
@@ -48,6 +46,105 @@ if (!$auth->isAdmin()) {
 $currentUser = $auth->getCurrentUser();
 $currentRole = $auth->getCurrentRole();
 ?>
+<!-- Admin Welcome Modal -->
+<div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <div class="modal-content">
+      <div class="modal-header welcome-modal-header">
+        <div class="welcome-icon-container">
+          <i class="bx bx-magic-wand welcome-icon"></i>
+        </div>
+        <div class="welcome-title-container">
+          <h4 class="modal-title welcome-title" id="welcomeModalLabel">
+            Welcome to Code Game, <?php echo htmlspecialchars($currentUser['username'] ?? 'Admin'); ?>!
+          </h4>
+          <p class="welcome-subtitle">Let's explore your coding adventure!</p>
+        </div>
+        <button type="button" class="btn-close welcome-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body welcome-modal-body">
+        <div class="wizard-container">
+          <div class="wizard-character">
+            <i class="bx bx-code-alt wizard-avatar"></i>
+          </div>
+          <div class="welcome-content">
+            <!-- Admin Welcome Content -->
+            <p class="welcome-intro">Welcome to your admin dashboard! Here's what you can manage:</p>
+            <div class="accordion welcome-accordion" id="adminWelcomeAccordion">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#adminDashboard" aria-expanded="true" data-section="dashboard">
+                    <i class="bx bx-tachometer me-2"></i>Admin Dashboard
+                  </button>
+                </h2>
+                <div id="adminDashboard" class="accordion-collapse collapse show" data-bs-parent="#adminWelcomeAccordion">
+                  <div class="accordion-body">
+                    Monitor user activity, view system statistics, and track overall platform performance with comprehensive analytics.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#userManagement" data-section="users">
+                    <i class="bx bx-group me-2"></i>User Management
+                  </button>
+                </h2>
+                <div id="userManagement" class="accordion-collapse collapse" data-bs-parent="#adminWelcomeAccordion">
+                  <div class="accordion-body">
+                    View user progress, manage accounts, and monitor user engagement across all game modes and tutorials.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#announcements" data-section="announcements">
+                    <i class="bx bx-megaphone me-2"></i>Announcements
+                  </button>
+                </h2>
+                <div id="announcements" class="accordion-collapse collapse" data-bs-parent="#adminWelcomeAccordion">
+                  <div class="accordion-body">
+                    Create, edit, and manage site-wide announcements to keep users informed about updates, events, and new features.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#systemTracking" data-section="tracking">
+                    <i class="bx bx-line-chart me-2"></i>System Tracking
+                  </button>
+                </h2>
+                <div id="systemTracking" class="accordion-collapse collapse" data-bs-parent="#adminWelcomeAccordion">
+                  <div class="accordion-body">
+                    Access detailed logs including login history, visitor statistics, and system performance metrics for comprehensive oversight.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer welcome-modal-footer">
+        <div class="footer-left">
+          <div class="wizard-tip">
+            <i class="bx bx-bulb me-2"></i>
+            <span>Tip: You can always access help from the navigation menu!</span>
+          </div>
+          <div class="dont-show-again-container">
+            <label class="form-check-label dont-show-again-label">
+              <input type="checkbox" class="form-check-input me-2" id="dontShowAgainCheck">
+              <i class="bx bx-hide me-1"></i>Don't show this welcome tour again
+            </label>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary welcome-btn" data-bs-dismiss="modal">
+          <i class="bx bx-rocket me-2"></i>Let's Start Coding!
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
