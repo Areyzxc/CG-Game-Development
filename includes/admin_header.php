@@ -58,7 +58,6 @@ $profilePicture = htmlspecialchars($profilePicture);
                     <li class="nav-item"><a class="nav-link" href="admin_announcements.php"><i class="fas fa-bullhorn me-1"></i>Announcements</a></li>
                     <li class="nav-item"><a class="nav-link" href="admin_users.php"><i class="fas fa-users me-1"></i>Users</a></li>
                     <li class="nav-item"><a class="nav-link" href="admin_analytics.php"><i class="fas fa-chart-line me-1"></i>Analytics</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin_content.php"><i class="fas fa-pencil-alt me-1"></i>Content</a></li>
                 </ul>
                 <div class="d-flex align-items-center ms-3">
                     <span class="vr mx-3 d-none d-lg-block" style="height:32px; opacity:0.2;"></span>
