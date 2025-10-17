@@ -22,7 +22,7 @@ This repository serves as the codebase for our Capstone Project (Academic Year 2
 
 ## Key Features
 
-- **User Profiles**: Customizable profiles with editable usernames, email, bios, kication, banners, avatars, and progress tracking.
+- **User Profiles**: Customizable profiles with editable usernames, email, bios, location, banners, avatars, and progress tracking.
 - **Interactive Tutorials**: Step-by-step guides with dynamic pop-ups, pagination, and progress indicators for learning coding concepts.
 - **Game Modes**: Mini-games like "Guess the Output" and "Speed Typing," quizzes, and challenges with scoring, timers, and feedback.
 - **Engagement Elements**: points, leaderboards, floating icons, background music, and a feedback container located at the About Us page for a personalized experience.
@@ -31,10 +31,10 @@ This repository serves as the codebase for our Capstone Project (Academic Year 2
 
 ## Technology Stack
 
-- **Frontend**: HTML5, CSS3, JavaScript, Bootstrap 5, Three.js (for 3D effects on Anchor page), Chart.js (for progress visuals), ScrollReveal.js (for animations).
+- **Frontend**: HTML5, CSS3, JavaScript, Bootstrap 5, Three.js (for 3D effects on Anchor page), Chart.js (for progress visuals), ScrollReveal.js (for animations), Boxicons, Popper.js, Typed.js, Rellax.js, and Anime.js.
 - **Backend**: PHP, MySQL (via XAMPP for local development), AJAX for seamless interactions.
-- **Database**: MySQL tables for users, visitors, questions, admins, logs, progress-tracking data, and much, much more.
-- **Deployment**: Hosted via GitHub Student Pack (e.g., Namecheap domains, Digital Ocean/Azure for free tier).
+- **Database**: MySQL tables for users, visitors, questions, admins, logs, progress-tracking data, feedback-likes, team-members, and much, much more.
+- **Deployment**: Hosted via GitHub Student Pack (e.g., Namecheap domains, Digital Ocean/Azure for free tier)/InfinityFree
 - **Development Methodology**: Agile with weekly/monthly meetings and iterative sprints.
 
 ## Installation and Setup
@@ -65,7 +65,8 @@ This repository serves as the codebase for our Capstone Project (Academic Year 2
 
 ## Usage
 
-- **As a User**: Register/login, explore tutorials/topics, play mini-games, quizzes, and challenges to earn points, and track progress on your dashboard or browse through the pages as a visitor/guest.
+- **As a User**: Register/login, explore tutorials/topics, play mini-games, quizzes, and challenges to earn points, and track progress on your dashboard.
+- **As a Guest/Visitor: Browse to any pages and explore more by signing up!
 - **As an Admin**: Access the dashboard to monitor users, post announcements, and view analytics.
 - **Testing**: Run surveys (included in `/surveys` or this Google Form link: ) to evaluate via ISO/IEC 25010—analyze results for Capstone reporting in Chapters 4 and 5.
 
