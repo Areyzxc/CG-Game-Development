@@ -1,0 +1,33 @@
+name: Bug Report
+description: Report a bug in the system
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "Thanks for reporting a bug in Code Gaming!"
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of the bug.
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: How can we replicate the issue?
+      placeholder: "1. Go to Home Page\n2. Click mini-game..."
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should happen?
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happens?
+  - type: input
+    id: browser
+    attributes:
+      label: Browser/Environment
+      description: e.g., Chrome on Windows
