@@ -66,7 +66,7 @@ This repository serves as the codebase for our Capstone Project (Academic Year 2
 ## Usage
 
 - **As a User**: Register/login, explore tutorials/topics, play mini-games, quizzes, and challenges to earn points, and track progress on your dashboard.
-- **As a Guest/Visitor: Browse to any pages and explore more by signing up!
+- **As a Guest/Visitor**: Browse to any pages and explore more by signing up!
 - **As an Admin**: Access the dashboard to monitor users, post announcements, and view analytics.
 - **Testing**: Run surveys (included in `/surveys` or this Google Form link: ) to evaluate via ISO/IEC 25010—analyze results for Capstone reporting in Chapters 4 and 5.
 
