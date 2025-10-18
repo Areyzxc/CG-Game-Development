@@ -9,13 +9,13 @@
 
 **Code Gaming** is an interactive web-based educational game system designed to teach coding skills and programming languages in an engaging, gamified manner. Developed as a Capstone Project for BSIT/CSS Students and IT Experts at Pateros Technological College, this platform transforms traditional coding learning into fun challenges, tutorials, topics to read, and mini-games. It targets beginners, intermediate, and expert learners, focusing on languages such as HTML, CSS, Bootstrap, JavaScript, Python, Java, and C++. The platform incorporates points, progress tracking, motivational quotes from famous coding experts, and leaderboards to boost motivation.
 
-The system was evaluated using the ISO/IEC 25010 quality model, with an emphasis on aspects such as functional suitability, performance efficiency, compatibility, usability, reliability, security, maintainability, and portability. This project aims to address common challenges in coding education, such as low engagement, by making learning feel like an adventure and a comfort.
+The system was evaluated using the ISO/IEC 25010 quality model, with an emphasis on aspects such as functional suitability, performance efficiency, compatibility, maintainability, reliability, usability, portability, and security. This project aims to address common challenges in coding education, such as low engagement, demotivation, and struggles, by making learning feel like an adventure and with comfort.
 
 ## Purpose and Objectives
 
 This repository serves as the codebase for our Capstone Project (Academic Year 2025-2026). The primary goals are:
 - To enable players to efficiently complete coding challenges within a set time limit, ensuring high performance and productivity;
-- To present players with intricate and thought-provoking coding tasks that encourage problem-solving and critical thinking.
+- To present players with intricate and thought-provoking coding tasks that encourage problem-solving and critical thinking;
 - To assess players' proficiency in programming languages and/or non-programming languages, data structures, and algorithms through immersive and interactive gameplay;
 - To introduce progressively challenging levels, engaging themes, and advanced coding problems to sustain players' interest and promote continuous skill development;
 - To inspire players to climb the leaderboard by excelling in challenges and earning exclusive rewards and/or badges, encouraging sustained participation and;
@@ -23,6 +23,7 @@ This repository serves as the codebase for our Capstone Project (Academic Year 2
 
 ## Key Features
 
+- **Anchor Page**: The main landing point upon visiting this code gaming system, with some detailed description about this platform is managed.
 - **User Profiles**: Customizable profiles with editable usernames, email, bios, location, banners, avatars, and progress tracking.
 - **Interactive Tutorials**: Step-by-step guides with dynamic pop-ups, pagination, and progress indicators for learning coding concepts.
 - **Game Modes**: Mini-games like "Guess the Output" and "Speed Typing," quizzes, and challenges with scoring, timers, and feedback.
@@ -46,7 +47,7 @@ This repository serves as the codebase for our Capstone Project (Academic Year 2
 
 2. **Clone the Repository**:
    ```
-   git clone https://github.com/your-repo-name/Game-Development.git
+   git clone https://github.com/your-repo-name/CG-Game-Development.git
    cd Game-Development
    ```
 
@@ -56,7 +57,7 @@ This repository serves as the codebase for our Capstone Project (Academic Year 2
 
 4. **Run Locally**:
    - Start XAMPP (Apache + MySQL).
-   - Open `http://localhost/Game-Development` in your browser.
+   - Open `http://localhost/CG-Game-Development` in your browser.
 
 5. **Deployment** (Optional):
    - Use GitHub Pages for static previews or a free host like Heroku/Netlify for full deployment.
@@ -94,4 +95,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Special thanks to our professors and panelists from Capstone and Pateros Technological College for guidance. Inspired by gamification studies and open-source educational tools.
 
-For questions or collaborations, contact us via GitHub Issues and Discussions (Make sure to have a GitHub account registered) or email at [jamesariess76@gmail.com].
+For questions or collaborations, contact us via GitHub Issues and Discussions (Make sure to have a GitHub account registered) or email us at [jamesariess76@gmail.com].
