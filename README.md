@@ -3,6 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub issues](https://img.shields.io/github/issues/Areyzxc/Game-Development)](https://github.com/Areyzxc/Game-Development/issues)
 [![GitHub stars](https://img.shields.io/github/stars/Areyzxc/Game-Development)](https://github.com/Areyzxc/Game-Development/stargazers)
+[![GitHub release](https://img.shields.io/github/v/release/Areyzxc/Game-Development)](https://github.com/Areyzxc/Game-Development/releases)
 
 ## Project Overview
 
