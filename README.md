@@ -1,4 +1,5 @@
-# An Educational Game System for Teaching Coding Skills and Programming Languages for Pateros Technological College
+# An Educational Game System for Teaching Coding Skills and Programming Languages for Pateros Technological College 🎮💻
+Welcome to our BSIT Capstone project at Pateros Technological College! This repo hosts "Code Gaming," a web-based system to teach coding skills with fun challenges. Check out our [latest release v0.0.2](https://github.com/Areyzxc/Game-Development/releases/tag/v0.0.2) and join our growing team! 🚀
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub issues](https://img.shields.io/github/issues/Areyzxc/Game-Development)](https://github.com/Areyzxc/Game-Development/issues)
