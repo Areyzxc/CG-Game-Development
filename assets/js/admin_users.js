@@ -543,13 +543,18 @@ document.addEventListener('DOMContentLoaded', () => {
        // Update the modal content
     modalOverlay.innerHTML = modalContent;
 
-
     // Add this to admin_users.js after the modal content is created
 function setupModalButtons(user) {
-    // Edit Button
-    document.getElementById('modalEditButton').addEventListener('click', function() {
-        // Show edit mode
-        enableEditMode();
+    // Edit Button Functionality 
+    const modalEditButton = document.getElementById('modalEditButton');
+    const modalSaveButton = document.getElementById('modalSaveButton');
+    const modalCancelButton = document.getElementById('modalCancelButton');
+    const modalUsername = document.getElementById('modalUsername');
+    const modalProfilePicInput = document.getElementById('modalProfilePicInput');
+
+    // Edit button click handler
+    modalEditButton.addEventListener('click', function() {
+        enableEditMode(user);
     });
 
     // Reset Pass Button
@@ -622,7 +627,6 @@ function setupModalButtons(user) {
     });
 }
 
-    // Remove the setupEditHandlers() call since we'll handle it differently
     // Instead, call our new setupModalButtons function
     setupModalButtons(user);
     
@@ -634,19 +638,8 @@ function setupModalButtons(user) {
     if (backButton) backButton.addEventListener('click', hideModal);
 
     return true;
-    }
-        
-        function setupEditHandlers() {
-            const editButton = document.createElement('button');
-            editButton.className = 'btn btn-sm btn-outline-primary';
-            editButton.innerHTML = '<i class="fas fa-edit"></i> Edit';
-            editButton.addEventListener('click', enableEditMode);
-            
-            const titleBar = document.querySelector('.retro-modal-title-bar');
-            if (titleBar) {
-                titleBar.appendChild(editButton);
-            }
-            
+    } 
+
             function enableEditMode() {
                 console.log('Edit mode enabled');
                 
@@ -790,42 +783,9 @@ function setupModalButtons(user) {
                 }
             }
         }
-    }
 
     // --- Modal Edit/Save/Cancel Logic ---
-    const modalEditButton = document.getElementById('modalEditButton');
-    const modalSaveButton = document.getElementById('modalSaveButton');
-    const modalCancelButton = document.getElementById('modalCancelButton');
-    const modalProfilePicInput = document.getElementById('modalProfilePicInput');
-    const modalProfilePic = document.getElementById('modalProfilePic');
-    const modalUsername = document.getElementById('modalUsername');
-    const modalUsernameInput = document.getElementById('modalUsernameInput');
-
-    modalEditButton.addEventListener('click', function() {
-        // Show input fields
-        modalUsername.classList.add('d-none');
-        modalUsernameInput.classList.remove('d-none');
-        modalProfilePicInput.classList.remove('d-none');
-        // Show Save/Cancel, hide Edit
-        modalEditButton.classList.add('d-none');
-        modalSaveButton.classList.remove('d-none');
-        modalCancelButton.classList.remove('d-none');
-    });
-
-    modalCancelButton.addEventListener('click', function() {
-        // Hide input fields, revert values
-        modalUsernameInput.classList.add('d-none');
-        modalUsername.classList.remove('d-none');
-        modalProfilePicInput.value = '';
-        modalProfilePicInput.classList.add('d-none');
-        // Hide Save/Cancel, show Edit
-        modalEditButton.classList.remove('d-none');
-        modalSaveButton.classList.add('d-none');
-        modalCancelButton.classList.add('d-none');
-        // Reset preview
-        modalProfilePic.src = modalProfilePic.dataset.original || modalProfilePic.src;
-        modalUsernameInput.value = modalUsername.textContent;
-    });
+    
 
     // Preview profile picture on file select
     modalProfilePicInput.addEventListener('change', function(e) {
@@ -838,18 +798,6 @@ function setupModalButtons(user) {
             reader.readAsDataURL(file);
         }
     });
-
-    modalSaveButton.addEventListener('click', function() {
-        // Prepare form data
-        const userId = modalOverlay.dataset.userid;
-        const userType = modalOverlay.dataset.usertype;
-        const newUsername = modalUsernameInput.value.trim();
-        const file = modalProfilePicInput.files[0];
-        
-        if (!newUsername) {
-            showToast('Username cannot be empty.', 'error');
-            return;
-        }
         
         // Show loading state
         const saveButton = this;
