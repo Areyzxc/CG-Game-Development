@@ -15,7 +15,7 @@
  *   - FontAwesome (icons)
  *   - Bootstrap (optional for modal styling)
  * Author: CodeGaming Team
- * Last Updated: October 2, 2025
+ * Last Updated: October 20, 2025
  */
 
 // admin_users.js
@@ -75,6 +75,35 @@ function updateUserAvatar(userId, userType, newPic) {
         });
     }
 }
+    // Helper function to update user in the UI
+    function updateUserInUI(userId, userType, newUsername, profilePic) {
+        const tableId = userType === 'admin' ? 'adminsTableBody' : 'usersTableBody';
+        const tableBody = document.getElementById(tableId);
+        if (!tableBody) return;
+        
+        const rows = tableBody.querySelectorAll('tr');
+        const basePath = window.location.pathname.split('/').slice(0, -1).join('/');
+        
+        rows.forEach(row => {
+            const idCell = row.querySelector('td:nth-child(3)');
+            if (idCell && idCell.textContent.trim() === userId) {
+                // Update username (4th column)
+                const usernameCell = row.querySelector('td:nth-child(4)');
+                if (usernameCell) {
+                    usernameCell.textContent = newUsername;
+                }
+                
+                // Update avatar if changed
+                if (profilePic) {
+                    const avatarImg = row.querySelector('td:nth-child(2) img');
+                    if (avatarImg) {
+                        const timestamp = new Date().getTime();
+                        avatarImg.src = `${basePath}/uploads/avatars/${profilePic}?t=${timestamp}`;
+                    }
+                }
+            }
+        });
+    }
 
 // Add event listener for save button
 document.addEventListener('click', function(e) {
@@ -434,6 +463,134 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+
+    // Standalone function to enable edit mode
+function enableEditMode() {
+    console.log('Edit mode enabled');
+    
+    // Get the necessary elements
+    const usernameSpan = document.getElementById('modalUsername');
+    const profilePic = document.getElementById('modalProfilePic');
+    const profilePicContainer = document.querySelector('.profile-picture-container');
+    const fileInput = document.getElementById('modalProfilePicInput');
+    const modalEditButton = document.getElementById('modalEditButton');
+    const modalSaveButton = document.getElementById('modalSaveButton');
+    const modalCancelButton = document.getElementById('modalCancelButton');
+    
+    if (!usernameSpan || !profilePic || !profilePicContainer) {
+        console.error('Required elements not found for edit mode');
+        return;
+    }
+    
+    // Show Save/Cancel, hide Edit
+    modalEditButton.classList.add('d-none');
+    modalSaveButton.classList.remove('d-none');
+    modalCancelButton.classList.remove('d-none');
+    
+    // Replace username with an input field
+    const currentUsername = usernameSpan.textContent;
+    const usernameInput = document.createElement('input');
+    usernameInput.type = 'text';
+    usernameInput.id = 'editUsernameInput';
+    usernameInput.className = 'form-control';
+    usernameInput.value = currentUsername;
+    usernameSpan.replaceWith(usernameInput);
+    
+    // Show file input
+    fileInput.classList.remove('d-none');
+    
+    // Add change picture button
+    const changePicBtn = document.createElement('button');
+    changePicBtn.className = 'btn btn-sm btn-outline-secondary mt-2';
+    changePicBtn.innerHTML = '<i class="fas fa-camera"></i> Change Picture';
+    changePicBtn.onclick = () => fileInput.click();
+    
+    profilePicContainer.appendChild(changePicBtn);
+}
+
+// Standalone function to setup modal buttons
+function setupModalButtons(user) {
+    const modalEditButton = document.getElementById('modalEditButton');
+    const modalPasswordButton = document.getElementById('modalPasswordButton');
+    const modalActivityButton = document.getElementById('modalActivityButton');
+    const modalProgressButton = document.getElementById('modalProgressButton');
+
+    // Edit button click handler
+    if (modalEditButton) {
+        modalEditButton.addEventListener('click', function() {
+            enableEditMode();
+        });
+    }
+
+    // Reset Pass Button
+    if (modalPasswordButton) {
+        modalPasswordButton.addEventListener('click', function() {
+            fetch(`api/admin_reset_password.php?id=${user.id}&type=${user.role}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast('Password reset email sent to user', 'success');
+                    } else {
+                        showToast('Failed to reset password: ' + data.error, 'error');
+                    }
+                })
+                .catch(error => {
+                    showToast('Error resetting password', 'error');
+                    console.error('Password reset error:', error);
+                });
+        });
+    }
+
+    // Activity Button
+    if (modalActivityButton) {
+        modalActivityButton.addEventListener('click', function() {
+            document.querySelectorAll('.retro-modal-content > div, .progress-content').forEach(div => {
+                div.style.display = 'none';
+            });
+            
+            const activityContent = document.createElement('div');
+            activityContent.className = 'activity-content';
+            activityContent.innerHTML = '<div class="loading">Loading activity...</div>';
+            document.querySelector('.retro-modal-content').appendChild(activityContent);
+            
+            fetch(`api/admin_get_user_activity.php?id=${user.id}&type=${user.role}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        activityContent.innerHTML = `
+                            <div class="activity-list">
+                                ${data.activities.map(activity => `
+                                    <div class="activity-item">
+                                        <div class="activity-time">${new Date(activity.timestamp).toLocaleString()}</div>
+                                        <div class="activity-description">${activity.description}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    } else {
+                        activityContent.innerHTML = '<div class="error">Failed to load activity</div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading activity:', error);
+                    activityContent.innerHTML = '<div class="error">Error loading activity</div>';
+                });
+        });
+    }
+
+    // Progress Button
+    if (modalProgressButton) {
+        modalProgressButton.addEventListener('click', () => {
+            document.querySelectorAll('.retro-modal-content > div').forEach(div => {
+                div.style.display = 'none';
+            });
+            
+            document.getElementById('progressContent').style.display = 'block';
+            loadUserProgress(user.id);
+        });
+    }
+}
+
     function populateModal(user) {
         console.log('populateModal called with user:', user);
         
@@ -543,92 +700,8 @@ document.addEventListener('DOMContentLoaded', () => {
        // Update the modal content
     modalOverlay.innerHTML = modalContent;
 
-    // Add this to admin_users.js after the modal content is created
-function setupModalButtons(user) {
-    // Edit Button Functionality 
-    const modalEditButton = document.getElementById('modalEditButton');
-    const modalSaveButton = document.getElementById('modalSaveButton');
-    const modalCancelButton = document.getElementById('modalCancelButton');
-    const modalUsername = document.getElementById('modalUsername');
-    const modalProfilePicInput = document.getElementById('modalProfilePicInput');
-
-    // Edit button click handler
-    modalEditButton.addEventListener('click', function() {
-        enableEditMode(user);
-    });
-
-    // Reset Pass Button
-    document.getElementById('modalPasswordButton').addEventListener('click', function() {
-        // Implement password reset functionality
-        fetch(`api/admin_reset_password.php?id=${user.id}&type=${user.role}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showToast('Password reset email sent to user', 'success');
-                } else {
-                    showToast('Failed to reset password: ' + data.error, 'error');
-                }
-            })
-            .catch(error => {
-                showToast('Error resetting password', 'error');
-                console.error('Password reset error:', error);
-            });
-    });
-
-    // Activity Button
-    document.getElementById('modalActivityButton').addEventListener('click', function() {
-        // Hide other content sections
-        document.querySelectorAll('.retro-modal-content > div, .progress-content').forEach(div => {
-            div.style.display = 'none';
-        });
-        
-        // Show activity content
-        const activityContent = document.createElement('div');
-        activityContent.className = 'activity-content';
-        activityContent.innerHTML = '<div class="loading">Loading activity...</div>';
-        document.querySelector('.retro-modal-content').appendChild(activityContent);
-        
-        // Fetch user activity
-        fetch(`api/admin_get_user_activity.php?id=${user.id}&type=${user.role}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    activityContent.innerHTML = `
-                        <div class="activity-list">
-                            ${data.activities.map(activity => `
-                                <div class="activity-item">
-                                    <div class="activity-time">${new Date(activity.timestamp).toLocaleString()}</div>
-                                    <div class="activity-description">${activity.description}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
-                } else {
-                    activityContent.innerHTML = '<div class="error">Failed to load activity</div>';
-                }
-            })
-            .catch(error => {
-                activityContent.innerHTML = '<div class="error">Error loading activity</div>';
-            });
-    });
-
-    // Progress Button (already implemented in your code)
-    document.getElementById('modalProgressButton').addEventListener('click', () => {
-        // Hide other content sections
-        document.querySelectorAll('.retro-modal-content > div').forEach(div => {
-            div.style.display = 'none';
-        });
-        
-        // Show progress content
-        document.getElementById('progressContent').style.display = 'block';
-        
-        // Load progress data
-        loadUserProgress(user.id);
-    });
-}
-
-    // Instead, call our new setupModalButtons function
-    setupModalButtons(user);
+        // Call setupModalButtons function
+        setupModalButtons(user);
     
     // Set up event listeners for close and back buttons
     const closeButton = document.getElementById('modalCloseButton');
@@ -640,301 +713,26 @@ function setupModalButtons(user) {
     return true;
     } 
 
-            function enableEditMode() {
-                console.log('Edit mode enabled');
-                
-                // Get the necessary elements
-                const usernameSpan = document.getElementById('modalUsername');
-                const profilePic = document.getElementById('modalProfilePic');
-                const profilePicContainer = document.querySelector('.profile-picture-container');
-                const fileInput = document.getElementById('modalProfilePicInput');
-                
-                if (!usernameSpan || !profilePic || !profilePicContainer) {
-                    console.error('Required elements not found for edit mode');
-                    return;
-                }
-                
-                // Replace username with an input field
-                const currentUsername = usernameSpan.textContent;
-                const usernameInput = document.createElement('input');
-                usernameInput.type = 'text';
-                usernameInput.id = 'editUsernameInput';
-                usernameInput.className = 'form-control';
-                usernameInput.value = currentUsername;
-                usernameSpan.replaceWith(usernameInput);
-                
-                // Add change picture button
-                const changePicBtn = document.createElement('button');
-                changePicBtn.className = 'btn btn-sm btn-outline-secondary mt-2';
-                changePicBtn.innerHTML = '<i class="fas fa-camera"></i> Change Picture';
-                changePicBtn.onclick = () => fileInput.click();
-                
-                // Add file input change handler
-                fileInput.onchange = (e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = (event) => {
-                            profilePic.src = event.target.result;
-                        };
-                        reader.readAsDataURL(file);
+    // --- Modal Edit/Save/Cancel Logic ---
+
+    // File input change handler for profile picture preview
+    const modalProfilePicInput = document.getElementById('modalProfilePicInput');
+    if (modalProfilePicInput) {
+        modalProfilePicInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    const modalProfilePic = document.getElementById('modalProfilePic');
+                    if (modalProfilePic) {
+                        modalProfilePic.src = ev.target.result;
                     }
                 };
-                
-                // Add buttons container
-                const buttonsContainer = document.createElement('div');
-                buttonsContainer.className = 'd-flex gap-2 mt-3';
-                
-                // Add save button
-                const saveBtn = document.createElement('button');
-                saveBtn.className = 'btn btn-primary btn-sm';
-                saveBtn.innerHTML = '<i class="fas fa-save"></i> Save';
-                saveBtn.onclick = saveChanges;
-                
-                // Add cancel button
-                const cancelBtn = document.createElement('button');
-                cancelBtn.className = 'btn btn-outline-secondary btn-sm';
-                cancelBtn.textContent = 'Cancel';
-                cancelBtn.onclick = cancelEdit;
-                
-                // Add buttons to container
-                buttonsContainer.appendChild(saveBtn);
-                buttonsContainer.appendChild(cancelBtn);
-                
-                // Add elements to profile container
-                profilePicContainer.appendChild(changePicBtn);
-                profilePicContainer.appendChild(buttonsContainer);
-                
-                // Save changes function
-                async function saveChanges() {
-                    const newUsername = usernameInput.value.trim();
-                    if (!newUsername) {
-                        showToast('Username cannot be empty', 'error');
-                        return;
-                    }
-                    
-                    // Show loading state
-                    saveBtn.disabled = true;
-                    saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
-                    
-                    const formData = new FormData();
-                    formData.append('id', user.id);
-                    formData.append('type', user.role === 'admin' ? 'admin' : 'user');
-                    formData.append('username', newUsername);
-                    
-                    // Add file if selected
-                    const file = fileInput.files[0];
-                    if (file) {
-                        formData.append('profile_picture', file);
-                    }
-                    
-                    try {
-                        const response = await fetch('api/update_profile.php', {
-                            method: 'POST',
-                            body: formData
-                        });
-                        
-                        const data = await response.json();
-                        
-                        if (data.success) {
-                            showToast('Profile updated successfully', 'success');
-                            // Update the displayed username
-                            usernameInput.replaceWith(usernameSpan);
-                            usernameSpan.textContent = newUsername;
-                            
-                            // Update the user object
-                            user.username = newUsername;
-                            if (data.profile_picture) {
-                                user.profile_picture = data.profile_picture;
-                                profilePic.src = `${basePath}/uploads/avatars/${data.profile_picture}?t=${new Date().getTime()}`;
-                            }
-                            
-                            // Exit edit mode
-                            cancelEdit();
-                        } else {
-                            throw new Error(data.message || 'Failed to update profile');
-                        }
-                    } catch (error) {
-                        console.error('Error updating profile:', error);
-                        showToast(error.message || 'Failed to update profile', 'error');
-                    } finally {
-                        saveBtn.disabled = false;
-                        saveBtn.innerHTML = '<i class="fas fa-save"></i> Save';
-                    }
-                }
-                
-                // Cancel edit function
-                function cancelEdit() {
-                    // Restore original username
-                    usernameInput.replaceWith(usernameSpan);
-                    usernameSpan.textContent = currentUsername;
-                    
-                    // Remove edit mode elements
-                    changePicBtn.remove();
-                    buttonsContainer.remove();
-                    
-                    // Reset file input
-                    fileInput.value = '';
-                    
-                    // Restore original image if changed
-                    if (fileInput.files.length > 0) {
-                        profilePic.src = picUrl;
-                    }
-                }
-            }
-        }
-
-    // --- Modal Edit/Save/Cancel Logic ---
-    
-
-    // Preview profile picture on file select
-    modalProfilePicInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                modalProfilePic.src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-        
-        // Show loading state
-        const saveButton = this;
-        const originalButtonText = saveButton.innerHTML;
-        saveButton.disabled = true;
-        saveButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
-        
-        const formData = new FormData();
-        formData.append('id', userId);
-        formData.append('type', userType);
-        formData.append('username', newUsername);
-        if (file) formData.append('profile_picture', file);
-        
-        // Add CSRF token if available
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
-        if (csrfToken) {
-            formData.append('csrf_token', csrfToken);
-        }
-        
-        // AJAX call to backend for saving user edits
-        fetch('api/admin_edit_user.php', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'  // Helps identify AJAX requests on the server
-            }
-        })
-        .then(async response => {
-            const text = await response.text();
-            console.log('Raw server response:', { status: response.status, statusText: response.statusText, text });
-            let data;
-            try {
-                if (!text.trim()) {
-                    throw new Error('Server returned an empty response');
-                }
-                data = JSON.parse(text);
-                console.log('Parsed response data:', data);
-                if (!response.ok) {
-                    const errorMsg = data.error || data.message || 'Failed to update user';
-                    console.error('Server returned error:', errorMsg, 'Status:', response.status);
-                    throw new Error(errorMsg);
-                }
-                return data;
-            } catch (e) {
-                console.error('Error parsing response. Text was:', text, 'Error:', e);
-                if (response.ok) {
-                    // If the response is 200 but we couldn't parse it, it might be a success
-                    return { success: true, message: 'User updated successfully' };
-                }
-                throw new Error('Invalid server response: ' + (e.message || 'Could not parse response'));
-            }
-        })
-        .then(data => {
-            console.log('Update response:', data);
-            if (data && data.success) {
-                const profilePic = (data.data && data.data.profile_picture) ? data.data.profile_picture : null;
-                
-                // Update the UI first
-                updateUserInUI(userId, userType, newUsername, profilePic);
-                
-                // Store the updated data in the modal's dataset
-                if (modalOverlay) {
-                    modalOverlay.dataset.username = newUsername;
-                    if (profilePic) {
-                        modalProfilePic.src = `${window.location.pathname.split('/').slice(0, -1).join('/')}/uploads/avatars/${profilePic}`;
-                    }
-                }
-                
-                // Show success message
-                showToast(data.message || 'User updated successfully!', 'success');
-                
-                // Close the modal after a short delay to show the success message
-                setTimeout(() => {
-                    hideModal();
-                    // Reset the modal state
-                    if (modalUsername && modalUsernameInput) {
-                        modalUsername.textContent = newUsername;
-                        modalUsernameInput.value = newUsername;
-                    }
-                }, 800);
-                
-                // If this is the current user's profile, update the session data
-                if (typeof updateUserHeader === 'function') {
-                    updateUserHeader({
-                        username: newUsername,
-                        profile_picture: profilePic,
-                        id: userId
-                    });
-                }
-            } else {
-                throw new Error(data?.error || data?.message || 'Failed to update user');
-            }
-        })
-        .catch(error => {
-            console.error('Update error details:', {
-                error: error,
-                message: error.message,
-                stack: error.stack
-            });
-            showToast('Error: ' + (error.message || 'Failed to update user. Please try again.'), 'error');
-        })
-        .finally(() => {
-            // Reset button state
-            saveButton.disabled = false;
-            saveButton.innerHTML = originalButtonText;
-        });
-    });
-    
-    // Helper function to update user in the UI
-    function updateUserInUI(userId, userType, newUsername, profilePic) {
-        const tableId = userType === 'admin' ? 'adminsTableBody' : 'usersTableBody';
-        const tableBody = document.getElementById(tableId);
-        if (!tableBody) return;
-        
-        const rows = tableBody.querySelectorAll('tr');
-        const basePath = window.location.pathname.split('/').slice(0, -1).join('/');
-        
-        rows.forEach(row => {
-            const idCell = row.querySelector('td:nth-child(3)');
-            if (idCell && idCell.textContent.trim() === userId) {
-                // Update username (4th column)
-                const usernameCell = row.querySelector('td:nth-child(4)');
-                if (usernameCell) {
-                    usernameCell.textContent = newUsername;
-                }
-                
-                // Update avatar if changed
-                if (profilePic) {
-                    const avatarImg = row.querySelector('td:nth-child(2) img');
-                    if (avatarImg) {
-                        const timestamp = new Date().getTime();
-                        avatarImg.src = `${basePath}/uploads/avatars/${profilePic}?t=${timestamp}`;
-                    }
-                }
+                reader.readAsDataURL(file);
             }
         });
     }
+
     // --- 3. Event Listeners ---
     document.body.addEventListener('click', event => {
         if (event.target.classList.contains('view-details-btn')) {
