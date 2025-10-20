@@ -455,13 +455,22 @@ document.addEventListener('DOMContentLoaded', () => {
             ? `${basePath}/uploads/avatars/${user.profile_picture}?t=${timestamp}`
             : `${basePath}/assets/images/PTC.png`;
             
-        const modalContent = `
+            const modalContent = `
             <div class="retro-modal">
                 <div class="retro-modal-title-bar">
                     <span id="modalTitle">@${user.username || 'Unknown'} // ${user.role || 'User'}'s Page</span>
                     <div class="title-bar-buttons">
                         <span id="modalCloseButton">✕</span>
                     </div>
+                </div>
+                <!-- Add the menu bar here -->
+                <div class="retro-modal-menu-bar">
+                    <button class="menu-button" id="modalEditButton">Edit</button>
+                    <button class="menu-button d-none" id="modalSaveButton">Save</button>
+                    <button class="menu-button d-none" id="modalCancelButton">Cancel</button>
+                    <button class="menu-button" id="modalPasswordButton">Reset Pass</button>
+                    <button class="menu-button" id="modalActivityButton">Activity</button>
+                    <button class="menu-button" id="modalProgressButton">Progress</button>
                 </div>
                 <div class="retro-modal-content">
                     <div class="profile-picture-container">
@@ -487,6 +496,43 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                 </div>
+                <!-- Add Progress Content -->
+                <div class="progress-content" id="progressContent" style="display: none;">
+                    <div class="progress-ring-wrapper">
+                        <div class="progress-ring">
+                            <svg class="progress-ring__circle" width="160" height="160">
+                                <circle class="progress-ring__circle-bg" r="70" cx="80" cy="80"/>
+                                <circle class="progress-ring__circle-fill" r="70" cx="80" cy="80"/>
+                            </svg>
+                            <div class="progress-ring__content">
+                                <div class="progress-ring__percent">0%</div>
+                                <div class="progress-ring__label">Total Progress</div>
+                            </div>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" id="completedTutorials">0</div>
+                                <div class="stat-label">Tutorials</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="completedQuizzes">0</div>
+                                <div class="stat-label">Quizzes</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="completedChallenges">0</div>
+                                <div class="stat-label">Challenges</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="completedMiniGames">0/2</div>
+                                <div class="stat-label">Mini-Games</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="totalXP">0</div>
+                                <div class="stat-label">Total XP</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="retro-modal-status-bar">
                     <button id="modalBackButton" class="back-button">← Back</button>
                     <div class="status-badge">${user.role === 'admin' ? 'Admin' : 'User'} Profile</div>
@@ -494,21 +540,101 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>`;
         
-        // Update the modal content
-        modalOverlay.innerHTML = modalContent;
+       // Update the modal content
+    modalOverlay.innerHTML = modalContent;
+
+
+    // Add this to admin_users.js after the modal content is created
+function setupModalButtons(user) {
+    // Edit Button
+    document.getElementById('modalEditButton').addEventListener('click', function() {
+        // Show edit mode
+        enableEditMode();
+    });
+
+    // Reset Pass Button
+    document.getElementById('modalPasswordButton').addEventListener('click', function() {
+        // Implement password reset functionality
+        fetch(`api/admin_reset_password.php?id=${user.id}&type=${user.role}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('Password reset email sent to user', 'success');
+                } else {
+                    showToast('Failed to reset password: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                showToast('Error resetting password', 'error');
+                console.error('Password reset error:', error);
+            });
+    });
+
+    // Activity Button
+    document.getElementById('modalActivityButton').addEventListener('click', function() {
+        // Hide other content sections
+        document.querySelectorAll('.retro-modal-content > div, .progress-content').forEach(div => {
+            div.style.display = 'none';
+        });
         
-        // Set up event listeners
-        const closeButton = document.getElementById('modalCloseButton');
-        const backButton = document.getElementById('modalBackButton');
+        // Show activity content
+        const activityContent = document.createElement('div');
+        activityContent.className = 'activity-content';
+        activityContent.innerHTML = '<div class="loading">Loading activity...</div>';
+        document.querySelector('.retro-modal-content').appendChild(activityContent);
         
-        if (closeButton) closeButton.addEventListener('click', hideModal);
-        if (backButton) backButton.addEventListener('click', hideModal);
+        // Fetch user activity
+        fetch(`api/admin_get_user_activity.php?id=${user.id}&type=${user.role}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    activityContent.innerHTML = `
+                        <div class="activity-list">
+                            ${data.activities.map(activity => `
+                                <div class="activity-item">
+                                    <div class="activity-time">${new Date(activity.timestamp).toLocaleString()}</div>
+                                    <div class="activity-description">${activity.description}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                } else {
+                    activityContent.innerHTML = '<div class="error">Failed to load activity</div>';
+                }
+            })
+            .catch(error => {
+                activityContent.innerHTML = '<div class="error">Error loading activity</div>';
+            });
+    });
+
+    // Progress Button (already implemented in your code)
+    document.getElementById('modalProgressButton').addEventListener('click', () => {
+        // Hide other content sections
+        document.querySelectorAll('.retro-modal-content > div').forEach(div => {
+            div.style.display = 'none';
+        });
         
-        // Set up edit functionality
-        setupEditHandlers();
+        // Show progress content
+        document.getElementById('progressContent').style.display = 'block';
         
-        console.log('Modal populated successfully');
-        return true;
+        // Load progress data
+        loadUserProgress(user.id);
+    });
+}
+
+    // Remove the setupEditHandlers() call since we'll handle it differently
+    // Instead, call our new setupModalButtons function
+    setupModalButtons(user);
+    
+    // Set up event listeners for close and back buttons
+    const closeButton = document.getElementById('modalCloseButton');
+    const backButton = document.getElementById('modalBackButton');
+    
+    if (closeButton) closeButton.addEventListener('click', hideModal);
+    if (backButton) backButton.addEventListener('click', hideModal);
+
+    return true;
+    }
         
         function setupEditHandlers() {
             const editButton = document.createElement('button');
