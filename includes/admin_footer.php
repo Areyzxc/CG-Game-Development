@@ -50,4 +50,7 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <!-- Font Awesome JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+<!-- Admin Notifications -->
+<script src="assets/js/admin_notifications.js"></script>
