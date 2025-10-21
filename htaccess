@@ -1,9 +1,35 @@
-# Enable URL rewriting
+# Enable URL rewriting and HTTPS
 RewriteEngine On
 
-# Allow direct access to files and directories that exist
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# Force HTTPS (uncomment when SSL is active)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Security Headers
+<IfModule mod_headers.c>
+    # XSS Protection
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# Disable directory listing
+Options -Indexes
+
+# Protect sensitive files
+<FilesMatch "^(composer\.(json|lock)|package(-lock)?\.json|\.env|\.git.*|README\.md|CHANGELOG\.md|LICENSE|\.htaccess)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Cache control for static assets
+<FilesMatch "\.(jpg|jpeg|png|gif|ico|css|js|woff|woff2|ttf|svg|eot)$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "max-age=31536000, public"
+    </IfModule>
+</FilesMatch>
 
 # Handle API requests
 RewriteRule ^api/(.*)$ api/$1 [L,QSA]
@@ -13,7 +39,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$ $1.php [L,QSA]
 
-# Handle front controller pattern
+# Front controller
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [L,QSA]
