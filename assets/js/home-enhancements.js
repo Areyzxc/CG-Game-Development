@@ -594,8 +594,18 @@ function renderProgressCards(progressData) {
         
         // Update user profile section if elements exist
         if (userAvatar) {
-            const defaultAvatar = '/CodeGaming/assets/images/default-avatar.png';
-            userAvatar.src = processImagePath(userData.profile_picture, defaultAvatar);
+            const defaultAvatar = '/CodeGaming/assets/images/default-avatar.gif';
+            const avatarPath = userData.profile_picture || defaultAvatar;
+            userAvatar.src = processImagePath(avatarPath, defaultAvatar);
+            
+            // Add error handler in case the image fails to load
+            userAvatar.onerror = function() {
+                console.warn('Failed to load profile image, using default avatar');
+                this.src = defaultAvatar;
+                this.style.backgroundImage = `url('${defaultAvatar}')`;
+            };
+            
+            console.log('Setting avatar source:', userAvatar.src);
         }
         
         // Process banner URL with timestamp to prevent caching
@@ -700,47 +710,102 @@ function renderProgressCards(progressData) {
     // Update avatar if element exists
     if (userAvatar) {
         try {
-            const defaultAvatar = '/CodeGaming/assets/images/default-avatar.png';
-            const avatarUrl = userData && userData.profile_picture ? 
+            // Get the base URL dynamically
+            const baseUrl = window.location.origin;
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const basePath = isLocal ? '/CodeGaming' : '';
+            const defaultAvatar = `${basePath}/assets/images/default-avatar.gif`;
+            
+            console.log('Base URL:', baseUrl);
+            console.log('Default avatar path:', defaultAvatar);
+            
+            // Process the avatar URL
+            const avatarUrl = userData?.profile_picture ? 
                 processImagePath(userData.profile_picture, defaultAvatar) : 
                 defaultAvatar;
             
-            // Update the avatar source with a timestamp to prevent caching
-            const timestamp = new Date().getTime();
-            const cleanAvatarUrl = avatarUrl.split('?')[0]; // Remove any existing query parameters
-            const avatarWithTimestamp = `${cleanAvatarUrl}?t=${timestamp}`;
+            console.log('Avatar URL to load:', avatarUrl);
             
-            // Set up the onload and onerror handlers first
-            userAvatar.onload = function() {
-                console.log('Avatar image loaded successfully');
-                this.style.opacity = '1';
-                this.style.visibility = 'visible';
+            // Create a new image to test if the avatar exists
+            const testImage = new Image();
+            
+            // Set up the onload and onerror handlers for the test image
+            testImage.onload = function() {
+                console.log('Test image loaded successfully:', this.src);
+                
+                // If we get here, the image exists
+                const timestamp = new Date().getTime();
+                const cleanAvatarUrl = avatarUrl.split('?')[0];
+                const avatarWithTimestamp = `${cleanAvatarUrl}?t=${timestamp}`;
+                
+                console.log('Setting final avatar source:', avatarWithTimestamp);
+                
+                userAvatar.onload = function() {
+                    console.log('Avatar image loaded successfully');
+                    this.style.opacity = '1';
+                    this.style.visibility = 'visible';
+                };
+                
+                userAvatar.onerror = function(e) {
+                    console.error('Error loading profile image, falling back to default', e);
+                    this.onerror = null; // Prevent infinite loop
+                    console.log('Trying to load default avatar from:', defaultAvatar);
+                    this.src = defaultAvatar;
+                    this.alt = 'Default Profile Picture';
+                    this.style.opacity = '1';
+                    this.style.visibility = 'visible';
+                };
+                
+                userAvatar.src = avatarWithTimestamp;
+                userAvatar.alt = `${userData?.username || 'User'}'s Profile Picture`;
+                userAvatar.style.opacity = '0';
+                userAvatar.style.visibility = 'hidden';
+                userAvatar.style.transition = 'opacity 0.3s ease-in-out';
             };
             
-            userAvatar.onerror = function() {
-                console.error('Error loading profile image, using default avatar');
-                this.src = defaultAvatar;
-                this.alt = 'Default Profile Picture';
-                this.style.opacity = '1';
-                this.style.visibility = 'visible';
+            testImage.onerror = function(e) {
+                console.warn('Profile image not found, using default avatar', e);
+                console.log('Default avatar path:', defaultAvatar);
+                
+                // Try to load the default avatar directly
+                const testDefault = new Image();
+                testDefault.onload = function() {
+                    console.log('Default avatar exists at:', defaultAvatar);
+                    userAvatar.src = defaultAvatar;
+                    userAvatar.alt = 'Default Profile Picture';
+                    userAvatar.style.opacity = '1';
+                    userAvatar.style.visibility = 'visible';
+                };
+                testDefault.onerror = function(e) {
+                    console.error('Error loading default avatar:', e);
+                    console.error('Failed to load default avatar from:', defaultAvatar);
+                    // Fallback to a data URL if all else fails
+                    userAvatar.alt = 'Profile Picture';
+                    userAvatar.style.opacity = '1';
+                    userAvatar.style.visibility = 'visible';
+                    userAvatar.style.backgroundColor = '#f0f0f0';
+                    userAvatar.style.borderRadius = '50%';
+                    userAvatar.style.display = 'flex';
+                    userAvatar.style.alignItems = 'center';
+                    userAvatar.style.justifyContent = 'center';
+                    userAvatar.style.color = '#999';
+                    userAvatar.style.fontSize = '12px';
+                    userAvatar.textContent = 'No Image';
+                };
+                testDefault.src = defaultAvatar;
             };
             
-            // Log the avatar loading
-            console.log('Setting avatar source:', {
-                originalPath: userData?.profile_picture || 'N/A',
-                processedPath: avatarUrl,
-                finalUrl: avatarWithTimestamp
-            });
-            
-            // Set the source last to trigger loading
-            userAvatar.src = avatarWithTimestamp;
-            userAvatar.alt = `${userData?.username || 'User'}'s Profile Picture`;
-            userAvatar.style.opacity = '0';
-            userAvatar.style.visibility = 'hidden';
-            userAvatar.style.transition = 'opacity 0.3s ease-in-out';
+            // Start loading the test image with error handling
+            try {
+                console.log('Attempting to load test image from:', avatarUrl);
+                testImage.src = avatarUrl;
+            } catch (e) {
+                console.error('Error setting test image source:', e);
+                testImage.onerror(e);
+            }
         } catch (error) {
             console.error('Error updating avatar:', error);
-            userAvatar.src = '/CodeGaming/assets/images/default-avatar.png';
+            userAvatar.src = '/CodeGaming/assets/images/default-avatar.gif';
             userAvatar.alt = 'Default Profile Picture';
             userAvatar.style.opacity = '1';
             userAvatar.style.visibility = 'visible';
