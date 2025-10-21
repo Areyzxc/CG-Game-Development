@@ -1,28 +1,46 @@
-# Allow access to this directory
-Options +Indexes
+# Disable directory listing
+Options -Indexes
 
 # Enable URL rewriting
 RewriteEngine On
 
-# If the request is for a file or directory that exists, serve it directly
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-# Handle PHP files
-<IfModule mod_php7.c>
-    php_flag display_errors on
-    php_value error_reporting E_ALL
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # CORS headers (adjust as needed)
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
 </IfModule>
 
-<IfModule mod_php.c>
-    php_flag display_errors on
-    php_value error_reporting E_ALL
-</IfModule>
+# Handle preflight requests
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
 
 # Set default character set
 AddDefaultCharset UTF-8
 
-# Set content type for JSON
+# PHP settings
+<IfModule mod_php7.c>
+    php_flag display_errors off
+    php_value error_reporting E_ALL
+    php_flag log_errors on
+    php_value error_log "error_log"
+</IfModule>
+
+# JSON content type
 <IfModule mod_mime.c>
     AddType application/json .json
+</IfModule>
+
+# Security measures
+<IfModule mod_rewrite.c>
+    # Block access to hidden files and directories
+    RewriteCond %{SCRIPT_FILENAME} -d [OR]
+    RewriteCond %{SCRIPT_FILENAME} -f
+    RewriteRule "(^|/)\." - [F]
 </IfModule>
