@@ -79,13 +79,32 @@ async function checkFirstVisit() {
  */
 function showWelcomeModal() {
     const welcomeModal = document.getElementById('welcomeModal');
-    if (welcomeModal) {
-        const modal = new bootstrap.Modal(welcomeModal, {
-            backdrop: 'static',
-            keyboard: false
-        });
-        modal.show();
+    if (!welcomeModal) return;
+    
+    // Ensure modal is in the correct position in the DOM
+    if (welcomeModal.parentNode !== document.body) {
+        document.body.appendChild(welcomeModal);
     }
+    
+    // Position the modal properly
+    const modalDialog = welcomeModal.querySelector('.modal-dialog');
+    if (modalDialog) {
+        modalDialog.style.margin = '1.75rem auto';
+    }
+    
+    // Initialize and show the modal
+    const modal = new bootstrap.Modal(welcomeModal, {
+        backdrop: 'static',
+        keyboard: false,
+        focus: true
+    });
+    
+    // Force repositioning
+    modal._handleUpdate = function() {
+        this._adjustDialog();
+    };
+    
+    modal.show();
 }
 
 /**
