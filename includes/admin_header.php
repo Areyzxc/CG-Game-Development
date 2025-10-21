@@ -18,11 +18,17 @@
  * Dependencies:
  *   - Auth.php for authentication  
  *   - Database.php for database access
+ *   - CSRFProtection.php for CSRF protection
  * 
  * Author: CodeGaming Team
- * Last Updated: July 26, 2025
+ * Last Updated: <?php echo date('F j, Y'); ?>
  */
 require_once 'Auth.php';
+require_once 'CSRFProtection.php';
+
+// Get CSRF protection instance and token
+$csrf = CSRFProtection::getInstance();
+$csrfToken = $csrf->getToken();
 
 $auth = Auth::getInstance();
 $currentUser = $auth->getCurrentUser();
@@ -41,6 +47,10 @@ $profilePicture = htmlspecialchars($profilePicture);
 ?>
 
 <!-- Main Navigation & Sidebar -->
+<?php if (!defined('NO_CSRF_META')): ?>
+<meta name="csrf-token" content="<?php echo htmlspecialchars($csrfToken); ?>">
+<?php endif; ?>
+
 <header class="admin-header">
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
@@ -67,9 +77,33 @@ $profilePicture = htmlspecialchars($profilePicture);
                         <div id="admin-digital-date" style="font-size:0.95rem; color:#555;"></div>
                     </div>
                     <span class="vr mx-2 d-none d-lg-block" style="height:32px; opacity:0.2;"></span>
-                    <a href="#" class="nav-link nav-icon px-2">
-                        <i class="fas fa-bell"></i>
-                    </a>
+                    <!-- Notification Bell with Badge -->
+                    <div class="dropdown">
+                        <a href="#" class="nav-link nav-icon px-2 position-relative" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notificationBadge" style="display: none; font-size: 0.65rem;">
+                                0
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end notification-dropdown" aria-labelledby="notificationDropdown" style="min-width: 320px; max-height: 400px; overflow-y: auto;">
+                            <li class="dropdown-header d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-bell me-2"></i>Notifications</span>
+                                <button class="btn btn-sm btn-link text-decoration-none" id="markAllReadBtn" style="font-size: 0.75rem;">Mark all read</button>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <div id="notificationList">
+                                <li class="dropdown-item text-muted text-center py-3">
+                                    <i class="fas fa-spinner fa-spin me-2"></i>Loading...
+                                </li>
+                            </div>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item text-center small text-primary" href="admin_notifications.php">
+                                    View All Notifications
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                     <span class="vr mx-2 d-none d-lg-block" style="height:32px; opacity:0.2;"></span>
                     <div class="dropdown">
                         <a href="#" class="nav-link nav-icon d-flex align-items-center" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
