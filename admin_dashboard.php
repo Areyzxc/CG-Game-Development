@@ -331,12 +331,10 @@ $showLoginNotification = isset($_GET['login']) && $_GET['login'] === 'success';
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-center mb-2">
         <h5 class="mb-0"><i class="fas fa-bell me-2 text-danger"></i>System Notifications</h5>
-        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-sync-alt"></i> Refresh</button>
+        <button class="btn btn-sm btn-outline-secondary" id="refreshNotificationsBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
       </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><i class="fas fa-exclamation-circle text-danger me-2"></i>3 failed login attempts detected.</li>
-        <li class="list-group-item"><i class="fas fa-info-circle text-info me-2"></i>New user registered: <b>coder123</b></li>
-        <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>System backup completed successfully.</li>
+      <ul class="list-group list-group-flush" id="systemNotificationsList">
+        <li class="list-group-item text-muted">Loading notifications...</li>
       </ul>
     </div>
   </div>
