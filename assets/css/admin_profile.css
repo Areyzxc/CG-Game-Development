@@ -1,0 +1,270 @@
+/**
+ * File: admin_profile.css
+ * Purpose: Styles for admin profile and settings pages
+ * Author: CodeGaming Team
+ * Last Updated: October 21, 2025
+ */
+
+/* Profile Card */
+.profile-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.profile-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem;
+    text-align: center;
+    color: #fff;
+}
+
+.profile-avatar-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.avatar-edit-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #667eea;
+    color: #667eea;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.avatar-edit-btn:hover {
+    background: #667eea;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.profile-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.profile-role {
+    margin-bottom: 0;
+}
+
+.profile-role .badge {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Profile Stats */
+.profile-stats {
+    padding: 1.5rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+.stat-item i {
+    font-size: 1.5rem;
+    color: #667eea;
+    margin-right: 1rem;
+    width: 40px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Settings Card */
+.settings-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.settings-card .card-header {
+    background: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
+    padding: 1rem 1.5rem;
+    border-radius: 12px 12px 0 0;
+}
+
+.settings-card .card-header h5 {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.settings-card .card-body {
+    padding: 1.5rem;
+}
+
+/* Form Styles */
+.form-control:disabled {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Toggle Switch */
+.form-switch .form-check-input {
+    width: 3rem;
+    height: 1.5rem;
+    cursor: pointer;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+/* Settings Section */
+.settings-section {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.settings-section:last-child {
+    border-bottom: none;
+}
+
+.settings-section h6 {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+}
+
+.setting-label {
+    flex: 1;
+}
+
+.setting-label .label-title {
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+}
+
+.setting-label .label-description {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* Danger Zone */
+.danger-zone {
+    background: #fff5f5;
+    border: 2px solid #fee;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.danger-zone h6 {
+    color: #dc3545;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.danger-zone .btn-danger {
+    background: #dc3545;
+    border-color: #dc3545;
+}
+
+.danger-zone .btn-danger:hover {
+    background: #c82333;
+    border-color: #bd2130;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-name {
+        font-size: 1.25rem;
+    }
+
+    .stat-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .stat-item i {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .setting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.profile-card,
+.admin-card {
+    animation: fadeIn 0.5s ease-out;
+}
