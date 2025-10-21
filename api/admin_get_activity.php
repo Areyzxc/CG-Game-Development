@@ -32,57 +32,26 @@ try {
     $db = Database::getInstance();
     $conn = $db->getConnection();
     
-    // Get recent activity from multiple sources
-    $stmt = $conn->query("
-        (SELECT 
-            u.username as user,
-            CONCAT('Logged in from ', ll.ip_address) as action,
-            ll.login_time as time,
-            'Success' as status,
-            'success' as status_color
-        FROM login_logs ll
-        LEFT JOIN users u ON ll.user_id = u.id
-        WHERE ll.login_time > DATE_SUB(NOW(), INTERVAL 24 HOUR)
-        ORDER BY ll.login_time DESC
-        LIMIT 5)
-        
-        UNION ALL
-        
-        (SELECT 
-            u.username as user,
-            CONCAT('Completed quiz: ', qq.question) as action,
-            uqa.attempted_at as time,
-            CASE WHEN uqa.is_correct THEN 'Success' ELSE 'Failed' END as status,
-            CASE WHEN uqa.is_correct THEN 'success' ELSE 'danger' END as status_color
-        FROM user_quiz_attempts uqa
-        LEFT JOIN users u ON uqa.user_id = u.id
-        LEFT JOIN quiz_questions qq ON uqa.question_id = qq.id
-        WHERE uqa.attempted_at > DATE_SUB(NOW(), INTERVAL 24 HOUR)
-        ORDER BY uqa.attempted_at DESC
-        LIMIT 5)
-        
-        UNION ALL
-        
-        (SELECT 
-            u.username as user,
-            CONCAT('Submitted code for challenge: ', cc.title) as action,
-            ucs.submitted_at as time,
-            ucs.status as status,
+    // Get recent activity from activity_log table
+    $stmt = $conn->prepare("
+        SELECT 
+            username as user,
+            action,
+            action_details,
+            MAX(created_at) as time,
+            status,
             CASE 
-                WHEN ucs.status = 'passed' THEN 'success'
-                WHEN ucs.status = 'failed' THEN 'danger'
+                WHEN status = 'success' THEN 'success'
+                WHEN status = 'failed' THEN 'danger'
                 ELSE 'warning'
             END as status_color
-        FROM user_code_submissions ucs
-        LEFT JOIN users u ON ucs.user_id = u.id
-        LEFT JOIN code_challenges cc ON ucs.challenge_id = cc.id
-        WHERE ucs.submitted_at > DATE_SUB(NOW(), INTERVAL 24 HOUR)
-        ORDER BY ucs.submitted_at DESC
-        LIMIT 5)
-        
+        FROM activity_log
+        WHERE created_at > DATE_SUB(NOW(), INTERVAL 24 HOUR)
+        GROUP BY username, action, action_details, status
         ORDER BY time DESC
-        LIMIT 10
+        LIMIT 15
     ");
+    $stmt->execute();
     
     $activity = [];
     while ($row = $stmt->fetch()) {
@@ -92,19 +61,48 @@ try {
         
         if ($diff->days == 0) {
             if ($diff->h == 0) {
-                $timeAgo = $diff->i . ' min ago';
+                if ($diff->i == 0) {
+                    $timeAgo = $diff->s . ' second' . ($diff->s != 1 ? 's' : '') . ' ago';
+                } else {
+                    $timeAgo = $diff->i . ' minute' . ($diff->i != 1 ? 's' : '') . ' ago';
+                }
             } else {
-                $timeAgo = $diff->h . ' hour' . ($diff->h > 1 ? 's' : '') . ' ago';
+                $timeAgo = $diff->h . ' hour' . ($diff->h != 1 ? 's' : '') . ' ago';
             }
         } else {
-            $timeAgo = $diff->days . ' day' . ($diff->days > 1 ? 's' : '') . ' ago';
+            $timeAgo = $diff->days . ' day' . ($diff->days != 1 ? 's' : '') . ' ago';
+        }
+        
+        // Format action text
+        $actionText = $row['action'];
+        switch ($row['action']) {
+            case 'logged_in':
+                $actionText = 'Logged in' . ($row['action_details'] ? ' from ' . substr($row['action_details'], strrpos($row['action_details'], ' ') + 1) : '');
+                break;
+            case 'logged_out':
+                $actionText = 'Logged out';
+                break;
+            case 'login_failed':
+                $actionText = 'Failed login attempt';
+                break;
+            case 'registered':
+                $actionText = 'Registered new account';
+                break;
+            case 'profile_updated':
+                $actionText = 'Updated profile';
+                break;
+            case 'password_changed':
+                $actionText = 'Changed password';
+                break;
+            default:
+                $actionText = ucfirst(str_replace('_', ' ', $row['action']));
         }
         
         $activity[] = [
             'user' => $row['user'] ?? 'Unknown User',
-            'action' => $row['action'],
+            'action' => $actionText,
             'time' => $timeAgo,
-            'status' => $row['status'],
+            'status' => ucfirst($row['status']),
             'status_color' => $row['status_color']
         ];
     }
