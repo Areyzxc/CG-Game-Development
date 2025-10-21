@@ -21,26 +21,29 @@
  */
 
 require_once 'includes/Auth.php';
+require_once 'includes/ActivityLogger.php';
 
 $auth = Auth::getInstance();
 
 // Log the logout action before clearing session
 if ($auth->isLoggedIn()) {
-    $db = Database::getInstance();
-    $conn = $db->getConnection();
-    
-    // Log the logout
-    $stmt = $conn->prepare("
-        INSERT INTO login_logs (user_id, role, ip_address, session_id, login_time)
-        VALUES (?, ?, ?, ?, NOW())
-    ");
-    
     $userId = $_SESSION['user_id'] ?? null;
+    $username = $_SESSION['username'] ?? 'Unknown';
     $role = $_SESSION['role'] ?? 'visitor';
-    $ip = $_SERVER['REMOTE_ADDR'];
-    $sessionId = session_id();
     
-    $stmt->execute([$userId, $role, $ip, $sessionId]);
+    // Log logout activity
+    $logger = ActivityLogger::getInstance();
+    $isAdmin = ($role === 'admin' || $role === 'super_admin');
+    
+    $logger->logActivity([
+        'user_id' => $isAdmin ? null : $userId,
+        'admin_id' => $isAdmin ? $userId : null,
+        'username' => $username,
+        'user_type' => $isAdmin ? 'admin' : 'user',
+        'action' => 'logged_out',
+        'action_details' => 'User logged out',
+        'status' => 'success'
+    ]);
 }
 
 // Use the Auth class to handle logout properly
