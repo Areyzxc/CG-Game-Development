@@ -26,6 +26,9 @@
 // login.php
 
 include 'db_connection.php';  // $conn = new mysqli(...);
+require_once 'includes/Database.php';
+require_once 'includes/ActivityLogger.php';
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -82,8 +85,30 @@ if ($row = $res->fetch_assoc()) {
         $updateStmt->bind_param("i", $row['id']);
         $updateStmt->execute();
         $updateStmt->close();
+        
+        // Log successful login
+        $logger = ActivityLogger::getInstance();
+        $logger->logActivity([
+            'user_id' => $row['id'],
+            'username' => $row['username'],
+            'user_type' => 'user',
+            'action' => 'logged_in',
+            'action_details' => 'Logged in from ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'),
+            'status' => 'success'
+        ]);
+        
         respond(true, ['role' => $row['role']]);
     } else {
+        // Log failed login attempt
+        $logger = ActivityLogger::getInstance();
+        $logger->logActivity([
+            'user_id' => null,
+            'username' => $username,
+            'user_type' => 'user',
+            'action' => 'login_failed',
+            'action_details' => 'Failed login attempt - incorrect password',
+            'status' => 'failed'
+        ]);
         respond(false, ['error' => 'Incorrect password.']);
     }
 }
@@ -108,13 +133,43 @@ if ($row = $res->fetch_assoc()) {
         $updateStmt->bind_param("i", $row['id']);
         $updateStmt->execute();
         $updateStmt->close();
+        
+        // Log successful admin login
+        $logger = ActivityLogger::getInstance();
+        $logger->logActivity([
+            'admin_id' => $row['id'],
+            'username' => $row['username'],
+            'user_type' => 'admin',
+            'action' => 'logged_in',
+            'action_details' => 'Admin logged in from ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'),
+            'status' => 'success'
+        ]);
+        
         respond(true, ['role' => $_SESSION['role']]);
     } else {
+        // Log failed admin login attempt
+        $logger = ActivityLogger::getInstance();
+        $logger->logActivity([
+            'admin_id' => null,
+            'username' => $username,
+            'user_type' => 'admin',
+            'action' => 'login_failed',
+            'action_details' => 'Failed admin login - incorrect password',
+            'status' => 'failed'
+        ]);
         respond(false, ['error' => 'Incorrect password.']);
     }
 }
 $stmt->close();
 
-// 5. No account found
+// 5. No account found - log failed attempt
+$logger = ActivityLogger::getInstance();
+$logger->logActivity([
+    'user_id' => null,
+    'username' => $username,
+    'user_type' => 'user',
+    'action' => 'login_failed',
+    'action_details' => 'Failed login - account not found',
+    'status' => 'failed'
+]);
 respond(false, ['error' => 'No account found with this username or email.']);
-
