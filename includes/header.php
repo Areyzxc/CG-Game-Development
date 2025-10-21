@@ -1,3 +1,4 @@
+
 <?php
 /**
  * ==========================================================
@@ -159,16 +160,16 @@ $currentUser = $isLoggedIn ? $auth->getCurrentUser() : null;
                         <!-- Logged-in User -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown"
-                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="<?php echo !empty($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : 'images/PTC.png'; ?>"
-                                     alt="Avatar" class="rounded-circle me-2" width="35" height="35" id="userAvatar"/>
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="<?php echo !empty($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : 'assets/images/default-avatar.gif'; ?>"
+                                    alt="Avatar" class="rounded-circle me-2" width="35" height="35" id="userAvatar"/>
                                 <span id="usernameDisplay"><?php echo htmlspecialchars($currentUser['username']); ?></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                                 <li class="dropdown-header">
                                     <div class="d-flex align-items-center">
-                                        <img src="<?php echo !empty($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : 'images/PTC.png'; ?>"
-                                             alt="Avatar" class="rounded-circle me-2" width="30" height="30"/>
+                                        <img src="<?php echo !empty($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : 'assets/images/default-avatar.gif'; ?>"
+                                            alt="Avatar" class="rounded-circle me-2" width="30" height="30"/>
                                         <div>
                                             <div class="fw-bold"><?php echo htmlspecialchars($currentUser['username']); ?></div>
                                             <small class="text-muted"><?php echo htmlspecialchars($currentUser['email']); ?></small>
@@ -179,11 +180,6 @@ $currentUser = $isLoggedIn ? $auth->getCurrentUser() : null;
                                 <li>
                                     <a class="dropdown-item" href="profile.php">
                                         <i class="fas fa-user me-2"></i>My Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="settings.php">
-                                        <i class="fas fa-cog me-2"></i>Settings
                                     </a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
@@ -218,7 +214,7 @@ $currentUser = $isLoggedIn ? $auth->getCurrentUser() : null;
             <?php if ($isLoggedIn): ?>
                 <!-- Logged-in User Mobile Menu -->
                 <div class="mobile-user-info">
-                    <img src="<?php echo !empty($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : 'images/PTC.png'; ?>"
+                    <img src="<?php echo !empty($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : 'assets/images/default-avatar.gif'; ?>"
                          alt="Avatar" class="mobile-avatar"/>
                     <div class="mobile-user-details">
                         <h6 class="mb-0"><?php echo htmlspecialchars($currentUser['username']); ?></h6>
