@@ -130,7 +130,8 @@ class CSRFProtection {
      * Validate a CSRF token
      */
     public function validateToken($token) {
-        error_log('CSRF Validation Attempt - Token: ' . substr($token, 0, 10) . '...');
+        $tokenPreview = $token ? substr($token, 0, 10) . '...' : 'EMPTY';
+        error_log("CSRF Validation Attempt - Token: {$tokenPreview}");
         
         // If no token provided
         if (empty($token)) {
@@ -140,7 +141,8 @@ class CSRFProtection {
         
         // If no token in session
         if (!isset($_SESSION[$this->tokenName])) {
-            error_log('CSRF Validation Failed: No token in session');
+            error_log('CSRF Validation Failed: No token found in session. Session ID: ' . session_id());
+            error_log('Session data: ' . print_r($_SESSION, true));
             return false;
         }
         
@@ -149,14 +151,16 @@ class CSRFProtection {
         
         // Check if token data is valid
         if (!is_array($storedToken) || !isset($storedToken['token']) || !isset($storedToken['expires'])) {
-            error_log('CSRF Validation Failed: Invalid token format in session');
+            error_log('CSRF Validation Failed: Invalid token format in session. Token data: ' . print_r($storedToken, true));
             $this->clearToken();
             return false;
         }
         
         // Check if token has expired
-        if (time() > $storedToken['expires']) {
-            error_log('CSRF Validation Failed: Token expired');
+        $currentTime = time();
+        if ($currentTime > $storedToken['expires']) {
+            $expiryTime = date('Y-m-d H:i:s', $storedToken['expires']);
+            error_log("CSRF Validation Failed: Token expired. Current time: {$currentTime}, Expiry: {$expiryTime} ({$storedToken['expires']})");
             $this->clearToken();
             return false;
         }
@@ -164,9 +168,15 @@ class CSRFProtection {
         // Get token to compare
         $tokenToCompare = $storedToken['token'];
         
+        // Log token comparison (first 10 chars only for security)
+        $storedPreview = substr($tokenToCompare, 0, 10) . '...';
+        $providedPreview = substr($token, 0, 10) . '...';
+        error_log("CSRF Token Comparison - Stored: {$storedPreview}, Provided: {$providedPreview}");
+        
         // Compare tokens
         if (!hash_equals($tokenToCompare, $token)) {
             error_log('CSRF Validation Failed: Token mismatch');
+            error_log('Session ID: ' . session_id());
             return false;
         }
         
