@@ -31,7 +31,6 @@
   --theme-card-bg: #ffffff;
   --theme-card-shadow: 0 4px 8px rgba(0,0,0,0.04);
   --theme-tag-green: #27ae60;
-  --theme-tag-blue: #2980b9;
   --theme-tag-orange: #d35400;
 }
 
@@ -48,6 +47,13 @@ body.admin-theme {
 .admin-main-content {
   padding: 2rem;
   margin-top: 70px; /* Space for fixed header */
+}
+
+.notification-item {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 /* -------------------
@@ -357,4 +363,98 @@ body, .admin-theme {
 }
 .fs-7 {
   font-size: 0.95rem !important;
-} 
+}
+
+/* -------------------
+ * Notification Bell & Dropdown
+ * ------------------- */
+.notification-dropdown {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e0e0e0;
+}
+
+.notification-item {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: start;
+}
+
+.notification-item:hover {
+  background-color: #f8f9fa;
+}
+
+.notification-item.unread {
+  background-color: #e3f2fd;
+  border-left: 3px solid #2196F3;
+}
+
+.notification-item .notification-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.notification-item .notification-icon.info {
+  background: #e3f2fd;
+  color: #2196F3;
+}
+
+.notification-item .notification-icon.success {
+  background: #e8f5e9;
+  color: #4CAF50;
+}
+
+.notification-item .notification-icon.warning {
+  background: #fff3e0;
+  color: #FF9800;
+}
+
+.notification-item .notification-icon.error {
+  background: #ffebee;
+  color: #f44336;
+}
+
+.notification-item .notification-content {
+  flex: 1;
+  margin-left: 0.75rem;
+}
+
+.notification-item .notification-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+  color: #2c3e50;
+}
+
+.notification-item .notification-message {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+}
+
+.notification-item .notification-time {
+  font-size: 0.7rem;
+  color: #95a5a6;
+}
+
+#notificationBadge {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
