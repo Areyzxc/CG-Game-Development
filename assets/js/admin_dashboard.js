@@ -1,3 +1,4 @@
+
 /**
  * File: admin_dashboard.js
  * Purpose: Handles admin dashboard logic for CodeGaming, including stats, announcements, activity, charts, and notifications.
@@ -59,24 +60,30 @@ document.addEventListener('DOMContentLoaded', function() {
   const announcementTitleInput = document.getElementById('announcementTitle');
   const announcementContentInput = document.getElementById('announcementContent');
   const publishAnnouncementBtn = document.getElementById('publishAnnouncementBtn');
-  let isEditingAnnouncement = false;
-
   // --- Fetch Dashboard Stats ---
   function loadStats() {
     fetch('api/admin_get_stats.php')
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          document.getElementById('totalUsersStat').textContent = data.total_users;
-          document.getElementById('activeUsersStat').textContent = data.active_users;
-          document.getElementById('totalContentStat').textContent = data.total_content;
-          document.getElementById('systemStatusStat').textContent = data.system_status;
-          document.getElementById('totalAnnouncementsStat').textContent = data.total_announcements;
-          document.getElementById('publishedAnnouncementsStat').textContent = data.published_announcements;
-          document.getElementById('draftAnnouncementsStat').textContent = data.draft_announcements;
+          const totalUsers = document.getElementById('totalUsersStat');
+          const activeUsers = document.getElementById('activeUsersStat');
+          const totalContent = document.getElementById('totalContentStat');
+          const systemStatus = document.getElementById('systemStatusStat');
+          const totalAnnouncements = document.getElementById('totalAnnouncementsStat');
+          const publishedAnnouncements = document.getElementById('publishedAnnouncementsStat');
+          const draftAnnouncements = document.getElementById('draftAnnouncementsStat');
+          
+          if (totalUsers) totalUsers.textContent = data.total_users;
+          if (activeUsers) activeUsers.textContent = data.active_users;
+          if (totalContent) totalContent.textContent = data.total_content;
+          if (systemStatus) systemStatus.textContent = data.system_status;
+          if (totalAnnouncements) totalAnnouncements.textContent = data.total_announcements;
+          if (publishedAnnouncements) publishedAnnouncements.textContent = data.published_announcements;
+          if (draftAnnouncements) draftAnnouncements.textContent = data.draft_announcements;
           console.log('Stats API response:', data);
         } else {
-          console.error('Failed to fetch stats:', data.error);
+          console.error('Failed to load stats:', data.error);
         }
       })
       .catch(error => {
@@ -175,6 +182,50 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   }
   loadActivity();
+
+  // --- Fetch System Notifications ---
+  function loadNotifications() {
+    fetch('api/admin_get_notifications.php?limit=5')
+      .then(res => res.json())
+      .then(data => {
+        const notificationsList = document.getElementById('systemNotificationsList');
+        if (data.success && Array.isArray(data.notifications)) {
+          notificationsList.innerHTML = '';
+          if (data.notifications.length === 0) {
+            notificationsList.innerHTML = '<li class="list-group-item text-muted">No notifications</li>';
+          } else {
+            data.notifications.forEach(notif => {
+              const li = document.createElement('li');
+              li.className = 'list-group-item';
+              
+              let iconClass = 'fa-info-circle text-info';
+              if (notif.type === 'error') iconClass = 'fa-exclamation-circle text-danger';
+              else if (notif.type === 'warning') iconClass = 'fa-exclamation-triangle text-warning';
+              else if (notif.type === 'success') iconClass = 'fa-check-circle text-success';
+              
+              li.innerHTML = `<i class="fas ${iconClass} me-2"></i>${notif.message}`;
+              notificationsList.appendChild(li);
+            });
+          }
+        } else {
+          notificationsList.innerHTML = '<li class="list-group-item text-danger">Failed to load notifications</li>';
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching notifications:', error);
+        const notificationsList = document.getElementById('systemNotificationsList');
+        if (notificationsList) {
+          notificationsList.innerHTML = '<li class="list-group-item text-danger">Error loading notifications</li>';
+        }
+      });
+  }
+  loadNotifications();
+
+  // Refresh notifications button
+  const refreshNotificationsBtn = document.getElementById('refreshNotificationsBtn');
+  if (refreshNotificationsBtn) {
+    refreshNotificationsBtn.addEventListener('click', loadNotifications);
+  }
 
   // --- Initialize Charts ---
   function initializeCharts(chartData) {
@@ -431,6 +482,7 @@ document.addEventListener('DOMContentLoaded', function() {
   setInterval(() => {
     loadAnnouncements();
     loadActivity();
+    loadNotifications();
   }, 30000);
 
   // After any announcement change, also call loadStats()
