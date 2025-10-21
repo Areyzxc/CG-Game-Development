@@ -123,7 +123,6 @@ $currentRole = $auth->getCurrentRole();
     </style>
     <link rel="stylesheet" href="assets/css/admin_dashboard.css">
     <link rel="stylesheet" href="assets/css/admin_users.css">
-    <script src="assets/js/admin_users_fixed.js" defer></script>
     
 </head>
 <body class="admin-theme">
@@ -228,7 +227,6 @@ $currentRole = $auth->getCurrentRole();
             </div>
             <div class="header-center" id="modalHeaderCenter">
                 <span id="modalTitle">@username // file.txt</span>
-                <i class="fas fa-edit edit-user-icon" title="Edit User"></i>
             </div>
             <div class="header-right"></div>
         </div>
@@ -267,39 +265,42 @@ $currentRole = $auth->getCurrentRole();
                 </div>
             </div>
         </div>
-        <!-- Progress Content -->
         <div class="progress-content" id="progressContent" style="display: none;">
-            <div class="progress-ring-wrapper">
-                <div class="progress-ring">
-                    <svg class="progress-ring__circle" width="160" height="160">
-                        <circle class="progress-ring__circle-bg" r="70" cx="80" cy="80"/>
-                        <circle class="progress-ring__circle-fill" r="70" cx="80" cy="80"/>
-                    </svg>
-                    <div class="progress-ring__content">
-                        <div class="progress-ring__percent">0%</div>
-                        <div class="progress-ring__label">Total Progress</div>
-                    </div>
-                </div>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value" id="completedTutorials">0</div>
-                        <div class="stat-label">Tutorials</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="completedQuizzes">0</div>
-                        <div class="stat-label">Quizzes</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="completedChallenges">0</div>
-                        <div class="stat-label">Challenges</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="totalXP">0</div>
-                        <div class="stat-label">Total XP</div>
-                    </div>
-                </div>
+    <div class="progress-ring-wrapper">
+        <div class="progress-ring">
+            <svg class="progress-ring__circle" width="160" height="160">
+                <circle class="progress-ring__circle-bg" r="70" cx="80" cy="80"/>
+                <circle class="progress-ring__circle-fill" r="70" cx="80" cy="80"/>
+            </svg>
+            <div class="progress-ring__content">
+                <div class="progress-ring__percent">0%</div>
+                <div class="progress-ring__label">Total Progress</div>
             </div>
         </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="completedTutorials">0</div>
+                <div class="stat-label">Tutorials</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="completedQuizzes">0</div>
+                <div class="stat-label">Quizzes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="completedChallenges">0</div>
+                <div class="stat-label">Challenges</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="completedMiniGames">0</div>
+                <div class="stat-label">Mini-Games</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalXP">0</div>
+                <div class="stat-label">Total XP</div>
+            </div>
+        </div>
+    </div>
+</div>
         <div class="retro-modal-status-bar">
             <button class="back-button" id="modalBackButton">< Back</button>
             <div class="time-display" id="modalTime">Time: 01:12 PM</div>
@@ -312,6 +313,7 @@ $currentRole = $auth->getCurrentRole();
 <?php include 'includes/admin_footer.php'; ?>
     <script src="assets/js/admin_global.js"></script>
     <script src="assets/js/retro-modal.js"></script>
+    <script src="assets/js/admin-user-progress.js"></script>
     <!-- Main admin users functionality is now in admin_users_fixed.js -->
     <script src="assets/js/admin_users.js" defer></script>
     <script>
