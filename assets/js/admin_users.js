@@ -15,7 +15,7 @@
  *   - FontAwesome (icons)
  *   - Bootstrap (optional for modal styling)
  * Author: CodeGaming Team
- * Last Updated: October 20, 2025
+ * Last Updated: October 2, 2025
  */
 
 // admin_users.js
@@ -104,6 +104,141 @@ function updateUserAvatar(userId, userType, newPic) {
             }
         });
     }
+
+
+    // Function to load user progress data
+function loadUserProgress(userId) {
+    fetch(`api/admin_get_user_progress.php?id=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const progress = data.data;
+                // Calculate total progress percentage
+                const totalCompleted = progress.completed_tutorials + 
+                                     progress.completed_quizzes + 
+                                     progress.completed_challenges +
+                                     progress.completed_mini_games;
+                const totalPossible = 32; // 10 each for tutorials, quizzes, challenges + 2 mini-games
+                const percentage = Math.round((totalCompleted / totalPossible) * 100);
+                
+                // Update progress ring
+                document.querySelector('.progress-ring__percent').textContent = `${percentage}%`;
+                initProgressRing(percentage);
+                
+                // Update stats
+                document.getElementById('completedTutorials').textContent = progress.completed_tutorials;
+                document.getElementById('completedQuizzes').textContent = progress.completed_quizzes;
+                document.getElementById('completedChallenges').textContent = progress.completed_challenges;
+                document.getElementById('completedMiniGames').textContent = `${progress.completed_mini_games}/2`;
+                document.getElementById('totalXP').textContent = progress.total_xp;
+            }
+        })
+        .catch(error => console.error('Error loading user progress:', error));
+}
+
+    // Function to initialize progress ring animation
+function initProgressRing(percent) {
+    const circle = document.querySelector('.progress-ring__circle-fill');
+    const radius = circle.r.baseVal.value;
+    const circumference = radius * 2 * Math.PI;
+    circle.style.strokeDasharray = `${circumference} ${circumference}`;
+    circle.style.strokeDashoffset = `${circumference}`;
+    const offset = circumference - (percent / 100) * circumference;
+    circle.style.strokeDashoffset = offset;
+}
+
+// Function to load admin actions log
+function loadAdminActionsLog() {
+    fetch('api/admin_get_actions_log.php')
+        .then(async response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const text = await response.text();
+            try {
+                return text ? JSON.parse(text) : {};
+            } catch (e) {
+                console.error('Failed to parse actions log JSON:', text);
+                throw new Error('Invalid server response');
+            }
+        })
+        .then(data => {
+            const log = document.getElementById('adminActionsLog');
+            if (data && data.success && Array.isArray(data.actions)) {
+                log.innerHTML = '';
+                data.actions.forEach(act => {
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item';
+                    let actionVerb = act.action_type;
+                    if (actionVerb === 'ban') actionVerb = 'banned';
+                    else if (actionVerb === 'unban') actionVerb = 'unbanned';
+                    else if (actionVerb === 'assign_badge') actionVerb = 'assigned badge to';
+                    else if (actionVerb === 'update_profile') actionVerb = 'updated profile of';
+                    else actionVerb += 'ed';
+                    li.innerHTML = `<b>${act.admin_username || 'Unknown Admin'}</b> ${actionVerb} <b>${act.target_type}</b> #${act.target_id} <span class='text-muted small'>${new Date(act.created_at).toLocaleString()}</span>`;
+                    log.appendChild(li);
+                });
+            } else {
+                log.innerHTML = '<li class="list-group-item text-muted">No recent actions.</li>';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading admin actions log:', error);
+            const log = document.getElementById('adminActionsLog');
+            if (log) {
+                log.innerHTML = '<li class="list-group-item text-danger">Error loading actions log.</li>';
+            }
+        });
+}
+
+// Function to hide modal
+function hideModal() {
+    const modalOverlay = document.getElementById('retroModalOverlay');
+    if (modalOverlay) {
+        modalOverlay.classList.remove('active', 'loading');
+        modalOverlay.style.display = 'none';
+        
+        // Clear any existing content
+        const modalContent = modalOverlay.querySelector('.retro-modal-content');
+        if (modalContent) {
+            modalContent.innerHTML = '';
+        }
+    }
+}
+
+// Function to show toast notifications
+function showToast(message, type = 'success') {
+    let toastContainer = document.getElementById('cgToastContainer');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'cgToastContainer';
+        toastContainer.style.position = 'fixed';
+        toastContainer.style.top = '24px';
+        toastContainer.style.right = '24px';
+        toastContainer.style.zIndex = '9999';
+        toastContainer.style.display = 'flex';
+        toastContainer.style.flexDirection = 'column';
+        toastContainer.style.gap = '8px';
+        document.body.appendChild(toastContainer);
+    }
+    const toast = document.createElement('div');
+    toast.className = 'cg-toast cg-toast-' + type;
+    toast.style.background = type === 'success' ? '#28a745' : '#dc3545';
+    toast.style.color = '#fff';
+    toast.style.padding = '12px 24px';
+    toast.style.borderRadius = '6px';
+    toast.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+    toast.style.fontWeight = 'bold';
+    toast.style.fontSize = '1rem';
+    toast.style.opacity = '0.95';
+    toast.style.transition = 'opacity 0.3s';
+    toast.textContent = message;
+    toastContainer.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 400);
+    }, 2200);
+}
 
 // Add event listener for save button
 document.addEventListener('click', function(e) {
@@ -200,10 +335,6 @@ document.addEventListener('click', function(e) {
         })
         .catch(error => {
             console.error('Error updating profile:', error);
-            showToast(error.message || 'Failed to update profile', 'error');
-        })
-        .catch(error => {
-            console.error('Error updating profile:', error);
             showToast('Error: ' + (error.message || 'Failed to update profile. Please try again.'), 'error');
         })
         .finally(() => {
@@ -216,39 +347,6 @@ document.addEventListener('click', function(e) {
     }
 });
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Toast Notification Helper ---
-    function showToast(message, type = 'success') {
-        let toastContainer = document.getElementById('cgToastContainer');
-        if (!toastContainer) {
-            toastContainer = document.createElement('div');
-            toastContainer.id = 'cgToastContainer';
-            toastContainer.style.position = 'fixed';
-            toastContainer.style.top = '24px';
-            toastContainer.style.right = '24px';
-            toastContainer.style.zIndex = '9999';
-            toastContainer.style.display = 'flex';
-            toastContainer.style.flexDirection = 'column';
-            toastContainer.style.gap = '8px';
-            document.body.appendChild(toastContainer);
-        }
-        const toast = document.createElement('div');
-        toast.className = 'cg-toast cg-toast-' + type;
-        toast.style.background = type === 'success' ? '#28a745' : '#dc3545';
-        toast.style.color = '#fff';
-        toast.style.padding = '12px 24px';
-        toast.style.borderRadius = '6px';
-        toast.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
-        toast.style.fontWeight = 'bold';
-        toast.style.fontSize = '1rem';
-        toast.style.opacity = '0.95';
-        toast.style.transition = 'opacity 0.3s';
-        toast.textContent = message;
-        toastContainer.appendChild(toast);
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => toast.remove(), 400);
-        }, 2200);
-    }
     const usersTableBody = document.getElementById('usersTableBody');
     const adminsTableBody = document.getElementById('adminsTableBody');
     
@@ -309,7 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isBanned = user.is_banned == 1 || user.is_banned === '1';
             let statusBadge = isBanned
                 ? '<span class="badge bg-danger ms-2">Banned</span>'
-                : '<span class="badge bg-success ms-2">Active</span>';
+                : '<span class="badge bg-success ms-2">Good</span>';
             let statusClass = user.status === 'Online' ? 'status-active' : 'status-inactive' + (isBanned ? ' status-banned' : '');
             let rowHtml = `
                 <td class="text-center"><input type="checkbox" class="${type}-select-checkbox"></td>
@@ -425,6 +523,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log('Data is valid, populating modal...');
                     // Remove loading state before populating
                     modalOverlay.classList.remove('loading');
+                    
+                    // Store userId and userType in modal dataset for save button
+                    modalOverlay.dataset.userid = userId;
+                    modalOverlay.dataset.usertype = userType;
+                    
                     try {
                         populateModal(data.data);
                         modalOverlay.classList.add('active');
@@ -449,19 +552,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast('Error loading user details: ' + (error.message || 'Unknown error'), 'error');
                 hideModal();
             });
-    }
-    function hideModal() {
-        const modalOverlay = document.getElementById('retroModalOverlay');
-        if (modalOverlay) {
-            modalOverlay.classList.remove('active', 'loading');
-            modalOverlay.style.display = 'none';
-            
-            // Clear any existing content
-            const modalContent = modalOverlay.querySelector('.retro-modal-content');
-            if (modalContent) {
-                modalContent.innerHTML = '';
-            }
-        }
     }
 
     // Standalone function to enable edit mode
@@ -841,48 +931,6 @@ function setupModalButtons(user) {
                 }
             });
     });
-    // --- 4. Admin Actions Log Placeholder ---
-    function loadAdminActionsLog() {
-        fetch('api/admin_get_actions_log.php')
-            .then(async response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const text = await response.text();
-                try {
-                    return text ? JSON.parse(text) : {};
-                } catch (e) {
-                    console.error('Failed to parse actions log JSON:', text);
-                    throw new Error('Invalid server response');
-                }
-            })
-            .then(data => {
-                const log = document.getElementById('adminActionsLog');
-                if (data && data.success && Array.isArray(data.actions)) {
-                    log.innerHTML = '';
-                    data.actions.forEach(act => {
-                        const li = document.createElement('li');
-                        li.className = 'list-group-item';
-                        let actionVerb = act.action_type;
-                        if (actionVerb === 'ban') actionVerb = 'banned';
-                        else if (actionVerb === 'unban') actionVerb = 'unbanned';
-                        else if (actionVerb === 'assign_badge') actionVerb = 'assigned badge to';
-                        else actionVerb += 'ed';
-                        li.innerHTML = `<b>${act.admin_username || 'Unknown Admin'}</b> ${actionVerb} <b>${act.target_type}</b> #${act.target_id} <span class='text-muted small'>${new Date(act.created_at).toLocaleString()}</span>`;
-                        log.appendChild(li);
-                    });
-                } else {
-                    log.innerHTML = '<li class="list-group-item text-muted">No recent actions.</li>';
-                }
-            })
-            .catch(error => {
-                console.error('Error loading admin actions log:', error);
-                const log = document.getElementById('adminActionsLog');
-                if (log) {
-                    log.innerHTML = '<li class="list-group-item text-danger">Error loading actions log.</li>';
-                }
-            });
-    }
     
     // Initialize the admin interface
     loadAdminActionsLog();
