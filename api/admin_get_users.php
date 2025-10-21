@@ -33,7 +33,7 @@ $q = isset($_GET['q']) ? trim($_GET['q']) : '';
 
 if ($q !== '') {
     // Search users
-    $stmt_users = $conn->prepare("SELECT id, username, email, created_at, is_banned, last_seen FROM users WHERE role = 'user' AND (username LIKE ? OR email LIKE ?) ORDER BY created_at DESC");
+    $stmt_users = $conn->prepare("SELECT id, username, email, profile_picture, created_at, is_banned, last_seen FROM users WHERE role = 'user' AND (username LIKE ? OR email LIKE ?) ORDER BY created_at DESC");
     $likeQ = "%$q%";
     $stmt_users->execute([$likeQ, $likeQ]);
     $users = $stmt_users->fetchAll(PDO::FETCH_ASSOC);
@@ -52,7 +52,7 @@ if ($q !== '') {
     unset($user);
 
     // Search admins
-    $stmt_admins = $conn->prepare("SELECT admin_id as id, username, email, role, created_at, is_banned, last_seen FROM admin_users WHERE username LIKE ? OR email LIKE ? ORDER BY created_at DESC");
+    $stmt_admins = $conn->prepare("SELECT admin_id as id, username, email, profile_picture, role, created_at, is_banned, last_seen FROM admin_users WHERE username LIKE ? OR email LIKE ? ORDER BY created_at DESC");
     $stmt_admins->execute([$likeQ, $likeQ]);
     $admins = $stmt_admins->fetchAll(PDO::FETCH_ASSOC);
     foreach ($admins as &$admin) {
@@ -69,7 +69,7 @@ if ($q !== '') {
     unset($admin);
 } else {
     // Fetch regular users
-    $stmt_users = $conn->prepare("SELECT id, username, email, created_at, is_banned, last_seen FROM users WHERE role = 'user' ORDER BY created_at DESC");
+    $stmt_users = $conn->prepare("SELECT id, username, email, profile_picture, created_at, is_banned, last_seen FROM users WHERE role = 'user' ORDER BY created_at DESC");
     $stmt_users->execute();
     $users = $stmt_users->fetchAll(PDO::FETCH_ASSOC);
     foreach ($users as &$user) {
@@ -86,7 +86,7 @@ if ($q !== '') {
     unset($user);
 
     // Fetch admin users
-    $stmt_admins = $conn->prepare("SELECT admin_id as id, username, email, role, created_at, is_banned, last_seen FROM admin_users ORDER BY created_at DESC");
+    $stmt_admins = $conn->prepare("SELECT admin_id as id, username, email, profile_picture, role, created_at, is_banned, last_seen FROM admin_users ORDER BY created_at DESC");
     $stmt_admins->execute();
     $admins = $stmt_admins->fetchAll(PDO::FETCH_ASSOC);
     foreach ($admins as &$admin) {
