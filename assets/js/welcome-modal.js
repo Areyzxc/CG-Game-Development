@@ -13,9 +13,14 @@
  * Last Updated: September 27, 2025
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-  initWelcomeModal();
-});
+// Only initialize if not already initialized
+if (!window.welcomeModalInitialized) {
+  document.addEventListener('DOMContentLoaded', () => {
+    initWelcomeModal();
+  });
+
+  window.welcomeModalInitialized = true;
+}
 
 // ─────────────────────────────────────────────────────────
 // Welcome Modal Functionality
@@ -23,6 +28,28 @@ document.addEventListener('DOMContentLoaded', () => {
 function initWelcomeModal() {
   const welcomeModal = document.getElementById('welcomeModal');
   if (!welcomeModal) return;
+
+  // Position the modal properly
+  const modalDialog = welcomeModal.querySelector('.modal-dialog');
+  if (modalDialog) {
+    modalDialog.style.margin = '1.75rem auto';
+    modalDialog.style.maxWidth = '600px';
+  }
+
+  // Ensure modal is in the correct position in the DOM
+  if (welcomeModal.parentNode !== document.body) {
+    document.body.appendChild(welcomeModal);
+  }
+
+  // Add event delegation for close buttons
+  document.addEventListener('click', (e) => {
+    if (e.target.matches('[data-bs-dismiss="modal"], [data-bs-dismiss="modal"] *')) {
+      const modal = bootstrap.Modal.getInstance(welcomeModal);
+      if (modal) {
+        modal.hide();
+      }
+    }
+  });
 
   // Check if user should see the welcome modal
   checkFirstVisit().then(shouldShow => {
@@ -33,9 +60,18 @@ function initWelcomeModal() {
       // Show modal with delay for better UX
       setTimeout(() => {
         const modal = new bootstrap.Modal(welcomeModal, {
-          backdrop: 'static',
-          keyboard: false
+          backdrop: true, // Changed from 'static' to allow closing by clicking outside
+          keyboard: true, // Changed to allow closing with ESC key
+          focus: true
         });
+        
+        // Add proper event listeners
+        welcomeModal.addEventListener('hide.bs.modal', () => {
+          removeConfetti();
+          handleModalClose();
+        });
+        
+        // Show the modal
         modal.show();
       }, 1000);
 
