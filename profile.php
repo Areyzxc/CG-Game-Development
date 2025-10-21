@@ -145,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
             if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $targetFile)) {
                 // Delete old profile picture if it exists and is not the default
                 $oldPicture = $currentUser['profile_picture'] ?? '';
-                if (!empty($oldPicture) && $oldPicture !== 'assets/images/default-avatar.png' && file_exists($oldPicture)) {
+                if (!empty($oldPicture) && $oldPicture !== 'assets/images/default-avatar.gif' && file_exists($oldPicture)) {
                     @unlink($oldPicture);
                 }
                 $profilePicture = $targetFile;
@@ -475,11 +475,11 @@ $stats['last_month_progress'] = min(100, $stats['overall_progress'] * 0.9); // E
         </div>
     </div>
     <div class="profile-avatar-container">
-        <img src="<?php echo !empty($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : '/CodeGaming/assets/images/default-avatar.png'; ?>" 
+        <img src="<?php echo !empty($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : '/CodeGaming/assets/images/default-avatar.gif'; ?>" 
              alt="Profile Picture" 
              class="profile-avatar"
              id="avatarPreview"
-             onerror="this.onerror=null; this.src='/CodeGaming/assets/images/default-avatar.png';">
+             onerror="this.onerror=null; this.src='/CodeGaming/assets/images/default-avatar.gif';">
         <div class="avatar-accent"></div>
     </div>
 </div>
@@ -784,7 +784,7 @@ $stats['last_month_progress'] = min(100, $stats['overall_progress'] * 0.9); // E
                     
                     <div class="mb-3 text-center">
                         <div class="position-relative d-inline-block mb-3">
-                            <img src="<?php echo !empty($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : 'assets/images/default-avatar.png'; ?>" 
+                            <img src="<?php echo !empty($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : 'assets/images/default-avatar.gif'; ?>" 
                                 alt="Profile Picture" 
                                 class="rounded-circle mb-2" 
                                 id="profileImagePreview"
