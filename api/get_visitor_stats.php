@@ -33,15 +33,15 @@ if (session_status() === PHP_SESSION_NONE) {
 // Debug: Log session data
 error_log('Session data: ' . print_r($_SESSION, true));
 
-// Check if user is logged in and is admin
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+// Check if user is logged in and has admin or super_admin role
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || !in_array($_SESSION['role'], ['admin', 'super_admin'])) {
     http_response_code(403);
     echo json_encode([
         'success' => false,
         'error' => 'Unauthorized access',
         'session' => $_SESSION,
         'is_logged_in' => isset($_SESSION['user_id']),
-        'is_admin' => ($_SESSION['user_role'] ?? null) === 'admin'
+        'is_admin' => in_array(($_SESSION['role'] ?? ''), ['admin', 'super_admin'])
     ]);
     exit;
 }
