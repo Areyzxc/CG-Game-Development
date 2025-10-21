@@ -52,12 +52,16 @@
 }
 
 /* Fallback for when the image fails to load */
-#userAvatar.user-avatar.rounded-circle:not([src]):not([srcset]) {   
-    background-color: transparent !important;
-    background-image: url('/CodeGaming/assets/images/default-avatar.png') !important;
+#userAvatar.user-avatar.rounded-circle:not([src]), 
+#userAvatar.user-avatar.rounded-circle[src=""],
+#userAvatar.user-avatar.rounded-circle[src*="default-avatar.gif"] {
+    background-color: #f0f2f5 !important;
+    background-image: url('/CodeGaming/assets/images/default-avatar.gif') !important;
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
+    content: '';
+    display: block;
 }
 
 .user-avatar:hover {
