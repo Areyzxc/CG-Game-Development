@@ -41,8 +41,17 @@ function initVisitorStats() {
  */
 async function fetchVisitorData() {
     try {
-        const response = await fetch('/api/get_visitor_stats.php?days=30');
-        return await response.json();
+        const response = await fetch('api/get_visitor_stats.php?days=30');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const text = await response.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            console.error('Invalid JSON response:', text);
+            return { success: false, error: 'Invalid server response' };
+        }
     } catch (error) {
         console.error('Error fetching visitor data:', error);
         return { success: false, error: 'Network error' };
@@ -54,22 +63,33 @@ async function fetchVisitorData() {
  */
 function updateVisitorStats(stats) {
     // Update the today's visitors card
-    const today = stats.daily_stats.find(day => day.date === new Date().toISOString().split('T')[0]);
+    const today = stats.daily_stats && stats.daily_stats.find(day => day.date === new Date().toISOString().split('T')[0]);
     
     if (today) {
-        document.getElementById('todayVisitors').textContent = today.page_views.toLocaleString();
-        document.getElementById('uniqueVisitors').textContent = today.unique_visits.toLocaleString();
+        const todayVisitorsEl = document.getElementById('todayVisitors');
+        const uniqueVisitorsEl = document.getElementById('uniqueVisitors');
+        
+        if (todayVisitorsEl) todayVisitorsEl.textContent = today.page_views.toLocaleString();
+        if (uniqueVisitorsEl) uniqueVisitorsEl.textContent = today.unique_visits.toLocaleString();
     }
     
-    // Update the active users count
-    const activeUsers = Math.floor(Math.random() * 50) + 30; // Simulate active users
-    document.getElementById('activeUsersStat').textContent = activeUsers;
+    // Update the active users count (only if element exists)
+    const activeUsersEl = document.getElementById('activeUsersStat');
+    if (activeUsersEl) {
+        const activeUsers = Math.floor(Math.random() * 50) + 30; // Simulate active users
+        activeUsersEl.textContent = activeUsers;
+    }
 }
 
 /**
  * Initialize the visitor charts
  */
 function initVisitorCharts(stats) {
+    if (!stats || !stats.daily_stats) {
+        console.warn('No visitor stats data available for charts');
+        return;
+    }
+    
     // Prepare data for the charts
     const labels = stats.daily_stats.map(day => {
         const date = new Date(day.date);
@@ -79,14 +99,20 @@ function initVisitorCharts(stats) {
     const pageViewsData = stats.daily_stats.map(day => day.page_views);
     const uniqueVisitsData = stats.daily_stats.map(day => day.unique_visits);
     
-    // Create the visitor trends chart
-    createVisitorTrendsChart(labels, pageViewsData, uniqueVisitsData);
+    // Create the visitor trends chart (only if container exists)
+    if (document.getElementById('visitorTrendsContainer')) {
+        createVisitorTrendsChart(labels, pageViewsData, uniqueVisitsData);
+    }
     
-    // Create the visitor sources chart
-    createVisitorSourcesChart(stats.referrers);
+    // Create the visitor sources chart (only if data and container exist)
+    if (stats.referrers && document.getElementById('visitorSourcesContainer')) {
+        createVisitorSourcesChart(stats.referrers);
+    }
     
-    // Create the browser usage chart
-    createBrowserUsageChart(stats.browsers);
+    // Create the browser usage chart (only if data and container exist)
+    if (stats.browsers && document.getElementById('browserUsageContainer')) {
+        createBrowserUsageChart(stats.browsers);
+    }
 }
 
 /**
