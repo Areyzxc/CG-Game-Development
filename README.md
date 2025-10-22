@@ -26,10 +26,10 @@ This repository serves as the codebase for our Capstone Project (Academic Year 2
 
 - **Anchor Page**: The main landing point upon visiting this code gaming system, with some detailed description about this platform is managed.
 - **User Profiles**: Customizable profiles with editable usernames, email, bios, location, banners, avatars, and progress tracking.
-- **Interactive Tutorials**: Step-by-step guides with dynamic pop-ups, pagination, and progress indicators for learning coding concepts.
+- **Interactive Tutorials**: Step-by-step guides with dynamic pop-ups, pagination, and progress tracking for learning coding concepts.
 - **Game Modes**: Mini-games like "Guess the Output" and "Speed Typing," quizzes, and challenges with scoring, timers, and feedback.
-- **Engagement Elements**: points, leaderboards, floating icons, background music, and a feedback container located at the About Us page for a personalized experience.
-- **Admin Dashboard**: Tools for user monitoring, announcements, and system stats, powered by charts and tables.
+- **Engagement Elements**: points, leaderboards, floating icons/avatars, background music, and a feedback container located at the About Us page for a personalized experience.
+- **Admin Dashboard**: Tools for user monitoring, announcements, user/admin log tracking, and system stats, powered by charts and tables.
 - **Visitor Tracking**: Non-registered users' activities are logged to encourage sign-ups.
 
 ## Technology Stack
@@ -94,6 +94,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-Special thanks to our professors and panelists from Capstone and Pateros Technological College for guidance. Inspired by gamification studies and open-source educational tools.
+Special thanks to our professor and panelists in Capstone from Pateros Technological College for guidance. Inspired by gamification studies and open-source educational tools.
 
 For questions or collaborations, contact us via GitHub Issues and Discussions (Make sure to have a GitHub account registered) or email us at [jamesariess76@gmail.com].
