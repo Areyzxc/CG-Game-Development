@@ -648,5 +648,53 @@ CREATE TABLE IF NOT EXISTS system_notifications (
     INDEX idx_type (type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- (41) --
+-- User Activities Table
+-- Create a table for user activity logs
+CREATE TABLE IF NOT EXISTS `user_activities` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `user_id` INT NOT NULL,
+    `activity_type` VARCHAR(50) NOT NULL COMMENT 'e.g., login, profile_view, quiz_complete, etc.',
+    `activity_details` JSON NULL,
+    `ip_address` VARCHAR(45) NULL,
+    `user_agent` TEXT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+    INDEX `idx_activity_user` (`user_id`, `activity_type`),
+    INDEX `idx_activity_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- (42) --
+-- User Stats Table
+-- Create a table for user stats
+CREATE TABLE IF NOT EXISTS `user_stats` (
+    `user_id` INT PRIMARY KEY,
+    `points` INT NOT NULL DEFAULT 0,
+    `rank` INT NULL,
+    `challenges_completed` INT NOT NULL DEFAULT 0,
+    `quizzes_passed` INT NOT NULL DEFAULT 0,
+    `total_learning_time` INT NOT NULL DEFAULT 0 COMMENT 'in minutes',
+    `last_week_progress` TINYINT NOT NULL DEFAULT 0,
+    `last_month_progress` TINYINT NOT NULL DEFAULT 0,
+    `overall_progress` TINYINT NOT NULL DEFAULT 0,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- (43) --
+-- User Badges/Achievements Table
+-- Create a table for user badges/achievements
+CREATE TABLE IF NOT EXISTS `user_badges` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `user_id` INT NOT NULL,
+    `badge_type` VARCHAR(50) NOT NULL,
+    `title` VARCHAR(100) NOT NULL,
+    `description` TEXT NULL,
+    `icon` VARCHAR(100) NULL,
+    `awarded_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+    INDEX `idx_user_badges` (`user_id`, `badge_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 
