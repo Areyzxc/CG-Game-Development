@@ -2,8 +2,10 @@
 -- Filename: Current Database & Tables.sql
 -- Description: The complete database schema for the Code Gaming application.
 -- This script creates the database, all necessary tables, and defines their relationships.
+-- Some insertion samples are added here too.
 -- It is designed to be the single source of truth for the database structure.
--- Last Updated: [07/22/25]
+-- Last Updated: [10/22/25]
+-- Code Gaming Team
 -- =================================================================
 
 -- Create the database if it doesn't exist
@@ -14,7 +16,7 @@ CREATE DATABASE coding_game CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE coding_game;
 
 -- =================================================================
--- Table Creation
+-- Table Creation (TOTAL: 40)
 -- =================================================================
 
 -- (1) --
@@ -85,7 +87,7 @@ CREATE TABLE IF NOT EXISTS visitor_logs (
     INDEX idx_visit_time (visit_time)
 ) ENGINE=InnoDB;
 
--- (5.1) --
+-- (6) --
 -- Guest Sessions: Tracks guest quiz/game sessions and nicknames.
 CREATE TABLE IF NOT EXISTS guest_sessions (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -96,7 +98,7 @@ CREATE TABLE IF NOT EXISTS guest_sessions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- (6) --
+-- (7) --
 -- System: Password Reset Tokens
 -- Stores tokens for the "Forgot Password" functionality.
 CREATE TABLE IF NOT EXISTS password_reset_requests (
@@ -110,7 +112,7 @@ CREATE TABLE IF NOT EXISTS password_reset_requests (
     INDEX idx_token (reset_token)
 ) ENGINE=InnoDB;
 
--- (7) --
+-- (8) --
 -- Content: Site-wide Announcements
 -- Stores announcements created by admins to be displayed on the site.
 CREATE TABLE IF NOT EXISTS announcements (
@@ -123,7 +125,7 @@ CREATE TABLE IF NOT EXISTS announcements (
     FOREIGN KEY (created_by) REFERENCES admin_users(admin_id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
--- (8) --
+-- (9) --
 -- Content: Quiz Questions
 -- Stores all questions for the quizzes, linked to a tutorial topic ID.
 CREATE TABLE IF NOT EXISTS quiz_questions (
@@ -136,7 +138,7 @@ CREATE TABLE IF NOT EXISTS quiz_questions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- (9) --
+-- (10) --
 -- Content: Quiz Answers
 -- Stores the possible answers for each quiz question.
 CREATE TABLE IF NOT EXISTS quiz_answers (
@@ -149,7 +151,7 @@ CREATE TABLE IF NOT EXISTS quiz_answers (
     FOREIGN KEY (question_id) REFERENCES quiz_questions(id) ON DELETE CASCADE
 );
 
--- (10) --
+-- (11) --
 -- Content: Coding Challenges
 -- Stores coding challenges, including starter code and test cases.
 -- NOTE: Only challenges with difficulty = 'expert' will be available for play in the future.
@@ -165,8 +167,8 @@ CREATE TABLE IF NOT EXISTS code_challenges (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- (10.1) --
--- Content: Challenge Questions (Extended)
+-- (12) --
+-- Content: Challenge Questions
 -- Stores challenge questions with varied types for the Expert Challenge mode.
 CREATE TABLE IF NOT EXISTS challenge_questions (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -180,7 +182,7 @@ CREATE TABLE IF NOT EXISTS challenge_questions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- (10.2) --
+-- (13) --
 -- Content: Challenge Answers
 -- Stores answers for challenge questions.
 CREATE TABLE IF NOT EXISTS challenge_answers (
@@ -193,7 +195,7 @@ CREATE TABLE IF NOT EXISTS challenge_answers (
     FOREIGN KEY (question_id) REFERENCES challenge_questions(id) ON DELETE CASCADE
 );
 
--- (10.3) --
+-- (14) --
 -- Content: Challenge Test Cases
 -- Stores test cases for code-based challenges.
 CREATE TABLE IF NOT EXISTS challenge_test_cases (
@@ -205,7 +207,7 @@ CREATE TABLE IF NOT EXISTS challenge_test_cases (
     FOREIGN KEY (question_id) REFERENCES challenge_questions(id) ON DELETE CASCADE
 );
 
--- (10.4) --
+-- (15) --
 -- Progress: User Challenge Attempts
 -- Records user submissions for challenge questions.
 CREATE TABLE IF NOT EXISTS user_challenge_attempts (
@@ -221,7 +223,7 @@ CREATE TABLE IF NOT EXISTS user_challenge_attempts (
     FOREIGN KEY (question_id) REFERENCES challenge_questions(id) ON DELETE CASCADE
 );
 
--- (10.5) --
+-- (16) --
 -- Progress: Guest Challenge Attempts
 -- Records guest submissions for challenge questions.
 CREATE TABLE IF NOT EXISTS guest_challenge_attempts (
@@ -237,7 +239,7 @@ CREATE TABLE IF NOT EXISTS guest_challenge_attempts (
     FOREIGN KEY (question_id) REFERENCES challenge_questions(id) ON DELETE CASCADE
 );
 
--- (10.6) --
+-- (17) --
 -- Analytics: Challenge Leaderboard
 -- Stores aggregated challenge scores for leaderboard display.
 CREATE TABLE IF NOT EXISTS challenge_leaderboard (
@@ -256,7 +258,7 @@ CREATE TABLE IF NOT EXISTS challenge_leaderboard (
     INDEX idx_completed (completed_at DESC)
 );
 
--- (11) --
+-- (18) --
 -- Content: User Feedback Messages
 -- Stores feedback messages submitted by users through the contact/feedback form.
 CREATE TABLE IF NOT EXISTS feedback_messages (
@@ -269,7 +271,7 @@ CREATE TABLE IF NOT EXISTS feedback_messages (
     likes INT DEFAULT 0
 ) ENGINE=InnoDB;
 
--- (12) --
+-- (19) --
 -- Progress: User Tutorial Topic Progress
 -- Tracks a user's progress for each specific tutorial topic.
 -- Status: 'pending' (not started), 'currently_reading' (in progress), 'done_reading' (completed)
@@ -285,7 +287,7 @@ CREATE TABLE IF NOT EXISTS user_progress (
     UNIQUE KEY unique_user_topic (user_id, topic_id)
 );
 
--- (13) --
+-- (20) --
 -- Progress: User Tutorial Game Mode Progress
 -- Tracks completion status for the introductory tutorials of game modes.
 CREATE TABLE IF NOT EXISTS user_tutorial_modes_progress (
@@ -298,7 +300,7 @@ CREATE TABLE IF NOT EXISTS user_tutorial_modes_progress (
     UNIQUE KEY unique_user_mode (user_id, mode)
 );
 
--- (14) --
+-- (21) --
 -- Progress: User Quiz Attempts
 -- Records each attempt a user makes on a quiz question.
 CREATE TABLE IF NOT EXISTS user_quiz_attempts (
@@ -314,7 +316,7 @@ CREATE TABLE IF NOT EXISTS user_quiz_attempts (
     FOREIGN KEY (selected_answer_id) REFERENCES quiz_answers(id) ON DELETE SET NULL
 );
 
--- (14.1) --
+-- (22) --
 -- Progress: Guest Quiz Attempts
 -- Records each attempt a guest makes on a quiz question.
 CREATE TABLE IF NOT EXISTS guest_quiz_attempts (
@@ -330,7 +332,7 @@ CREATE TABLE IF NOT EXISTS guest_quiz_attempts (
     FOREIGN KEY (selected_answer_id) REFERENCES quiz_answers(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
--- (15) --
+-- (23) --
 -- Progress: User Code Submissions
 -- Records user submissions for coding challenges.
 CREATE TABLE IF NOT EXISTS user_code_submissions (
@@ -346,7 +348,7 @@ CREATE TABLE IF NOT EXISTS user_code_submissions (
     FOREIGN KEY (challenge_id) REFERENCES code_challenges(id) ON DELETE CASCADE
 );
 
--- (16) --
+-- (24) --
 -- Progress: Mini-Game Scores
 -- Stores scores and results from the various mini-games.
 CREATE TABLE IF NOT EXISTS mini_game_results (
@@ -360,7 +362,7 @@ CREATE TABLE IF NOT EXISTS mini_game_results (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
--- (17) --
+-- (25) --
 -- Tracking: Tutorial Page Visits
 -- Tracks which tutorial topics users are viewing.
 CREATE TABLE IF NOT EXISTS tutorial_visits (
@@ -378,7 +380,7 @@ CREATE TABLE IF NOT EXISTS tutorial_visits (
     INDEX idx_visit_time (visit_time)
 ) ENGINE=InnoDB;
 
--- (18) --
+-- (26) --
 -- Tracking: User Achievements
 -- Tracks achievements unlocked by users.
 CREATE TABLE IF NOT EXISTS user_achievements (
@@ -390,7 +392,7 @@ CREATE TABLE IF NOT EXISTS user_achievements (
     UNIQUE KEY unique_user_achievement (user_id, achievement_id)
 ) ENGINE=InnoDB; 
 
--- (19) --
+-- (27) --
 -- Tracking: Admin Actions Log
 -- Tracks actions taken by admins.
 CREATE TABLE IF NOT EXISTS admin_actions_log (
@@ -404,7 +406,7 @@ CREATE TABLE IF NOT EXISTS admin_actions_log (
   FOREIGN KEY (admin_id) REFERENCES admin_users(admin_id) ON DELETE SET NULL
 ); 
 
--- (20) --
+-- (28) --
 -- Tracking: Welcome Modal Interactions
 -- Tracks interactions with the welcome modal for personalization.
 CREATE TABLE IF NOT EXISTS user_welcome_tracking (
@@ -421,7 +423,7 @@ CREATE TABLE IF NOT EXISTS user_welcome_tracking (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) COMMENT 'Tracks user interactions with welcome modal for personalization';
 
--- (21) --
+-- (29) --
 -- Tracking: User Feedback Likes
 -- Tracks likes on user feedback messages.
 CREATE TABLE IF NOT EXISTS user_feedback_likes (
@@ -434,7 +436,7 @@ CREATE TABLE IF NOT EXISTS user_feedback_likes (
     UNIQUE KEY unique_user_feedback_like (user_id, feedback_id)
 ) ENGINE=InnoDB;
 
--- (22) --
+-- (30) --
 -- Team Members Table
 -- Stores detailed information about team members for the About page
 CREATE TABLE IF NOT EXISTS team_members (
@@ -458,7 +460,7 @@ CREATE TABLE IF NOT EXISTS team_members (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- (23) --
+-- (31) --
 -- Timeline Events Table
 -- Stores project development milestones for the timeline section
 CREATE TABLE IF NOT EXISTS timeline_events (
@@ -474,7 +476,7 @@ CREATE TABLE IF NOT EXISTS timeline_events (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- (24) --
+-- (32) --
 -- Coding Playlist Table
 -- Stores music tracks for the coding playlist section
 CREATE TABLE IF NOT EXISTS coding_playlist (
@@ -491,7 +493,7 @@ CREATE TABLE IF NOT EXISTS coding_playlist (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- (25) --
+-- (33) --
 -- FAQ Items Table
 -- Stores frequently asked questions with search functionality
 CREATE TABLE IF NOT EXISTS faq_items (
@@ -507,7 +509,7 @@ CREATE TABLE IF NOT EXISTS faq_items (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- (26) --
+-- (34) --
 -- Project Statistics Table
 -- Stores key project metrics for the impact section
 CREATE TABLE IF NOT EXISTS project_statistics (
@@ -522,7 +524,7 @@ CREATE TABLE IF NOT EXISTS project_statistics (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- (27) --
+-- (35) --
 -- Mini-Game Modes Table
 -- Stores different game modes for the mini-game section
 CREATE TABLE IF NOT EXISTS mini_game_modes (
@@ -539,7 +541,7 @@ CREATE TABLE IF NOT EXISTS mini_game_modes (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- (28) --
+-- (36) --
 -- Mini-Game Preferences Table
 -- Stores user preferences for the mini-game section
 CREATE TABLE IF NOT EXISTS user_mini_game_preferences (
@@ -557,7 +559,7 @@ CREATE TABLE IF NOT EXISTS user_mini_game_preferences (
 CREATE INDEX idx_mini_game_modes_active ON mini_game_modes(is_active);
 CREATE INDEX idx_user_preferences_user_id ON user_mini_game_preferences(user_id);
 
--- (29) --
+-- (37) --
 -- Visitor Tracking Table
 -- Tracks visitor activity on the website
 CREATE TABLE IF NOT EXISTS `visitor_tracking` (
@@ -580,7 +582,7 @@ CREATE TABLE IF NOT EXISTS `visitor_tracking` (
   KEY `visit_time` (`visit_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- (30) --
+-- (38) --
 -- Visitor Stats Table
 -- Stores aggregated visitor data for analytics
 CREATE TABLE IF NOT EXISTS `visitor_stats` (
@@ -593,4 +595,45 @@ CREATE TABLE IF NOT EXISTS `visitor_stats` (
   UNIQUE KEY `visit_date` (`visit_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+-- (39) --
+-- Activity Log Table
+-- Table for tracking all user/admin activities
+CREATE TABLE IF NOT EXISTS activity_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NULL,
+    admin_id INT NULL,
+    username VARCHAR(100) NOT NULL,
+    user_type ENUM('user', 'admin') NOT NULL DEFAULT 'user',
+    action VARCHAR(100) NOT NULL,
+    action_details TEXT NULL,
+    ip_address VARCHAR(45) NULL,
+    user_agent TEXT NULL,
+    status ENUM('success', 'failed', 'pending') NOT NULL DEFAULT 'success',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_user_id (user_id),
+    INDEX idx_admin_id (admin_id),
+    INDEX idx_created_at (created_at),
+    INDEX idx_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- (40) --
+-- System Notifications Table
+-- Table for system notifications for Admins
+CREATE TABLE IF NOT EXISTS system_notifications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    type ENUM('info', 'warning', 'error', 'success') NOT NULL DEFAULT 'info',
+    title VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    icon VARCHAR(50) DEFAULT 'fa-info-circle',
+    is_read BOOLEAN DEFAULT FALSE,
+    related_user_id INT NULL,
+    related_admin_id INT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    read_at TIMESTAMP NULL,
+    INDEX idx_is_read (is_read),
+    INDEX idx_created_at (created_at),
+    INDEX idx_type (type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
