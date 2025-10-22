@@ -29,6 +29,17 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255) NOT NULL,
     role ENUM('user', 'admin') DEFAULT 'user',
     profile_picture VARCHAR(255) DEFAULT NULL,
+    bio` TEXT NULL DEFAULT NULL,
+    location VARCHAR(100) NULL DEFAULT NULL,
+    title VARCHAR(100) NULL DEFAULT 'Code Enthusiast',
+    social_instagram VARCHAR(100) NULL DEFAULT NULL,
+    social_facebook VARCHAR(100) NULL DEFAULT NULL,
+    social_twitter VARCHAR(100) NULL DEFAULT NULL,
+    social_pinterest VARCHAR(100) NULL DEFAULT NULL,
+    email_verified TINYINT(1) NOT NULL DEFAULT 0,
+    profile_views INT NOT NULL DEFAULT 0,
+    last_activity TIMESTAMP NULL DEFAULT NULL,
+    preferences JSON NULL DEFAULT NULL COMMENT 'User preferences in JSON format';
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     last_seen TIMESTAMP NULL DEFAULT NULL,
@@ -636,4 +647,5 @@ CREATE TABLE IF NOT EXISTS system_notifications (
     INDEX idx_created_at (created_at),
     INDEX idx_type (type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
