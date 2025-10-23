@@ -1,3 +1,4 @@
+
 <?php
 /**
  * ==========================================================
@@ -123,6 +124,7 @@ $currentRole = $auth->getCurrentRole();
     </style>
     <link rel="stylesheet" href="assets/css/admin_dashboard.css">
     <link rel="stylesheet" href="assets/css/admin_users.css">
+    <link rel="stylesheet" href="assets/css/admin_users_modern.css">
     
 </head>
 <body class="admin-theme">
@@ -254,23 +256,29 @@ $currentRole = $auth->getCurrentRole();
                     <p id="modalLocation">Role / Joined Date</p>
                 </div>
                 <div class="details-section">
-                    <p class="section-title">File Details</p>
-                    <p>name: 
+                    <p class="section-title">User Details</p>
+                    <p><strong>Username:</strong> 
                         <span id="modalUsername">Lennon</span>
                         <input type="text" id="modalUsernameInput" class="form-control d-none" value="" maxlength="32" style="width:180px;display:inline-block;vertical-align:middle;">
                     </p>
-                    <p>email: <span id="modalEmail">user@example.com</span></p>
-                    <p>last seen: <span id="modalLastSeen">Online</span></p>
-                    <p>status: <span id="modalStatus" class="status-active">Active</span></p>
+                    <p><strong>Email:</strong> <span id="modalEmail">user@example.com</span></p>
+                    <p><strong>Last Seen:</strong> <span id="modalLastSeen">Online</span></p>
+                    <p><strong>Status:</strong> <span id="modalStatus" class="status-active">Active</span></p>
                 </div>
             </div>
         </div>
         <div class="progress-content" id="progressContent" style="display: none;">
     <div class="progress-ring-wrapper">
         <div class="progress-ring">
-            <svg class="progress-ring__circle" width="160" height="160">
-                <circle class="progress-ring__circle-bg" r="70" cx="80" cy="80"/>
-                <circle class="progress-ring__circle-fill" r="70" cx="80" cy="80"/>
+            <svg class="progress-ring__circle" width="180" height="180">
+                <defs>
+                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <circle class="progress-ring__circle-bg" r="70" cx="90" cy="90"/>
+                <circle class="progress-ring__circle-fill" r="70" cx="90" cy="90"/>
             </svg>
             <div class="progress-ring__content">
                 <div class="progress-ring__percent">0%</div>
@@ -313,63 +321,12 @@ $currentRole = $auth->getCurrentRole();
 <?php include 'includes/admin_footer.php'; ?>
     <script src="assets/js/admin_global.js"></script>
     <script src="assets/js/retro-modal.js"></script>
-    <script src="assets/js/admin-user-progress.js"></script>
-    <!-- Main admin users functionality is now in admin_users_fixed.js -->
+    <!-- Main admin users functionality -->
     <script src="assets/js/admin_users.js" defer></script>
     <script>
-        // Progress ring initialization
-        function initProgressRing(percent) {
-            const circle = document.querySelector('.progress-ring__circle-fill');
-            const radius = circle.r.baseVal.value;
-            const circumference = radius * 2 * Math.PI;
-            circle.style.strokeDasharray = `${circumference} ${circumference}`;
-            circle.style.strokeDashoffset = `${circumference}`;
-            const offset = circumference - (percent / 100) * circumference;
-            circle.style.strokeDashoffset = offset;
-        }
-        
-        // Load user progress
-        function loadUserProgress(userId) {
-            fetch(`api/admin_get_user_progress.php?id=${userId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const progress = data.data;
-                        // Calculate total progress percentage
-                        const totalCompleted = progress.completed_tutorials + 
-                                             progress.completed_quizzes + 
-                                             progress.completed_challenges;
-                        const totalPossible = 30; // Example: assuming 10 each
-                        const percentage = Math.round((totalCompleted / totalPossible) * 100);
-                        
-                        // Update progress ring
-                        document.querySelector('.progress-ring__percent').textContent = `${percentage}%`;
-                        initProgressRing(percentage);
-                        
-                        // Update stats
-                        document.getElementById('completedTutorials').textContent = progress.completed_tutorials;
-                        document.getElementById('completedQuizzes').textContent = progress.completed_quizzes;
-                        document.getElementById('completedChallenges').textContent = progress.completed_challenges;
-                        document.getElementById('totalXP').textContent = progress.total_xp;
-                    }
-                })
-                .catch(error => console.error('Error loading user progress:', error));
-        }
-
-        // Progress tab click handler
-        document.getElementById('modalProgressButton').addEventListener('click', () => {
-            // Hide other content sections
-            document.querySelectorAll('.retro-modal-content > div').forEach(div => {
-                div.style.display = 'none';
-            });
-            
-            // Show progress content
-            document.getElementById('progressContent').style.display = 'block';
-            
-            // Load progress data for current user
-            const userId = document.getElementById('modalUsername').getAttribute('data-user-id');
-            loadUserProgress(userId);
-        });
+        // Note: loadUserProgress and initProgressRing functions are now in admin_users.js
+        // Progress button click handler is managed in admin_users.js as well
+        console.log('Admin users page loaded - progress functions loaded from admin_users.js');
     </script>
 </body>
 </html>
