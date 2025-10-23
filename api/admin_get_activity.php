@@ -38,7 +38,7 @@ try {
             username as user,
             action,
             action_details,
-            MAX(created_at) as time,
+            created_at as time,
             status,
             CASE 
                 WHEN status = 'success' THEN 'success'
@@ -47,30 +47,36 @@ try {
             END as status_color
         FROM activity_log
         WHERE created_at > DATE_SUB(NOW(), INTERVAL 24 HOUR)
-        GROUP BY username, action, action_details, status
-        ORDER BY time DESC
+        ORDER BY created_at DESC
         LIMIT 15
     ");
     $stmt->execute();
     
     $activity = [];
     while ($row = $stmt->fetch()) {
-        $date = new DateTime($row['time']);
-        $now = new DateTime();
+        // Use server timezone for consistent time calculation
+        $date = new DateTime($row['time'], new DateTimeZone(date_default_timezone_get()));
+        $now = new DateTime('now', new DateTimeZone(date_default_timezone_get()));
         $diff = $now->diff($date);
         
-        if ($diff->days == 0) {
-            if ($diff->h == 0) {
-                if ($diff->i == 0) {
-                    $timeAgo = $diff->s . ' second' . ($diff->s != 1 ? 's' : '') . ' ago';
-                } else {
-                    $timeAgo = $diff->i . ' minute' . ($diff->i != 1 ? 's' : '') . ' ago';
-                }
-            } else {
-                $timeAgo = $diff->h . ' hour' . ($diff->h != 1 ? 's' : '') . ' ago';
-            }
+        // Calculate total seconds for more accurate time display
+        $totalSeconds = ($diff->days * 24 * 60 * 60) + ($diff->h * 60 * 60) + ($diff->i * 60) + $diff->s;
+        
+        if ($totalSeconds < 60) {
+            // Less than 1 minute
+            $timeAgo = $totalSeconds . ' second' . ($totalSeconds != 1 ? 's' : '') . ' ago';
+        } elseif ($totalSeconds < 3600) {
+            // Less than 1 hour
+            $minutes = floor($totalSeconds / 60);
+            $timeAgo = $minutes . ' minute' . ($minutes != 1 ? 's' : '') . ' ago';
+        } elseif ($totalSeconds < 86400) {
+            // Less than 1 day
+            $hours = floor($totalSeconds / 3600);
+            $timeAgo = $hours . ' hour' . ($hours != 1 ? 's' : '') . ' ago';
         } else {
-            $timeAgo = $diff->days . ' day' . ($diff->days != 1 ? 's' : '') . ' ago';
+            // 1 day or more
+            $days = floor($totalSeconds / 86400);
+            $timeAgo = $days . ' day' . ($days != 1 ? 's' : '') . ' ago';
         }
         
         // Format action text
