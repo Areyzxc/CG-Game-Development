@@ -93,20 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initial load
   loadStats();
 
-  // --- Fetch Chart Data ---
-  fetch('api/admin_get_chart_data.php')
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        initializeCharts(data);
-      } else {
-        console.error('Failed to fetch chart data:', data.error);
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching chart data:', error);
-    });
-
   // --- Fetch Announcements (Pinned first, limit 5) ---
   function loadAnnouncements() {
     fetch('api/admin_get_announcements.php')
@@ -225,69 +211,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const refreshNotificationsBtn = document.getElementById('refreshNotificationsBtn');
   if (refreshNotificationsBtn) {
     refreshNotificationsBtn.addEventListener('click', loadNotifications);
-  }
-
-  // --- Initialize Charts ---
-  function initializeCharts(chartData) {
-    // User Activity Chart
-    if (window.ApexCharts && document.querySelector('#userActivityChart')) {
-      const userActivityOptions = {
-        chart: { 
-          type: 'bar', 
-          height: 180, 
-          toolbar: { show: false },
-          background: 'transparent'
-        },
-        series: [{ 
-          name: 'Logins', 
-          data: chartData.user_activity.data || [30, 40, 35, 50, 49, 60, 70] 
-        }],
-        xaxis: { 
-          categories: chartData.user_activity.labels || ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          labels: { style: { colors: '#7f8c8d' } }
-        },
-        yaxis: { labels: { style: { colors: '#7f8c8d' } } },
-        colors: ['#3498db'],
-        grid: { borderColor: '#e0e4ea' },
-        plotOptions: {
-          bar: {
-            borderRadius: 4,
-            dataLabels: { position: 'top' }
-          }
-        }
-      };
-      new ApexCharts(document.querySelector('#userActivityChart'), userActivityOptions).render();
-    }
-
-    // Content Distribution Chart
-    if (window.ApexCharts && document.querySelector('#contentPieChart')) {
-      const labels = chartData.content_distribution.map(item => item.label) || ['Tutorials', 'Quizzes', 'Challenges'];
-      const values = chartData.content_distribution.map(item => item.value) || [44, 33, 23];
-      
-      const contentPieOptions = {
-        chart: { 
-          type: 'donut', 
-          height: 180,
-          background: 'transparent'
-        },
-        series: values,
-        labels: labels,
-        colors: ['#3498db', '#f1c40f', '#2ecc71'],
-        legend: { 
-          show: true, 
-          position: 'bottom',
-          labels: { colors: '#7f8c8d' }
-        },
-        plotOptions: {
-          pie: {
-            donut: {
-              size: '60%'
-            }
-          }
-        }
-      };
-      new ApexCharts(document.querySelector('#contentPieChart'), contentPieOptions).render();
-    }
   }
 
   // --- Add/Edit Announcement ---
