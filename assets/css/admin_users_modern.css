@@ -1,0 +1,326 @@
+/* Modern Professional Styling for Retro Modal Content */
+
+/* Content Area */
+.retro-modal-content {
+    background: #ffffff;
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Profile Section */
+.profile-picture-container {
+    text-align: center;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.profile-picture-container img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #667eea;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+/* Edit Mode Styles */
+.profile-picture-container input[type="file"] {
+    margin-top: 12px;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.profile-picture-container .btn {
+    margin-top: 8px;
+}
+
+/* File Details */
+.file-details-container {
+    padding: 0;
+}
+
+.file-info-box {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+}
+
+.file-info-box span {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 4px;
+}
+
+.file-info-box p {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* Details Section */
+.details-section {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 16px;
+    position: relative;
+    z-index: 2;
+}
+
+.section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #495057;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #667eea;
+}
+
+.details-section p {
+    margin: 12px 0;
+    font-size: 14px;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    line-height: 1.6;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.details-section p strong {
+    min-width: 100px;
+    color: #212529;
+    font-weight: 600;
+}
+
+.details-section span {
+    color: #6c757d;
+}
+
+/* Edit Mode Username Input */
+.details-section input[type="text"].form-control,
+#editUsernameInput {
+    display: inline-block;
+    width: auto;
+    min-width: 200px;
+    max-width: 300px;
+    padding: 6px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+.details-section input[type="text"].form-control:focus,
+#editUsernameInput:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Status Badge */
+.status-active {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #28a745;
+    color: white;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-inactive {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #dc3545;
+    color: white;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Progress Content */
+.progress-content {
+    padding: 24px;
+    background: #ffffff;
+}
+
+.progress-ring-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+}
+
+.progress-ring {
+    position: relative;
+    width: 180px;
+    height: 180px;
+}
+
+.progress-ring__circle {
+    transform: rotate(-90deg);
+}
+
+.progress-ring__circle-bg {
+    fill: none;
+    stroke: #e9ecef;
+    stroke-width: 8;
+}
+
+.progress-ring__circle-fill {
+    fill: none;
+    stroke: url(#progressGradient);
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+.progress-ring__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.progress-ring__percent {
+    font-size: 36px;
+    font-weight: 700;
+    color: #667eea;
+    line-height: 1;
+}
+
+.progress-ring__label {
+    font-size: 13px;
+    color: #6c757d;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+    width: 100%;
+}
+
+.stat-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #667eea;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #6c757d;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Status Bar */
+.retro-modal-status-bar {
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 0 12px 12px;
+}
+
+.time-display {
+    font-size: 12px;
+    color: #6c757d;
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-weight: 500;
+}
+
+.status-badge {
+    font-size: 12px;
+    color: #667eea;
+    font-weight: 600;
+    background: rgba(102, 126, 234, 0.1);
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+/* Close Button */
+.header-left .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ff5f56;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.header-left .dot:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(255, 95, 86, 0.4);
+}
+
+.header-left .dot:nth-child(2) {
+    background: #ffbd2e;
+}
+
+.header-left .dot:nth-child(3) {
+    background: #27c93f;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .retro-modal {
+        max-width: 95%;
+        margin: 20px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .retro-modal-menu-bar {
+        padding: 8px 12px;
+    }
+    
+    .retro-modal-menu-bar .menu-button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
