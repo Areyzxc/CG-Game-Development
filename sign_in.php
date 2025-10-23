@@ -42,46 +42,76 @@ try {
     $db = Database::getInstance();
     $conn = $db->getConnection();
     
-    // Check for existing email
-    $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+    // Debug logging
+    error_log("Registration attempt - Role: $role, Username: $username, Email: $email");
+    
+    // Check for existing email (case-insensitive)
+    $stmt = $conn->prepare("SELECT id FROM users WHERE LOWER(email) = LOWER(?)");
     $stmt->execute([$email]);
-    if ($stmt->fetch()) {
+    $existingUser = $stmt->fetch();
+    if ($existingUser) {
+        error_log("Email $email already exists in users table (ID: {$existingUser['id']})");
         echo json_encode(['success' => false, 'error' => 'Email already registered.']);
         exit;
     }
-    $stmt = $conn->prepare("SELECT admin_id FROM admin_users WHERE email = ?");
+    
+    $stmt = $conn->prepare("SELECT admin_id FROM admin_users WHERE LOWER(email) = LOWER(?)");
     $stmt->execute([$email]);
-    if ($stmt->fetch()) {
+    $existingAdmin = $stmt->fetch();
+    if ($existingAdmin) {
+        error_log("Email $email already exists in admin_users table (ID: {$existingAdmin['admin_id']})");
         echo json_encode(['success' => false, 'error' => 'Email already registered as admin.']);
         exit;
     }
     
-    // Check for existing username
-    $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+    error_log("Email $email is available for registration");
+    
+    // Check for existing username (case-insensitive)
+    $stmt = $conn->prepare("SELECT id FROM users WHERE LOWER(username) = LOWER(?)");
     $stmt->execute([$username]);
-    if ($stmt->fetch()) {
+    $existingUserByUsername = $stmt->fetch();
+    if ($existingUserByUsername) {
+        error_log("Username $username already exists in users table");
         echo json_encode(['success' => false, 'error' => 'Username already taken.']);
         exit;
     }
-    $stmt = $conn->prepare("SELECT admin_id FROM admin_users WHERE username = ?");
+    
+    $stmt = $conn->prepare("SELECT admin_id FROM admin_users WHERE LOWER(username) = LOWER(?)");
     $stmt->execute([$username]);
-    if ($stmt->fetch()) {
+    $existingAdminByUsername = $stmt->fetch();
+    if ($existingAdminByUsername) {
+        error_log("Username $username already exists in admin_users table");
         echo json_encode(['success' => false, 'error' => 'Username already taken as admin.']);
         exit;
     }
+    
+    error_log("Username $username is available for registration");
     
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
     
     if ($role === 'admin') {
         // Require admin acceptance
         if (!$admin_acceptance) {
+            error_log("Admin registration failed: Admin acceptance not provided");
             echo json_encode(['success' => false, 'error' => 'Admin acceptance is required.']);
             exit;
         }
+        
+        error_log("Attempting to insert admin user: $username, $email");
+        
         // Insert into admin_users
         $stmt = $conn->prepare("INSERT INTO admin_users (username, email, password_hash, role, created_at) VALUES (?, ?, ?, 'admin', NOW())");
-        $stmt->execute([$username, $email, $passwordHash]);
+        $executeResult = $stmt->execute([$username, $email, $passwordHash]);
+        
+        if (!$executeResult) {
+            $errorInfo = $stmt->errorInfo();
+            error_log("Failed to insert admin user. Error: " . print_r($errorInfo, true));
+            echo json_encode(['success' => false, 'error' => 'Failed to create admin account. Database error.']);
+            exit;
+        }
+        
         $adminId = $conn->lastInsertId();
+        error_log("Admin user created successfully with ID: $adminId");
         
         // Log admin registration
         $logger = ActivityLogger::getInstance();
