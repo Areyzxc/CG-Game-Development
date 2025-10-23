@@ -28,8 +28,10 @@
 // -- Code Gaming Team --
 // ===========================================================
 require_once 'includes/Auth.php';
+require_once 'includes/CSRFProtection.php';
 
 $auth = Auth::getInstance();
+$csrf = CSRFProtection::getInstance();
 
 // Redirect if not logged in
 if (!$auth->isLoggedIn()) {
@@ -50,6 +52,7 @@ $currentRole = $auth->getCurrentRole();
 <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<?php echo $csrf->getToken(); ?>">
     <div class="modal-content">
       <div class="modal-header welcome-modal-header">
         <div class="welcome-icon-container">
@@ -152,8 +155,12 @@ $currentRole = $auth->getCurrentRole();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="assets/css/admin_dashboard.css">
+  <!-- Welcome Modal Styles -->
+  <link rel="stylesheet" href="assets/css/stylehome.css">
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- BoxIcons for welcome modal -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" />
 </head>
@@ -225,36 +232,6 @@ $showLoginNotification = isset($_GET['login']) && $_GET['login'] === 'success';
           <div class="fw-bold text-muted mt-2">System Status</div>
           <span class="badge bg-success fs-7" id="systemStatusStat">Online</span>
           <div class="text-muted small mt-1">All systems operational</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Analytics/Charts Section -->
-  <div class="row mb-4">
-    <div class="col-lg-8 mb-4 mb-lg-0">
-      <div class="card admin-card">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="mb-0"><i class="fas fa-chart-line me-2 text-info"></i>User Activity</h5>
-            <div class="btn-group btn-group-sm" role="group">
-              <button class="btn btn-outline-secondary active">Daily</button>
-              <button class="btn btn-outline-secondary">Weekly</button>
-              <button class="btn btn-outline-secondary">Monthly</button>
-            </div>
-          </div>
-          <div class="chart-container">
-            <canvas id="userActivityChart" height="180"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4">
-      <div class="card admin-card">
-        <div class="card-body">
-          <h5 class="mb-3"><i class="fas fa-chart-pie me-2 text-purple"></i>Content Distribution</h5>
-          <div class="chart-container">
-            <canvas id="contentPieChart" height="180"></canvas>
-          </div>
         </div>
       </div>
     </div>
@@ -425,10 +402,21 @@ include 'includes/admin_footer.php';
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<!-- Global JavaScript Variables -->
+<script>
+    // Global variables for JavaScript
+    window.CG_USER_ID = <?php echo $currentUser ? ($currentUser['admin_id'] ?? $currentUser['id']) : 'null'; ?>;
+    window.CG_USERNAME = <?php echo $currentUser ? json_encode($currentUser['username']) : 'null'; ?>;
+    window.CG_USER_ROLE = <?php echo $currentRole ? json_encode($currentRole) : 'null'; ?>;
+    window.CG_IS_ADMIN = <?php echo $auth->isAdmin() ? 'true' : 'false'; ?>;
+    window.CSRF_TOKEN = <?php echo json_encode($csrf->getToken()); ?>;
+</script>
+
 <!-- Custom JS -->
 <script src="assets/js/admin_global.js"></script>
 <script src="assets/js/admin_dashboard.js"></script>
 <script src="assets/js/visitor-stats.js"></script>
+<script src="assets/js/welcome-modal.js"></script>
 
 <script>
   // Initialize visitor stats when the page loads
