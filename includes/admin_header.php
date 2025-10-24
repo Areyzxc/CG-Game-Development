@@ -47,9 +47,27 @@ $profilePicture = htmlspecialchars($profilePicture);
 ?>
 
 <!-- Main Navigation & Sidebar -->
-<?php if (!defined('NO_CSRF_META')): ?>
-<meta name="csrf-token" content="<?php echo htmlspecialchars($csrfToken); ?>">
-<?php endif; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php if (!defined('NO_CSRF_META')): ?>
+    <meta name="csrf-token" content="<?php echo htmlspecialchars($csrfToken); ?>">
+    <?php endif; ?>
+    <title><?php echo isset($pageTitle) ? $pageTitle . ' • ' : ''; ?>Admin Panel</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/CodeGaming/assets/images/diffmid.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/CodeGaming/assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/CodeGaming/assets/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/CodeGaming/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/CodeGaming/assets/images/site.webmanifest">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="admin-panel">
 
 <header class="admin-header">
     <nav class="navbar navbar-expand-lg">
