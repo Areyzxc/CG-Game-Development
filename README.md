@@ -24,21 +24,51 @@ This repository serves as the codebase for our Capstone Project (Academic Year 2
 
 ## Key Features
 
-- **Anchor Page**: The main landing point upon visiting this code gaming system, with some detailed description about this platform is managed.
-- **User Profiles**: Customizable profiles with editable usernames, email, bios, location, banners, avatars, and progress tracking.
-- **Interactive Tutorials**: Step-by-step guides with dynamic pop-ups, pagination, and progress tracking for learning coding concepts.
-- **Game Modes**: Mini-games like "Guess the Output" and "Speed Typing," quizzes, and challenges with scoring, timers, and feedback.
-- **Engagement Elements**: points, leaderboards, floating icons/avatars, background music, and a feedback container located at the About Us page for a personalized experience.
-- **Admin Dashboard**: Tools for user monitoring, announcements, user/admin log tracking, and system stats, powered by charts and tables.
-- **Visitor Tracking**: Non-registered users' activities are logged to encourage sign-ups.
+### Core Features
+- **Interactive Learning Modules**: Hands-on coding challenges with instant feedback and progressive difficulty levels
+- **Multi-Language Support**: Comprehensive tutorials and exercises for HTML, CSS, Bootstrap, JavaScript, Python, Java, and C++
+- **Gamified Experience**: Points, stats, badges, and achievements to motivate learning progress
+- **Real-time Code Execution**: Built-in code editor with syntax highlighting and live preview
+- **Comprehensive Progress Tracking**: Detailed analytics and visualizations of learning journey
+
+### User Experience
+- **Personalized Dashboard**: Customizable user profiles with progress tracking and achievement display, updating user information, and uploading profile picture
+- **Responsive Design**: Fully responsive interface that works on desktop and mobile devices
+- **Accessibility**: WCAG 2.1 compliant with keyboard navigation and screen reader support
+- **Interactive UI/UX**: Animated transitions, tooltips, and guided tours for better engagement
+
+### Admin & Analytics
+- **Admin Dashboard**: Comprehensive user management, content moderation, and system analytics
+- **Real-time Monitoring**: Track active users/visitors, recent activities/logging, and system performance
+- **Content Management**: Easy addition and updating of tutorials, challenges, mini-games, and quizzes through coding
+- **Security**: Role-based access control and activity logging
 
 ## Technology Stack
 
-- **Frontend**: HTML5, CSS3, JavaScript, Bootstrap 5, Three.js (for 3D effects on Anchor page), Chart.js (for progress visuals), ScrollReveal.js (for animations), Boxicons, Popper.js, Typed.js, Rellax.js, and Anime.js.
-- **Backend**: PHP, MySQL (via XAMPP for local development), AJAX for seamless interactions.
-- **Database**: MySQL tables for users, visitors, questions, admins, logs, progress-tracking data, feedback-likes, team-members, and much, much more.
-- **Deployment**: Hosted via GitHub Student Pack (e.g., Namecheap domains, Digital Ocean/Azure for free tier)/InfinityFree
-- **Development Methodology**: Agile with weekly/monthly meetings and iterative sprints.
+### Frontend
+- **Core**: HTML5, CSS3, Vanilla JavaScript (ES6+)
+- **UI Framework**: Bootstrap 5.3 with custom theming
+- **Animation & Effects**: 
+  - Three.js for 3D elements
+  - Anime.js for micro-interactions
+  - ScrollReveal.js for scroll-based animations
+  - Typed.js for typewriter effects
+- **Data Visualization**: Charts.js for progress tracking and visitor statistics
+- **Icons & UI**: Boxicons and Font Awesome
+- **Fonts**: RadiationHollow, Calliste, Monochrome, and more. [Downloaded from Dafont.com]
+
+### Backend
+- **Server**: PHP 8.1+
+- **Database**: MySQL 8.0+ with InnoDB
+- **API**: RESTful API architecture
+- **Sessions & Authentication**: Custom session management with JWT support
+- **Security**: Prepared statements, CSRF protection, XSS prevention
+
+### Development Tools
+- **Version Control**: Git with GitHub
+- **Package Management**: Composer (PHP)
+- **Local Development**: XAMPP/WAMP
+- **Code Quality**: ESLint, Prettier, PHP_CodeSniffer
 
 ## Installation and Setup
 
