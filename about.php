@@ -456,7 +456,7 @@ $pageTitle = "About Us";
           // Fetch feedbacks for current page
           $feedbackResult = $conn->query("SELECT id, sender_name, sender_email, message, sent_at, likes FROM feedback_messages ORDER BY sent_at DESC LIMIT $perPage OFFSET $offset");
                 
-                // Display feedback messages with proper like counts from feedback_likes table
+                // Display feedback messages with proper like counts from user_feedback_likes table
                 if ($feedbackResult && $feedbackResult->rowCount() > 0) {
                     while ($row = $feedbackResult->fetch()) {
                         $id = (int)$row['id'];
@@ -464,11 +464,22 @@ $pageTitle = "About Us";
                         $msg = htmlspecialchars($row['message']);
                         $time = date('M j, Y', strtotime($row['sent_at']));
                         
-                        // Get actual like count from feedback_likes table
-                        $likeQuery = $conn->prepare("SELECT COUNT(*) as like_count FROM feedback_likes WHERE feedback_id = ?");
+                        // Get like count from user_feedback_likes table and check if current user has liked
+                        $likeQuery = $conn->prepare("SELECT COUNT(*) as like_count FROM user_feedback_likes WHERE feedback_id = ?");
                         $likeQuery->execute([$id]);
                         $likeResult = $likeQuery->fetch();
                         $likes = (int)$likeResult['like_count'];
+                        
+                        // Check if current user has already liked this feedback
+                        $hasLiked = false;
+                        if (isset($_SESSION['user_id'])) {
+                            $checkLikeStmt = $conn->prepare("SELECT id FROM user_feedback_likes WHERE feedback_id = ? AND user_id = ?");
+                            $checkLikeStmt->execute([$id, $_SESSION['user_id']]);
+                            $hasLiked = $checkLikeStmt->rowCount() > 0;
+                        }
+                        
+                        $likeBtnClass = $hasLiked ? 'liked' : '';
+                        $disabledAttr = $hasLiked ? 'disabled' : '';
                         
                         echo "
                         <div class='feedback-item' data-feedback-id='{$id}'>
@@ -478,7 +489,7 @@ $pageTitle = "About Us";
                           </div>
                           <p>{$msg}</p>
                           <div class='feedback-actions'>
-                            <button class='like-btn btn btn-sm btn-outline-danger' data-feedback-id='{$id}'>
+                            <button class='like-btn btn btn-sm btn-outline-danger {$likeBtnClass}' data-feedback-id='{$id}' {$disabledAttr}>
                               <i class='fas fa-heart'></i> 
                               <span class='like-count'>{$likes}</span>
                             </button>
