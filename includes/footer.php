@@ -38,7 +38,7 @@
                     <li><a href="about.php" class="footer-link">About Us</a></li>
                     <li><a href="privacy.php" class="footer-link">Privacy Policy</a></li>
                     <li><a href="terms.php" class="footer-link">Terms of Service</a></li>
-                    <li><a href="/contact" class="footer-link">Contact Us</a></li>
+                    <li><a href="contact.php" class="footer-link">Contact Us</a></li>
                 </ul>
             </div>
             <div class="col-md-4">
