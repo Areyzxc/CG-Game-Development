@@ -24,19 +24,30 @@ document.addEventListener('DOMContentLoaded', () => {
   initDynamicBackground();
 
 // ─────────────────────────────────────────────────────────
+  /**
+   * Get time-appropriate greeting
+   * @returns {string} Greeting based on time of day
+   */
+  function getTimeBasedGreeting() {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good Morning';
+    if (hour < 18) return 'Good Afternoon';
+    return 'Good Evening';
+  }
+
   // 1. Typed.js Triggers (for logged-in users only)
   // ─────────────────────────────────────────────────────────
   const usernameDisplay = document.getElementById('usernameDisplay');
   const welcomeTypedElement = document.getElementById('welcomeTyped');
   
-  if (usernameDisplay && welcomeTypedElement) {
-    // Only initialize Typed.js if user is logged in and welcomeTyped element exists
-    const username = usernameDisplay.textContent.trim();
+  if (welcomeTypedElement) {
+    const username = usernameDisplay ? usernameDisplay.textContent.trim() : 'Coder';
+    const greeting = getTimeBasedGreeting();
 
     // Enhanced Typed.js with glitch effect
     new Typed('#welcomeTyped', {
       strings: [
-        `Welcome back, ${username}!`,
+        `${greeting}, ${username}!`,
         'Ready to conquer your next coding challenge?',
         'Level up your coding skills!',
         'Join the coding adventure!'
@@ -402,8 +413,11 @@ if (analyticsContainer) {
     // Update welcome message with personalized greeting
     const welcomeElement = document.getElementById('welcomeTyped');
     if (welcomeElement && personalization.greeting) {
-      const username = personalization.username || personalization.nickname || 'Player';
+      const username = personalization.username || personalization.nickname || 'Coder';
+      const greeting = getTimeBasedGreeting();
+      
       const welcomeMessages = [
+        `${greeting}, ${username}!`,
         `${personalization.greeting}, ${username}!`,
         'Ready to conquer your next coding challenge?',
         'Level up your coding skills!',
@@ -417,8 +431,8 @@ if (analyticsContainer) {
       
       window.typedInstance = new Typed('#welcomeTyped', {
         strings: welcomeMessages,
-        typeSpeed: 50,
-        backSpeed: 25,
+        typeSpeed: 40,
+        backSpeed: 20,
         backDelay: 2000,
         loop: true,
         onStringTyped: () => {
