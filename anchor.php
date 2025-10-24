@@ -47,6 +47,14 @@ $currentUser = $auth->isLoggedIn() ? $auth->getCurrentUser() : null;
   <!-- Ensure proper scaling on mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Code Game | Gamified Programming Platform</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/CodeGaming/assets/images/diffeasy.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/CodeGaming/assets/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/CodeGaming/assets/images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/CodeGaming/assets/images/apple-touch-icon.png">
+  <link rel="manifest" href="/CodeGaming/site.webmanifest">
+  
   <!-- SEO Meta Tags -->
   <meta name="description" content="Code Game is a gamified web-based educational platform for learning programming through interactive challenges, quizzes, tutorials, and mini-games. Track your progress and compete on leaderboards!">
   <meta name="keywords" content="coding, programming, game, challenges, quizzes, tutorials, leaderboard, education, learn to code">
@@ -250,7 +258,7 @@ $currentUser = $auth->isLoggedIn() ? $auth->getCurrentUser() : null;
                       aria-label="Challenge Mode Demo Video"
                       aria-describedby="challenge-video-desc"
                       id="challengeVideo">
-                  <source src="videos/Challenge.mp4" type="video/mp4">
+                  <source src="videos/Challenges.mp4" type="video/mp4">
                   <track kind="captions" label="English" srclang="en" src="videos/captions/challenge-mode.vtt" default>
                   <track kind="descriptions" label="English Descriptions" srclang="en" src="videos/descriptions/challenge-mode.vtt">
                   Your browser does not support the video tag.
@@ -269,9 +277,9 @@ $currentUser = $auth->isLoggedIn() ? $auth->getCurrentUser() : null;
                 <h3><i class="fas fa-trophy text-warning"></i> Challenge Mode</h3>
                 <p class="lead">Test your skills with real coding challenges</p>
                 <ul class="feature-list">
-                  <li><i class="fas fa-check-circle text-success"></i> Progressive difficulty levels</li>
+                  <li><i class="fas fa-check-circle text-success"></i> Progressive difficult questions with case scenarios</li>
                   <li><i class="fas fa-check-circle text-success"></i> Real-time code execution</li>
-                  <li><i class="fas fa-check-circle text-success"></i> Instant feedback and hints</li>
+                  <li><i class="fas fa-check-circle text-success"></i> Timer and instant feedback</li>
                 </ul>
                 <a href="challenges.php" class="btn btn-primary mt-3">Try Challenge Mode</a>
               </div>
@@ -347,7 +355,7 @@ $currentUser = $auth->isLoggedIn() ? $auth->getCurrentUser() : null;
                 <ul class="feature-list">
                   <li><i class="fas fa-check-circle text-success"></i> Step-by-step tutorials</li>
                   <li><i class="fas fa-check-circle text-success"></i> Interactive code examples</li>
-                  <li><i class="fas fa-check-circle text-success"></i> Tracks your progress</li>
+                  <li><i class="fas fa-check-circle text-success"></i> Different topics to choose from</li>
                 </ul>
                 <a href="tutorial.php" class="btn btn-primary mt-3">Try Tutorial Mode</a>
               </div>
