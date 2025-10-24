@@ -18,10 +18,37 @@
  *   - Displays comprehensive privacy policy with engaging UI
  * 
  * Author: [Santiago]
- * Last Updated: [June 17, 2025]
- * -- Code Gaming Team --
- * ==========================================================
+ * Last Updated: [October 24, 2025]
  */
+
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Include visitor tracking if file exists
+if (file_exists(__DIR__ . '/includes/track_visitor.php')) {
+    require_once __DIR__ . '/includes/track_visitor.php';
+}
+
+// Include CSRF protection if file exists
+$csrf = null;
+if (file_exists(__DIR__ . '/includes/CSRFProtection.php')) {
+    require_once __DIR__ . '/includes/CSRFProtection.php';
+    $csrf = CSRFProtection::getInstance();
+}
+
+// Check if auth class exists and initialize it
+$auth = null;
+if (file_exists(__DIR__ . '/includes/Auth.php')) {
+    require_once __DIR__ . '/includes/Auth.php';
+    if (class_exists('Auth') && method_exists('Auth', 'getInstance')) {
+        $auth = Auth::getInstance();
+    }
+}
+
+// Set page title for header
+$pageTitle = 'Privacy Policy';
 
 // Include header
 include 'includes/header.php';
