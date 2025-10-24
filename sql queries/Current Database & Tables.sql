@@ -16,7 +16,7 @@ CREATE DATABASE coding_game CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE coding_game;
 
 -- =================================================================
--- Table Creation (TOTAL: 40)
+-- Table Creation (TOTAL: 43
 -- =================================================================
 
 -- (1) --
@@ -695,6 +695,7 @@ CREATE TABLE IF NOT EXISTS `user_badges` (
     FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
     INDEX `idx_user_badges` (`user_id`, `badge_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 
 
