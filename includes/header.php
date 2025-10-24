@@ -20,7 +20,7 @@
  *   - Relies on session/auth variables to display user-specific links.
  * 
  * Author: [Santiago]
- * Last Updated: [June 13, 2025]
+ * Last Updated: [October 13, 2025]
  * ==========================================================
  */
 
