@@ -459,7 +459,7 @@ async function loadUserProgress() {
         console.log('Loading user progress for user ID:', window.CG_USER_ID);
         
         // Fetch user progress using APIHelper
-        const response = await APIHelper.fetchWithAuth('api/get-user-progress.php');
+        const response = await APIHelper.fetchWithAuth('api/user-progress.php');
         console.log('API Response:', JSON.stringify(response, null, 2));
         
         if (response && response.error) {
