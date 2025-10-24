@@ -28,7 +28,7 @@ require_once 'includes/track_visitor.php';
  *   - External: Bootstrap, Font Awesome, Anime.js, Typed.js, Rellax, ScrollReveal, Chart.js
  * 
  * Author: [Santiago]
- * Last Updated: [July 22, 2025]
+ * Last Updated: [September 22, 2025]
  * -- Code Gaming Team --
  * ==========================================================
  */
@@ -240,32 +240,32 @@ if ($showLoginNotification && $currentUser):
         <!-- Quote Spotlight Section -->
         <section class="quote-spotlight-section position-relative py-5 text-white" role="banner" aria-labelledby="quote-spotlight">
             <div class="container position-relative text-center">
-                <!-- Welcome Message with Typed.js Effect -->
-                <?php if ($auth->isLoggedIn() && isset($currentUser['username'])): ?>
-                    <div class="welcome-message mb-4">
-                        <h2 class="display-5 fw-bold mb-3">
-                            <span id="welcomeTyped" class="glitch-text"></span>
-                        </h2>
-                        <p class="lead">Continue your coding journey today!</p>
-                    </div>
-                <?php endif; ?>
-                
-                <div class="quote-content">
-                    <div id="quoteSpotlight" class="quote-spotlight mb-4">
-                        <blockquote class="quote-text">
-                            <i class="bx bx-code-alt quote-icon"></i>
-                            <span id="currentQuote">Loading inspirational quote...</span>
-                            <i class="bx bx-code-alt quote-icon"></i>
-                        </blockquote>
-                        <cite id="quoteAuthor" class="quote-author">— Loading...</cite>
-                    </div>
-                    <div class="cta-container">
-                        <div id="start-game-description">
-                            Start playing quizzes, challenges, or mini-games to test your coding skills
+                    <!-- Welcome Message with Typed.js Effect -->
+                    <?php if ($auth->isLoggedIn() && isset($currentUser['username'])): ?>
+                        <div class="welcome-message mb-4">
+                            <h2 class="display-5 fw-bold mb-3">
+                                <span id="welcomeTyped" class="glitch-text"></span>
+                            </h2>
+                            <p class="lead">Continue your coding journey today!</p>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <div class="quote-content">
+                        <div id="quoteSpotlight" class="quote-spotlight mb-4">
+                            <blockquote class="quote-text">
+                                <i class="bx bx-code-alt quote-icon"></i>
+                                <span id="currentQuote">Loading inspirational quote...</span>
+                                <i class="bx bx-code-alt quote-icon"></i>
+                            </blockquote>
+                            <cite id="quoteAuthor" class="quote-author">— Loading...</cite>
+                        </div>
+                        <div class="cta-container">
+                            <div id="start-game-description">
+                                Start playing quizzes, challenges, or mini-games to test your coding skills
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </section>
 
         <!-- User Progress Dashboard (Dynamic for logged-in users) -->
@@ -276,8 +276,20 @@ if ($showLoginNotification && $currentUser):
                 <div class="user-banner" id="userBanner" style="background-image: url('assets/images/default-banner.jpg');">
                 </div>
                 <div class="user-info text-center mt-4">
-                    <h3 class="username" id="userDisplayName">Welcome Back!</h3>
-                    <p class="text-muted" id="userLevel">Coding Enthusiast</p>
+                    <h3 class="username" id="userDisplayName">Welcome Back, <?php echo htmlspecialchars($currentUser['username'] ?? 'Coder'); ?>!</h3>
+                    <p class="text-muted" id="userLevel">
+                        <?php 
+                        $level = $currentUser['level'] ?? 1;
+                        $title = match(true) {
+                            $level >= 50 => 'Coding Master',
+                            $level >= 30 => 'Senior Developer',
+                            $level >= 20 => 'Mid-level Developer',
+                            $level >= 10 => 'Junior Developer',
+                            default => 'Coding Enthusiast'
+                        };
+                        echo htmlspecialchars($title);
+                        ?>
+                    </p>
                 </div>
             </div>
             
@@ -308,28 +320,53 @@ if ($showLoginNotification && $currentUser):
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="progress-card" id="tutorial-progress-card">
-                        <div class="progress-icon">
-                            <i class="bx bx-book-open"></i>
+                    <div class="progress-icon text-primary">
+                        <i class="fas fa-graduation-cap fa-2x"></i>
+                    </div>
+                    <div class="progress-details">
+                        <h5 class="mb-3">Tutorial Progress</h5>
+                        <div class="progress mb-2" style="height: 8px;">
+                            <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" 
+                                 id="tutorial-progress-bar" 
+                                 role="progressbar" 
+                                 style="width: 0%" 
+                                 aria-valuenow="0" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100"></div>
                         </div>
-                        <h5>Tutorials</h5>
-                        <p class="progress-text">Complete interactive coding lessons</p>
-                        <div class="mt-3">
-                            <a href="tutorial.php" class="btn btn-primary btn-sm">Start Learning</a>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="progress-percentage fw-bold" id="tutorial-progress-percentage">0%</span>
+                            <span class="progress-text small" id="tutorial-progress-text">
+                                <?php echo ($currentUser ? 'Loading...' : 'Sign in to track progress'); ?>
+                            </span>
                         </div>
                     </div>
                 </div>
                 </div>
+                </div>
                 <div class="col-md-4">
-                    <div class="progress-card" id="tutorial-progress-card">
-                        <div class="progress-icon">
-                            <i class="bx bx-user-circle"></i>
+                    <div class="progress-card h-100" id="profile-progress-card">
+                        <div class="progress-icon text-success">
+                            <i class="fas fa-user-circle fa-2x"></i>
                         </div>
-                        <h5>Profile</h5>
-                        <p class="progress-text">Customize your coding profile</p>
-                        <div class="profile-completeness">
-                            <span class="completeness-text">0% Complete</span>
+                        <div class="progress-details">
+                            <h5 class="mb-3">Profile Status</h5>
+                            <div class="progress mb-2" style="height: 8px;">
+                                <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" 
+                                     id="profile-progress-bar" 
+                                     role="progressbar" 
+                                     style="width: 0%" 
+                                     aria-valuenow="0" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100"></div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="progress-percentage fw-bold" id="profile-progress-percentage">0%</span>
+                                <span class="progress-text small" id="profile-progress-text">
+                                    <?php echo ($currentUser ? 'Loading profile...' : 'Sign in to complete profile'); ?>
+                                </span>
+                            </div>
                         </div>
-                        <small class="text-muted">Sign up to create profile</small>
                     </div>
                 </div>
             </div>
