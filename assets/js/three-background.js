@@ -65,25 +65,25 @@ class ThreeBackground {
             javascript: {
                 color: 0xF7DF1E,    // JavaScript yellow
                 hoverColor: 0xFFE066, // Glowing effect color
-                symbols: ['function', 'const', 'let', 'var', 'if', 'else', 'for', 'while', 'return', 'try', 'catch', 'async', 'await', '=>', 'class'],
+                symbols: ['function', 'const', 'let', 'var', 'if', 'else', 'for', 'while', 'return', 'try', 'catch', '=>', 'class'],
                 keywords: ['JavaScript', 'ES6', 'Node.js', 'React', 'Vue', 'Angular', 'DOM', 'JSON', 'API', 'Promise']
             },
             bootstrap: {
                 color: 0x7952B3,    // Bootstrap purple
                 hoverColor: 0x8A63C6, // Glowing effect color
-                symbols: ['container', 'row', 'col', 'btn', 'card', 'navbar', 'modal', 'alert', 'badge', 'progress', 'form', 'input', 'table', 'grid', 'flex'],
+                symbols: ['container', 'row', 'col', 'btn', 'card', 'navbar', 'modal', 'alert', 'badge', 'table', 'grid', 'flex'],
                 keywords: ['Bootstrap', 'CSS', 'Framework', 'Responsive', 'Grid', 'Components', 'Utilities', 'Themes', 'Icons', 'Layout']
             },
             html: {
                 color: 0xE34F26,    // HTML orange
                 hoverColor: 0xF16529, // Glowing effect color
-                symbols: ['<html>', '<head>', '<body>', '<div>', '<p>', '<h1>', '<img>', '<a>', '<form>', '<input>', '<button>', '<ul>', '<li>', '<table>', '<nav>'],
+                symbols: ['<html>', '<head>', '<body>', '<div>', '<p>', '<h1>', '<img>', '<a>', '<form>', '<input>', '<table>', '<nav>'],
                 keywords: ['HTML', 'Semantic', 'Accessibility', 'SEO', 'Structure', 'Elements', 'Attributes', 'Tags', 'Document', 'Markup']
             },
             css: {
                 color: 0x1572B6,    // CSS blue
                 hoverColor: 0x1E88E5, // Glowing effect color
-                symbols: ['color', 'background', 'margin', 'padding', 'border', 'display', 'position', 'flex', 'grid', 'animation', 'transition', 'transform', 'box-shadow', 'font-size', 'text-align'],
+                symbols: ['color', 'background', 'margin', 'padding', 'border', 'display', 'position', 'flex', 'transform', 'box-shadow', 'font-size', 'text-align'],
                 keywords: ['CSS', 'Styling', 'Layout', 'Responsive', 'Flexbox', 'Grid', 'Animations', 'Transitions', 'Selectors', 'Properties']
             }
         };
@@ -609,4 +609,4 @@ class ThreeBackground {
 // Initialize Three.js background when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new ThreeBackground();
-}); 
+});
