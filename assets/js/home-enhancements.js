@@ -472,10 +472,16 @@ async function loadUserProgress() {
             throw new Error(response.error);
         }
         
-        if (response && response.success && response.data) {
-            renderProgressCards(response.data);
+        if (response && response.success) {
+            // The API returns data directly in the response, not in a 'data' property
+            renderProgressCards({
+                stats: response.user_stats || {},
+                achievements: response.achievements || [],
+                progress: response.progress || {},
+                personalization: response.personalization || {}
+            });
         } else {
-            throw new Error('Invalid response format from server');
+            throw new Error(response.error || 'Invalid response format from server');
         }
     } catch (error) {
         console.error('Error loading progress:', error);
