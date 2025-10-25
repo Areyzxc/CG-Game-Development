@@ -175,22 +175,51 @@ class Auth {
         
         try {
             $conn = $this->db;
-         // Handle admin users
-         if ($role === 'admin' || $role === 'super_admin') {
-            $stmt = $conn->prepare("SELECT * FROM admin_users WHERE admin_id = ?");
+            
+            // Handle admin users
+            if ($role === 'admin' || $role === 'super_admin') {
+                $stmt = $conn->prepare("SELECT *, 'admin' as user_type FROM admin_users WHERE admin_id = ?");
+                $stmt->execute([$userId]);
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if (!$user) {
+                    // If admin not found, try to find in regular users as fallback
+                    $stmt = $conn->prepare("SELECT *, 'user' as user_type FROM users WHERE id = ?");
+                    $stmt->execute([$userId]);
+                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                    
+                    if ($user) {
+                        // Update session role if found in users table
+                        $_SESSION['role'] = 'player';
+                    }
+                }
+                
+                return $user;
+            }
+            
+            // Handle regular users
+            $stmt = $conn->prepare("SELECT *, 'user' as user_type FROM users WHERE id = ?");
             $stmt->execute([$userId]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // If user not found in users table, check admin_users as fallback
+            if (!$user) {
+                $stmt = $conn->prepare("SELECT *, 'admin' as user_type FROM admin_users WHERE admin_id = ?");
+                $stmt->execute([$userId]);
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if ($user) {
+                    // Update session role if found in admin_users table
+                    $_SESSION['role'] = 'admin';
+                }
+            }
+            
+            return $user;
+            
+        } catch (PDOException $e) {
+            error_log("Error getting user data for user ID $userId: " . $e->getMessage());
+            return null;
         }
-        
-        // Handle regular users
-        $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
-        $stmt->execute([$userId]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-        
-    } catch (PDOException $e) {
-        error_log("Error getting user data: " . $e->getMessage());
-        return null;
-    }
 }
 
     public function getCurrentRole() {
