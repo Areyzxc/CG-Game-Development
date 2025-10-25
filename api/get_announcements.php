@@ -48,10 +48,10 @@ try {
             'author_name' => $row['author_name'] ?? 'Admin',
             'author_avatar' => !empty($row['author_avatar']) ? 
                 (strpos($row['author_avatar'], 'http') === 0 ? $row['author_avatar'] : 
-                (file_exists($_SERVER['DOCUMENT_ROOT'] . '/CodeGaming/uploads/avatars/' . $row['author_avatar']) ? 
-                    '/CodeGaming/uploads/avatars/' . $row['author_avatar'] : 
-                    '/CodeGaming/assets/images/PTC.png')) : 
-                '/CodeGaming/assets/images/PTC.png'
+                (file_exists($_SERVER['DOCUMENT_ROOT'] . '/uploads/avatars/' . $row['author_avatar']) ? 
+                    '/uploads/avatars/' . $row['author_avatar'] : 
+                    '/assets/images/PTC.png')) : 
+                '/assets/images/PTC.png'
         ];
     }
     // Total count for pagination
