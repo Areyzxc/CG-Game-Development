@@ -20,6 +20,8 @@ if (!$auth->isAdmin()) {
     header('Location: login.php');
     exit;
 }
+// Set page title for the header
+$pageTitle = "Admin Profile";
 
 $db = Database::getInstance();
 $currentUser = $auth->getCurrentUser();
