@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Track tutorial progress
     async function trackTutorialProgress(mode, status) {
         try {
-            const response = await fetch('api/tutorial/track-progress.php', {
+            const response = await fetch('/api/tutorial/track-progress.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -436,17 +436,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
             });
 
-            const data = await response.json();
-            if (data.success) {
-                // Update UI
-                updateProgressButtons(status);
-                // Reload topics to refresh progress
-                loadTopics(currentTopicData.language_id, false);
-                
-                // Show achievement notification if any
-                if (data.achievements?.length) {
-                    showAchievementNotification(data.achievements);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            try {
+                const data = await response.json();
+                if (data.success) {
+                    // Update UI
+                    updateProgressButtons(status);
+                    // Reload topics to refresh progress
+                    loadTopics(currentTopicData.language_id, false);
+                    
+                    // Show achievement notification if any
+                    if (data.achievements && data.achievements.length > 0) {
+                        showAchievementNotification(data.achievements);
+                    }
                 }
+            } catch (jsonError) {
+                console.error('Error parsing JSON response:', jsonError);
+                const responseText = await response.text();
+                console.error('Response text that failed to parse:', responseText);
+                throw new Error('Failed to parse server response. Check console for details.');
             }
         } catch (error) {
             console.error('Error updating progress:', error);
@@ -744,7 +755,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
         
         return new Promise((resolve, reject) => {
-            fetch('/CodeGaming/api/tutorial/track-progress.php', {
+            fetch('/api/tutorial/track-progress.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -780,7 +791,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadTopicProgress() {
         // Get CSRF token from meta tag
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
-        const progressUrl = '/CodeGaming/api/tutorial/track-progress.php';
+        const progressUrl = '/api/tutorial/track-progress.php';
         
         console.log('Fetching progress from:', progressUrl);
         
@@ -795,19 +806,26 @@ document.addEventListener('DOMContentLoaded', function() {
             credentials: 'same-origin'
         })
         .then(async response => {
+            if (!response.ok) {
+                console.error('Server responded with status:', response.status, response.statusText);
+                throw new Error(`Server error: ${response.status} ${response.statusText}`);
+            }
+            
             const responseText = await response.text();
             
             // Check if the response is HTML (which indicates an error)
             if (responseText.trim().startsWith('<!DOCTYPE') || 
                 responseText.includes('<html') || 
                 responseText.includes('<br />')) {
-                console.error('Received HTML response instead of JSON:', responseText.substring(0, 200) + '...');
-                throw new Error('Server returned an HTML error page');
+                console.error('Received HTML response instead of JSON. Response starts with:', responseText.substring(0, 200));
+                throw new Error('Server returned an HTML error page. Check the console for details.');
             }
             
             // Try to parse as JSON
             try {
-                return JSON.parse(responseText);
+                const data = JSON.parse(responseText);
+                console.log('Successfully parsed progress data:', data);
+                return data;
             } catch (e) {
                 console.error('Failed to parse JSON response:', e);
                 console.error('Response text:', responseText);
