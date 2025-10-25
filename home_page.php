@@ -28,7 +28,7 @@ require_once 'includes/track_visitor.php';
  *   - External: Bootstrap, Font Awesome, Anime.js, Typed.js, Rellax, ScrollReveal, Chart.js
  * 
  * Author: [Santiago]
- * Last Updated: [September 22, 2025]
+ * Last Updated: [July 22, 2025]
  * -- Code Gaming Team --
  * ==========================================================
  */
@@ -54,8 +54,20 @@ $xss = XSSProtection::getInstance();
 $conn = $db->getConnection();
 
 // Get current user data if logged in
-$currentUser = $auth->isLoggedIn() ? $auth->getCurrentUser() : null;
-$currentRole = $auth->isLoggedIn() ? $auth->getCurrentRole() : null;
+$currentUser = null;
+$currentRole = null;
+
+if ($auth->isLoggedIn()) {
+    $currentUser = $auth->getCurrentUser();
+    $currentRole = $auth->getCurrentRole();
+    
+    // Debugging: Check if user data was retrieved
+    if (!$currentUser) {
+        error_log('User is logged in but user data could not be retrieved. User ID: ' . $_SESSION['user_id']);
+    } else {
+        error_log('User data retrieved successfully. User ID: ' . $currentUser['id']);
+    }
+}
 
 // Track visitor for analytics (only for non-logged-in users)
 if (!$currentUser) {
@@ -85,6 +97,8 @@ $additionalStyles = '
     <script src="https://unpkg.com/scrollreveal"></script>
 ';
 
+// Set page title for header
+$pageTitle = 'Home Page';
 // Include header which contains the full HTML structure
 include 'includes/header.php';
 
@@ -259,17 +273,13 @@ if ($showLoginNotification && $currentUser):
                             </blockquote>
                             <cite id="quoteAuthor" class="quote-author">— Loading...</cite>
                         </div>
-                        <div class="cta-container">
-                            <div id="start-game-description">
-                                Start playing quizzes, challenges, or mini-games to test your coding skills
-                            </div>
                         </div>
                     </div>
                 </div>
         </section>
 
         <!-- User Progress Dashboard (Dynamic for logged-in users) -->
-        <?php if ($currentUser): ?>
+        <?php if ($auth->isLoggedIn()): ?>
         <section class="progress-dashboard container py-5" role="region" aria-labelledby="progress-heading">
             <!-- User Profile Header -->
             <div class="user-journey-header mb-4">
