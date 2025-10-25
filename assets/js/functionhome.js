@@ -43,28 +43,32 @@ document.addEventListener('DOMContentLoaded', () => {
   if (welcomeTypedElement) {
     const username = usernameDisplay ? usernameDisplay.textContent.trim() : 'Coder';
     const greeting = getTimeBasedGreeting();
-
-    // Enhanced Typed.js with glitch effect
-    new Typed('#welcomeTyped', {
-      strings: [
-        `${greeting}, ${username}!`,
-        'Ready to conquer your next coding challenge?',
-        'Level up your coding skills!',
-        'Join the coding adventure!'
-      ],
-      typeSpeed: 50,
-      backSpeed: 25,
-      backDelay: 2000,
-      loop: true,
-      onStringTyped: () => {
-        const element = document.querySelector('.glitch-text');
-        if (element) {
-          element.style.animation = 'none';
-          void element.offsetWidth; // Trigger reflow
-          element.style.animation = 'glitch 0.3s linear';
+    
+    // Set the initial greeting immediately
+    welcomeTypedElement.textContent = `${greeting}, ${username}!`;
+    
+    // After a delay, initialize Typed.js with just the additional messages
+    setTimeout(() => {
+      new Typed('#welcomeTyped', {
+        strings: [
+          'Ready to conquer your next coding challenge?',
+          'Level up your coding skills!',
+          'Join the coding adventure!'
+        ],
+        typeSpeed: 50,
+        backSpeed: 25,
+        backDelay: 2000,
+        loop: true,
+        onStringTyped: () => {
+          const element = document.querySelector('.glitch-text');
+          if (element) {
+            element.style.animation = 'none';
+            void element.offsetWidth; // Trigger reflow
+            element.style.animation = 'glitch 0.3s linear';
+          }
         }
-      }
-    });
+      });
+    }, 3000); // 3 seconds delay before starting the message cycle
   }
   // ─────────────────────────────────────────────────────────
   // 2. Rellax Initialization (only if elements exist)
@@ -421,7 +425,8 @@ if (analyticsContainer) {
         `${personalization.greeting}, ${username}!`,
         'Ready to conquer your next coding challenge?',
         'Level up your coding skills!',
-        'Join the coding adventure!'
+        'Join the coding adventure!',
+        'Start playing quizzes, challenges, or mini-games to test your coding skills!'
       ];
       
       // Update Typed.js with new messages
