@@ -870,14 +870,135 @@ main {
 /*===================================
   User Journey Section
 ===================================*/
+/* Center the guest journey section */
+#guest-progress-heading {
+    text-align: center;
+    margin: 0 auto 2rem;
+    font-size: 2rem;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 1rem;
+}
+
+/* Main container for guest progress */
+.progress-dashboard {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Ensure the row takes full width */
+.progress-dashboard > .row {
+    margin-left: 0;
+    margin-right: 0;
+    justify-content: center;
+}
+
+/* Column adjustments for better centering */
+.progress-dashboard > .row > [class*='col-'] {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Ensure the journey cards are properly aligned */
+.progress-dashboard .progress-card,
+#tutorial-progress-card,
+#challenge-progress-card,
+#minigame-progress-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(40, 45, 52, 0.8);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.progress-dashboard .progress-card:hover,
+#tutorial-progress-card:hover,
+#challenge-progress-card:hover,
+#minigame-progress-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.progress-card .card-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.progress-card .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.progress-card .card-text {
+    color: #adb5bd;
+    flex-grow: 1;
+    margin-bottom: 1.5rem;
+}
+
+.progress-card .btn {
+    align-self: flex-start;
+    margin-top: auto;
+}
+
+/* User Profile Header */
 .user-journey-header {
     position: relative;
     border-radius: 12px;
     overflow: hidden;
-    margin: 0 auto 2rem;
+    margin: 0 auto 3rem;
     max-width: 1200px;
+    width: calc(100% - 2rem);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     background: #fff;
+    transition: all 0.3s ease;
+}
+
+/* Center the user journey section */
+.progress-dashboard[aria-labelledby="progress-heading"] {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem 2rem;
+}
+
+/* User info section */
+.user-info {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.user-info .username {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.user-info .text-muted {
+    color: #7f8c8d !important;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Stats container */
+.stats-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
 }
 
 .user-banner {
