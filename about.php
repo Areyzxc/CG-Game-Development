@@ -306,7 +306,7 @@ $pageTitle = "About Us";
         <!-- Tech Stack -->
         <div class="col-lg-8">
           <div class="tech-stack-card" data-reveal="fade-right">
-            <h3>Technologies We Use</h3>
+            <h3>Technologies & Libraries We Use</h3>
             <div class="tech-icons">
               <div class="tech-item"><i class="fab fa-html5"></i><span>HTML5</span></div>
               <div class="tech-item"><i class="fab fa-css3-alt"></i><span>CSS3</span></div>
@@ -315,6 +315,12 @@ $pageTitle = "About Us";
               <div class="tech-item"><i class="fas fa-database"></i><span>MySQL</span></div>
               <div class="tech-item"><i class="fab fa-bootstrap"></i><span>Bootstrap</span></div>
               <div class="tech-item"><i class="fab fa-threejs"></i><span>Three.js</span></div>
+              <div class="tech-item"><i class="fab fa-scrollreveal"></i><span>ScrollReveal.js</span></div>
+              <div class="tech-item"><i class="fab fa-scrollreveal"></i><span>Anime.js</span></div>
+              <div class="tech-item"><i class="fab fa-scrollreveal"></i><span>Typed.js</span></div>
+              <div class="tech-item"><i class="fab fa-scrollreveal"></i><span>Rellax.js</span></div>
+              <div class="tech-item"><i class="fab fa-scrollreveal"></i><span>Chart.js</span></div>
+              <div class="tech-item"><i class="fab fa-scrollreveal"></i><span>Font Awesome</span></div>
             </div>
           </div>
         </div>
