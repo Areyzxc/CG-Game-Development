@@ -39,7 +39,7 @@
   --black: #000000;
   
   /* Text Colors */
-  --text-primary: #487800;
+  --text-primary: #89e202;
   --text-secondary: #5a6c7d;
   --text-light: #ffffff;
   
@@ -515,6 +515,31 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--secondary-orange);
   transform: scale(1.1);
   box-shadow: var(--shadow-heavy);
+}
+
+/* Footer Logo */
+.footer-logo {
+  max-width: 80px;
+  height: auto;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-info h4 {
+  margin-bottom: 0.5rem;
+  color: var(--primary-orange);
+}
+
+.footer-info p {
+  margin: 0.25rem 0;
+  color: var(--text-light);
+  font-size: 0.9rem;
 }
 
 /* Additional Utility Classes */
