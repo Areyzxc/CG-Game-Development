@@ -47,8 +47,8 @@
                     <a href="https://github.com/Areyzxc/Game-Development" target="_blank" title="GitHub" class="social-icon">
                         <i class="fab fa-github"></i>
                     </a>
-                    <a href="https://twitter.com/codegame" target="_blank" title="Twitter" class="social-icon">
-                        <i class="fab fa-twitter"></i>
+                    <a href="https://reddit.com/r/codegaming_ptc" target="_blank" title="Reddit" class="social-icon">
+                        <i class="fa-brands fa-reddit"></i>
                     </a>
                     <a href="https://discord.gg/codegame" target="_blank" title="Discord" class="social-icon">
                         <i class="fab fa-discord"></i>
@@ -98,6 +98,7 @@
                         <option value="audio/come_to_life.mp3">Come to Life</option>
                         <option value="audio/Andromeda_Sunsets.mp3">Andromeda Sunsets</option>
                         <option value="audio/rainsdef.mp3">Rainsdef</option>
+                        <option value="audio/crystalsettings.mp3">Crystal Settings</option>
                     </select>
                 </div>
             </div>
