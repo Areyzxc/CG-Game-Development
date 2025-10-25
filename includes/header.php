@@ -46,11 +46,11 @@ $currentUser = $isLoggedIn ? $auth->getCurrentUser() : null;
     <?php echo $csrf->getTokenMeta(); ?>
     <title><?php echo isset($pageTitle) ? $pageTitle . ' • ' : ''; ?>Code Game</title>
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/CodeGaming/assets/images/diffeasy.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="/CodeGaming/assets/images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/CodeGaming/assets/images/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/CodeGaming/assets/images/apple-touch-icon.png">
-    <link rel="manifest" href="/CodeGaming/assets/images/site.webmanifest">
+    <link rel="icon" type="image/x-icon" href="/assets/images/diffeasy.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/images/site.webmanifest">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
