@@ -44,7 +44,8 @@ if (!$auth->isAdmin()) {
     header('Location: home_page.php');
     exit;
 }
-
+// Set page title for the header
+$pageTitle = "Admin Dashboard";
 $currentUser = $auth->getCurrentUser();
 $currentRole = $auth->getCurrentRole();
 ?>
