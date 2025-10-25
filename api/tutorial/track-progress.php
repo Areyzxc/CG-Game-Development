@@ -25,10 +25,13 @@ $response = [
 ];
 
 try {
-    // Include required files
-    require_once '../../includes/Database.php';
-    require_once '../../includes/Auth.php';
-    require_once '../../includes/CSRFProtection.php';
+    // Set the base directory
+    $baseDir = dirname(dirname(dirname(__FILE__)));
+    
+    // Include required files using absolute paths
+    require_once $baseDir . '/includes/Database.php';
+    require_once $baseDir . '/includes/Auth.php';
+    require_once $baseDir . '/includes/CSRFProtection.php';
     // Verify CSRF token for non-GET requests
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $csrf = CSRFProtection::getInstance();
