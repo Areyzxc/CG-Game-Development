@@ -199,11 +199,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['header_banner'])) {
     header('Content-Type: application/json');
     
     try {
-        $targetDir = "uploads/banners/";
+        $targetDir = __DIR__ . '/uploads/banners/';
         if (!is_dir($targetDir)) {
-            if (!mkdir($targetDir, 0755, true)) {
-                throw new Exception('Failed to create upload directory.');
+            if (!mkdir($targetDir, 0777, true)) {
+                throw new Exception('Failed to create upload directory. Please check permissions.');
             }
+        }
+        
+        // Ensure the directory is writable
+        if (!is_writable($targetDir)) {
+            throw new Exception('Upload directory is not writable. Please check permissions.');
         }
 
         $originalName = basename($_FILES['header_banner']['name']);
@@ -211,29 +216,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['header_banner'])) {
         $targetFile = $targetDir . $fileName;
         
         // Validate file type
-        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+        $imageFileType = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
         $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
         if (!in_array($imageFileType, $allowedTypes)) {
             throw new Exception('Only JPG, JPEG, PNG & GIF files are allowed.');
+        }
+        
+        // Check file size (max 5MB)
+        if ($_FILES['header_banner']['size'] > 5 * 1024 * 1024) {
+            throw new Exception('File is too large. Maximum size is 5MB.');
         }
 
         if (move_uploaded_file($_FILES['header_banner']['tmp_name'], $targetFile)) {
             // Update database
             $stmt = $db->prepare('UPDATE users SET header_banner = ? WHERE id = ?');
-            if ($stmt->execute([$targetFile, $currentUser['id']])) {
+            $relativePath = 'uploads/banners/' . $fileName;
+            if ($stmt->execute([$relativePath, $currentUser['id']])) {
                 // Update session
-                $_SESSION['user']['header_banner'] = $targetFile;
-                $currentUser['header_banner'] = $targetFile;
+                $_SESSION['user']['header_banner'] = $relativePath;
+                $currentUser['header_banner'] = $relativePath;
                 
                 // Get the full URL for redirect
                 $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
                 $host = $_SERVER['HTTP_HOST'];
-                $redirectUrl = $protocol . $host . '/CodeGaming/profile.php';
+                $redirectUrl = $protocol . $host . '/profile.php';
                 
                 echo json_encode([
                     'success' => true,
                     'message' => 'Banner uploaded successfully!',
-                    'bannerUrl' => $targetFile,
+                    'bannerUrl' => '/' . $relativePath, // Return web-accessible path
                     'redirect' => $redirectUrl
                 ]);
                 exit;
@@ -475,11 +486,11 @@ $stats['last_month_progress'] = min(100, $stats['overall_progress'] * 0.9); // E
         </div>
     </div>
     <div class="profile-avatar-container">
-        <img src="<?php echo !empty($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : '/CodeGaming/assets/images/default-avatar.gif'; ?>" 
+        <img src="<?php echo !empty($currentUser['profile_picture']) ? htmlspecialchars($currentUser['profile_picture']) : '/assets/images/default-avatar.gif'; ?>" 
              alt="Profile Picture" 
              class="profile-avatar"
              id="avatarPreview"
-             onerror="this.onerror=null; this.src='/CodeGaming/assets/images/default-avatar.gif';">
+             onerror="this.onerror=null; this.src='/assets/images/default-avatar.gif';">
         <div class="avatar-accent"></div>
     </div>
 </div>
