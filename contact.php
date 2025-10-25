@@ -117,7 +117,7 @@ include 'includes/header.php';
                         </div>
                         <div>
                             <h3 class="h6 mb-1">Our Location</h3>
-                            <p class="mb-0 text-muted">123 Code Street<br>Tech City, TC 10101</p>
+                            <p class="mb-0 text-muted">College St.<br>Pateros, Metro Manila</p>
                         </div>
                     </div>
 
@@ -140,7 +140,7 @@ include 'includes/header.php';
                         <div>
                             <h3 class="h6 mb-1">Call Us</h3>
                             <p class="mb-0">
-                                <a href="tel:+1234567890" class="text-decoration-none">+1 (234) 567-890</a>
+                                <a href="tel:+639605876574" class="text-decoration-none">+63 9605876574</a>
                             </p>
                         </div>
                     </div>
@@ -151,7 +151,7 @@ include 'includes/header.php';
             <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
                 <div class="ratio ratio-16x9">
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215209179128!2d-73.9878449244723!3d40.74844063928175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1623456789012!5m2!1sen!2sus" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215209179128!2d121.0656666!3d14.5656666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1623456789012!5m2!1sen!2sus" 
                         width="600" 
                         height="450" 
                         style="border:0;" 
