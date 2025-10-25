@@ -706,32 +706,54 @@ async function saveSessionResult() {
                 total_questions: miniGameState.totalQuestions,
                 correct_answers: miniGameState.correctAnswers,
                 incorrect_answers: miniGameState.incorrectAnswers,
-                accuracy: Math.round((miniGameState.correctAnswers / miniGameState.totalQuestions) * 100),
+                accuracy: Math.round((miniGameState.correctAnswers / Math.max(1, miniGameState.totalQuestions)) * 100),
                 session_duration: sessionDuration,
                 timestamp: new Date().toISOString()
             }
         };
         
-        const response = await fetch('api/mini-game/save-result.php', {
+        const response = await fetch('/api/mini-game/save-result.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
             },
+            credentials: 'same-origin',
             body: JSON.stringify(payload)
         });
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        // First, get the response as text to handle potential HTML errors
+        const responseText = await response.text();
+        let data;
+        
+        try {
+            // Try to parse as JSON
+            data = JSON.parse(responseText);
+        } catch (e) {
+            console.error('Failed to parse JSON response:', responseText);
+            throw new Error('Received invalid JSON response from server');
         }
         
-        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.error || `HTTP error! status: ${response.status}`);
+        }
+        
+        if (!data.success) {
+            throw new Error(data.message || 'Failed to save session result');
+        }
+        
         console.log('Session result saved:', data);
         
         // Refresh leaderboard after saving session
         loadLeaderboard();
         
+        return data;
+        
     } catch (error) {
         console.error('Error saving session result:', error);
+        // Show error to user in a non-intrusive way
+        showNotification(`Failed to save results: ${error.message}`, 'error');
+        throw error; // Re-throw to allow callers to handle the error if needed
     }
 }
 
@@ -981,21 +1003,42 @@ async function testLeaderboardAPI() {
     console.log('🧪 Testing leaderboard API...');
     
     try {
-        const response = await fetch('api/mini-game/test-leaderboard.php');
-        const data = await response.json();
+        const response = await fetch('/api/mini-game/test-leaderboard.php', {
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        // First get the response as text to handle potential HTML errors
+        const responseText = await response.text();
+        let data;
+        
+        try {
+            // Try to parse as JSON
+            data = JSON.parse(responseText);
+        } catch (e) {
+            console.error('❌ Failed to parse JSON response:', responseText.substring(0, 200));
+            throw new Error('Received invalid JSON response from server');
+        }
+        
         console.log('🧪 Test results:', data);
         
-        if (data.success) {
+        if (data && data.success) {
             console.log('✅ Database tests passed:', {
-                tableExists: data.tests.table_exists,
-                totalRecords: data.tests.total_records,
-                sampleRecords: data.tests.sample_records.length
+                tableExists: data.tests?.table_exists || false,
+                totalRecords: data.tests?.total_records || 0,
+                sampleRecords: data.tests?.sample_records?.length || 0
             });
+            return true;
         } else {
-            console.error('❌ Database tests failed:', data.error);
+            const errorMsg = data?.error || 'Unknown error occurred';
+            console.error('❌ Database tests failed:', errorMsg);
+            return false;
         }
     } catch (error) {
         console.error('❌ Test API failed:', error);
+        return false;
     }
 }
 
