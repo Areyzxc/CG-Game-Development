@@ -3,14 +3,12 @@ Welcome to our BSIT Capstone project at Pateros Technological College! This repo
 
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fcodegaming.gamer.gd&label=Live%20Demo&style=for-the-badge&color=blue)](https://codegaming.gamer.gd)
 
-[![CodeGaming Preview](https://imgur.com/a/code-gaming-tZtxRha)](https://codegaming.gamer.gd)
+[![CodeGaming Preview](assets/images/background-1.jpg)](https://codegaming.gamer.gd)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub issues](https://img.shields.io/github/issues/Areyzxc/Game-Development)](https://github.com/Areyzxc/Game-Development/issues)
 [![GitHub stars](https://img.shields.io/github/stars/Areyzxc/Game-Development)](https://github.com/Areyzxc/Game-Development/stargazers)
 [![GitHub release](https://img.shields.io/github/v/release/Areyzxc/Game-Development)](https://github.com/Areyzxc/Game-Development/releases)
-
-**Visit the live website:** [https://codegaming.gamer.gd](https://codegaming.gamer.gd)
 
 ## Project Overview
 
