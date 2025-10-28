@@ -33,7 +33,7 @@
       <div class="col-md-6 text-end">
         <a href="admin_dashboard.php" class="me-3">Dashboard</a>
         <a href="admin_users.php" class="me-3">Users</a>
-        <a href="admin_content.php" class="me-3">Content</a>
+        <a href="admin_profile.php" class="me-3">Profile</a>
         <a href="admin_settings.php">Settings</a>
       </div>
     </div>
