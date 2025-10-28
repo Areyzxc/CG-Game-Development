@@ -18,7 +18,7 @@ The system was evaluated using the ISO/IEC 25010 quality model, with an emphasis
 
 ## Purpose and Objectives
 
-This repository serves as the codebase for our Capstone Project (Academic Year 2025-2026). The primary goals are:
+This repository serves as the codebase for our Capstone Project S.Y. 2025. The primary goals are:
 - To enable players to efficiently complete coding challenges within a set time limit, ensuring high performance and productivity;
 - To present players with intricate and thought-provoking coding tasks that encourage problem-solving and critical thinking;
 - To assess players' proficiency in programming languages and/or non-programming languages, data structures, and algorithms through immersive and interactive gameplay;
