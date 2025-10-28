@@ -48,7 +48,7 @@ include 'includes/header.php';
     <!-- Page Header -->
     <div class="text-center mb-5">
         <h1 class="display-4 fw-bold text-gradient">Get In Touch</h1>
-        <p class="lead text-muted">We'd love to hear from you! Send us a message and we'll respond as soon as possible.</p>
+        <p class="lead text">We'd love to hear from you! Send us a message and we'll respond as soon as possible.</p>
     </div>
 
     <div class="row g-5">
@@ -90,7 +90,7 @@ include 'includes/header.php';
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="privacyPolicy" name="privacyPolicy" required>
                                     <label class="form-check-label small text-muted" for="privacyPolicy">
-                                        I agree to the <a href="/privacy" class="text-decoration-none">Privacy Policy</a> and <a href="/terms" class="text-decoration-none">Terms of Service</a>
+                                        I agree to the <a href="privacy.php" class="text-decoration-none">Privacy Policy</a> and <a href="terms.php" class="text-decoration-none">Terms of Service</a>
                                     </label>
                                 </div>
                             </div>
@@ -116,8 +116,8 @@ include 'includes/header.php';
                             <i class="fas fa-map-marker-alt text-primary"></i>
                         </div>
                         <div>
-                            <h3 class="h6 mb-1">Our Location</h3>
-                            <p class="mb-0 text-muted">College St.<br>Pateros, Metro Manila</p>
+                            <h3 class="h6 mb-1">Our Location:</h3>
+                            <p class="mb-0 text-muted">College St.<br>Pateros, Metro Manila, Philippines</p>
                         </div>
                     </div>
 
@@ -126,9 +126,14 @@ include 'includes/header.php';
                             <i class="fas fa-envelope text-primary"></i>
                         </div>
                         <div>
-                            <h3 class="h6 mb-1">Email Us</h3>
+                            <h3 class="h6 mb-1">Email Us:</h3>
                             <p class="mb-0">
-                                <a href="mailto:contact@codegaming.com" class="text-decoration-none">contact@codegaming.com</a>
+                                <a href="mailto:jgsantiago@paterostechnologicalcollege.edu.ph" class="text-decoration-none">Proponent No. 1: jgsantiago@paterostechnologicalcollege.edu.ph</a>
+                                <a href="mailto:jibelza@paterostechnologicalcollege.edu.ph" class="text-decoration-none">Proponent No. 2: jibelza@paterostechnologicalcollege.edu.ph</a>
+                                <a href="mailto:ajbconstantino@paterostechnologicalcollege.edu.ph" class="text-decoration-none">Proponent No. 3: ajbconstantino@paterostechnologicalcollege.edu.ph</a>
+                                <a href="mailto:ytsabangan@paterostechnologicalcollege.edu.ph" class="text-decoration-none">Proponent No. 4: ytsabangan@paterostechnologicalcollege.edu.ph</a>
+                                <a href="mailto:jcsilvestre@paterostechnologicalcollege.edu.ph" class="text-decoration-none">Proponent No. 5: jcsilvestre@paterostechnologicalcollege.edu.ph</a>
+                                <a href="mailto:psvalencia@paterostechnologicalcollege.edu.ph" class="text-decoration-none">Proponent No. 6: psvalencia@paterostechnologicalcollege.edu.ph</a>
                             </p>
                         </div>
                     </div>
