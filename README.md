@@ -111,7 +111,7 @@ For detailed user guides, see the `/docs` folder.
 
 ## Contributors
 
-This project is a collaborative effort by BSIT-4F students at Pateros Technological College:
+This capstone project is a collaborative effort by BSIT-4F students at Pateros Technological College:
 
 - **Belza, John Jaylyn**  
 - **Constantino, Alvin Jr.**  
