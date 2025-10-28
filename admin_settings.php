@@ -15,6 +15,9 @@ session_start();
 require_once 'includes/Auth.php';
 require_once 'includes/Database.php';
 
+// Set page title for the header
+$pageTitle = "Admin Settings";
+
 $auth = Auth::getInstance();
 if (!$auth->isAdmin()) {
     header('Location: login.php');
@@ -306,9 +309,36 @@ $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
 <?php include 'includes/admin_footer.php'; ?>
 
+<!-- Bootstrap JS Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS -->
+<script>
+// Initialize Bootstrap components
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all dropdowns
+    var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+    var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+        return new bootstrap.Dropdown(dropdownToggleEl, {
+            autoClose: true,
+            boundary: 'clippingParents'
+        });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.matches('.dropdown-toggle') && !event.target.closest('.dropdown-menu')) {
+            dropdownList.forEach(function(dropdown) {
+                if (dropdown._menu.classList.contains('show')) {
+                    dropdown.hide();
+                }
+            });
+        }
+    });
+});
+</script>
 <script src="assets/js/admin_global.js"></script>
-<script src="assets/js/admin_settings.js"></script>
+<script src="assets/js/admin_settings.js" defer></script>
 
 </body>
 </html>
