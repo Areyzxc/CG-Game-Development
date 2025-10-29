@@ -65,13 +65,14 @@ This repository serves as the codebase for our Capstone Project S.Y. 2025. The p
 - **Server**: PHP 8.1+
 - **Database**: MySQL 8.0+ with InnoDB
 - **API**: RESTful API architecture
-- **Sessions & Authentication**: Custom session management with JWT support
+- **Sessions & Authentication**: Custom session management with JWT (JSON Web Token) support
 - **Security**: Prepared statements, CSRF protection, XSS prevention
 
 ### Development Tools
 - **Version Control**: Git with GitHub
 - **Package Management**: Composer (PHP)
 - **Local Development**: XAMPP/WAMP
+- **Deploymentt**: InfinityFree with domain and SSL
 - **Code Quality**: ESLint, Prettier, PHP_CodeSniffer
 
 ## Installation and Setup
