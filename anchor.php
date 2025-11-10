@@ -885,7 +885,7 @@ print("Welcome to Code Gaming!")`,
           codeElement.innerHTML = '';
           await typeCode(codeSnippets[currentSnippet], codeElement);
           
-          // Wait a bit before moving to next snippet
+          // Wait a bit before moving to the next snippet
           await new Promise(resolve => setTimeout(resolve, 3000));
           
           // Move to next snippet
@@ -902,3 +902,4 @@ print("Welcome to Code Gaming!")`,
   <script src="assets/js/video-text-effect.js"></script>
 </body>
 </html>
+
